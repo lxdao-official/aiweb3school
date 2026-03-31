@@ -1,0 +1,20 @@
+:root {
+  --my-h1-color: #111;
+  --my-h2-color: #1a1a6e;
+  --my-h3-color: #3b82f6;
+  --my-h4-color: #2563eb;
+  --my-h5-color: #1d4ed8;
+  --my-h6-color: #111;
+}
+
+h1 { color: var(--my-h1-color); }
+h2 { color: var(--my-h2-color); }
+h3 { color: var(--my-h3-color); }
+h4 { color: var(--my-h4-color); }
+h5 { color: var(--my-h5-color); }
+h6 { color: var(--my-h6-color); }
+
+/* Timeline section - override home layout background */
+.vp-home .Timeline {
+  background: transparent;
+}
