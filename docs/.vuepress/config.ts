@@ -14,7 +14,7 @@ export default defineUserConfig({
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/images/logo.png' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/images/logo.svg' }],
   ],
 
   bundler: viteBundler(),

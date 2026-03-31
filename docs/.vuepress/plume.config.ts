@@ -28,7 +28,7 @@ export default defineThemeConfig({
   locales: {
     '/': {
       profile: {
-        avatar: '/images/logo.png',
+        avatar: '/images/logo.svg',
         name: 'AI Web3 School',
         description: 'AI × Web3 学习平台',
       },

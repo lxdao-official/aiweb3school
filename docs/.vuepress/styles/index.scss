@@ -1,4 +1,4 @@
-:root {
+html[data-theme='light'] {
   --my-h1-color: #111;
   --my-h2-color: #1a1a6e;
   --my-h3-color: #3b82f6;
@@ -7,12 +7,12 @@
   --my-h6-color: #111;
 }
 
-h1 { color: var(--my-h1-color); }
-h2 { color: var(--my-h2-color); }
-h3 { color: var(--my-h3-color); }
-h4 { color: var(--my-h4-color); }
-h5 { color: var(--my-h5-color); }
-h6 { color: var(--my-h6-color); }
+html[data-theme='light'] h1 { color: var(--my-h1-color); }
+html[data-theme='light'] h2 { color: var(--my-h2-color); }
+html[data-theme='light'] h3 { color: var(--my-h3-color); }
+html[data-theme='light'] h4 { color: var(--my-h4-color); }
+html[data-theme='light'] h5 { color: var(--my-h5-color); }
+html[data-theme='light'] h6 { color: var(--my-h6-color); }
 
 /* Timeline section - override home layout background */
 .vp-home .Timeline {
