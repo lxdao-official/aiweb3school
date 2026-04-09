@@ -419,7 +419,7 @@ onMounted(() => {
 
 .merge-bridge {
   position: relative;
-  width: min(500px, 72%);
+  width: min(438px, 68%);
   height: 40px;
   margin: 0 auto 8px;
 }
@@ -466,14 +466,14 @@ onMounted(() => {
 
 .merge-stack {
   position: relative;
-  max-width: 560px;
+  max-width: 492px;
   margin: 0 auto;
 }
 
 .merge-stack::before {
   content: '';
   position: absolute;
-  inset: 16px 36px;
+  inset: 16px 30px;
   pointer-events: none;
   border-radius: 999px;
   background:
@@ -485,7 +485,7 @@ onMounted(() => {
 
 .merge-spine {
   position: absolute;
-  left: 30px;
+  left: 26px;
   top: 14px;
   bottom: 14px;
   width: 2px;
@@ -495,9 +495,9 @@ onMounted(() => {
 
 .merge-row {
   display: grid;
-  grid-template-columns: 30px minmax(0, 468px);
+  grid-template-columns: 26px minmax(0, 404px);
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 

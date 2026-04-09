@@ -294,6 +294,22 @@ function navigate() {
 
 .variant-fusion {
   min-height: 104px;
+  max-width: 404px;
+  justify-self: start;
+}
+
+.variant-fusion .card-content {
+  padding: 11px 12px 12px;
+}
+
+.variant-fusion .card-title {
+  font-size: 16.5px;
+}
+
+.variant-fusion .card-desc {
+  max-width: 21ch;
+  font-size: 11.5px;
+  line-height: 1.48;
 }
 
 .variant-branch {
