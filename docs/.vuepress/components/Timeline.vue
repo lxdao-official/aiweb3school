@@ -1,285 +1,634 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import TimelineCard from './TimelineCard.vue'
+import roadmapSource from '../content/roadmap.md?raw'
 
-interface TimelineItem {
+interface RoadmapCard {
   title: string
   description: string
-  link: string
   icon: string
-  color: 'web3' | 'ai'
+  kicker: string
+  tone: 'web3' | 'ai' | 'fusion' | 'future'
+  variant: 'foundation' | 'fusion' | 'branch'
+  link?: string
 }
 
-interface ParallelRow {
-  left: TimelineItem
-  right: TimelineItem
+interface FoundationRow {
+  left: RoadmapCard
+  right: RoadmapCard
 }
 
-const parallelItems: ParallelRow[] = [
-  {
-    left: { title: '区块链基础', description: '理解区块链核心概念、共识机制与分布式账本', link: '/zh/blockchain-basics/', icon: '🔗', color: 'web3' },
-    right: { title: 'AI 基础概念', description: '人工智能发展历程、核心思想与应用场景', link: '/zh/ai-fundamentals/', icon: '🧠', color: 'ai' },
-  },
-  {
-    left: { title: '智能合约入门', description: 'Solidity 语言基础与合约开发实践', link: '/zh/smart-contracts/', icon: '📜', color: 'web3' },
-    right: { title: '机器学习入门', description: '监督学习、无监督学习与常用算法', link: '/zh/machine-learning-basics/', icon: '📊', color: 'ai' },
-  },
-  {
-    left: { title: 'DeFi 概览', description: '去中心化金融协议、DEX 与借贷机制', link: '/zh/defi-intro/', icon: '💰', color: 'web3' },
-    right: { title: '深度学习简介', description: '神经网络、Transformer 与大语言模型', link: '/zh/deep-learning-intro/', icon: '🔬', color: 'ai' },
-  },
-  {
-    left: { title: 'Web3 开发工具', description: 'Hardhat、Foundry、Ethers.js 等工具链', link: '/zh/web3-tools/', icon: '🛠️', color: 'web3' },
-    right: { title: 'AI 工具与平台', description: 'ChatGPT、Claude、开源模型与 API 实践', link: '/zh/ai-tools/', icon: '⚙️', color: 'ai' },
-  },
-]
+function extractJsonBlock(section: string) {
+  const escapedSection = section.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const pattern = new RegExp(`##\\s+${escapedSection}[\\s\\S]*?\\\`\\\`\\\`json\\n([\\s\\S]*?)\\n\\\`\\\`\\\``, 'm')
+  const match = roadmapSource.match(pattern)
+
+  if (!match?.[1]) {
+    throw new Error(`Missing roadmap section: ${section}`)
+  }
+
+  return match[1]
+}
+
+function parseRoadmapSection<T>(section: string): T {
+  return JSON.parse(extractJsonBlock(section)) as T
+}
+
+const foundationRows = parseRoadmapSection<FoundationRow[]>('foundation')
+const mergeCards = parseRoadmapSection<RoadmapCard[]>('merge')
+const branchCards = parseRoadmapSection<RoadmapCard[]>('branch')
 
 const timelineRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   nextTick(() => {
     if (!timelineRef.value) return
-    const cards = timelineRef.value.querySelectorAll('.timeline-card')
+
+    const nodes = timelineRef.value.querySelectorAll('.roadmap-reveal')
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
+            entry.target.classList.add('is-visible')
             observer.unobserve(entry.target)
           }
         })
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     )
-    cards.forEach((card) => observer.observe(card))
+
+    nodes.forEach((node) => observer.observe(node))
   })
 })
 </script>
 
 <template>
-  <div class="timeline-section" ref="timelineRef">
-    <div class="timeline-wrapper">
-      <!-- Section Title -->
-      <div class="section-header">
-        <h2 class="section-title">学习路线</h2>
-        <p class="section-subtitle">左手 Web3，右手 AI —— 双线并进，融合创新</p>
-      </div>
+  <section class="timeline-section" ref="timelineRef">
+    <div class="timeline-shell">
+      <section class="phase phase-foundation">
+        <div class="track-headings roadmap-reveal">
+          <span class="track-pill track-pill-web3">Web3</span>
+          <span class="track-pill track-pill-ai">AI</span>
+        </div>
 
-      <!-- Track Labels -->
-      <div class="track-labels">
-        <span class="track-label label-web3">Web3</span>
-        <span class="track-label label-ai">AI</span>
-      </div>
+        <div class="foundation-roadmap">
+          <div class="foundation-spine" />
 
-      <!-- Parallel Phase -->
-      <div class="timeline-phase parallel-phase">
-        <div class="timeline-line" />
-        <div
-          v-for="(pair, i) in parallelItems"
-          :key="i"
-          class="timeline-row"
-        >
+          <div
+            v-for="(row, index) in foundationRows"
+            :key="row.left.title"
+            class="foundation-row"
+          >
+            <TimelineCard
+              class="roadmap-reveal"
+              :style="{ transitionDelay: `${index * 70}ms` }"
+              v-bind="row.left"
+              side="left"
+            />
+
+            <div
+              class="foundation-node roadmap-reveal"
+              :style="{ transitionDelay: `${index * 70 + 40}ms` }"
+            >
+              <span />
+            </div>
+
+            <TimelineCard
+              class="roadmap-reveal"
+              :style="{ transitionDelay: `${index * 70 + 80}ms` }"
+              v-bind="row.right"
+              side="right"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="phase phase-merge">
+        <div class="merge-bridge roadmap-reveal">
+          <span class="merge-line merge-line-left" />
+          <span class="merge-core" />
+          <span class="merge-line merge-line-right" />
+        </div>
+
+        <div class="merge-stack">
+          <div class="merge-spine" />
+
+          <div
+            v-for="(card, index) in mergeCards"
+            :key="card.title"
+            class="merge-row roadmap-reveal"
+            :style="{ transitionDelay: `${index * 90}ms` }"
+          >
+            <div class="merge-node">
+              <span />
+            </div>
+
+            <TimelineCard v-bind="card" side="center" />
+          </div>
+        </div>
+      </section>
+
+      <section class="phase phase-branch">
+        <div class="branch-network roadmap-reveal">
+          <div class="branch-core">
+            <span />
+          </div>
+          <div class="branch-rail" />
+          <div class="branch-drop-lines">
+            <span v-for="card in branchCards" :key="card.title" />
+          </div>
+        </div>
+
+        <div class="branch-grid">
           <TimelineCard
-            v-bind="pair.left"
-            side="left"
-          />
-          <div class="timeline-dot" />
-          <TimelineCard
-            v-bind="pair.right"
-            side="right"
+            v-for="(card, index) in branchCards"
+            :key="card.title"
+            class="roadmap-reveal"
+            :style="{ transitionDelay: `${index * 80}ms` }"
+            v-bind="card"
+            side="center"
           />
         </div>
-      </div>
-
-      <!-- End Dot -->
-      <div class="timeline-end">
-        <div class="end-dot" />
-      </div>
+      </section>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 .timeline-section {
-  min-height: 100vh;
-  max-width: 1120px;
+  position: relative;
+  margin-top: 0;
+  padding: 64px 0 72px;
+  overflow: clip;
+  isolation: isolate;
+}
+
+.timeline-section::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  bottom: -48px;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  pointer-events: none;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(141, 118, 255, 0.14), transparent 28%),
+    radial-gradient(circle at 84% 18%, rgba(80, 220, 185, 0.12), transparent 24%),
+    radial-gradient(circle at 52% 52%, rgba(106, 164, 255, 0.1), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9) 18%, rgba(255, 255, 255, 0.96) 100%);
+  animation: drift-halo 14s ease-in-out infinite;
+}
+
+.timeline-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.18) 24%, rgba(255, 255, 255, 0) 100%);
+}
+
+.timeline-shell {
+  --rail-web3: rgba(140, 118, 255, 0.85);
+  --rail-ai: rgba(62, 214, 177, 0.82);
+  --rail-fusion: rgba(114, 161, 255, 0.84);
+  position: relative;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 18px 18px 34px;
+}
+
+.phase + .phase {
+  margin-top: 30px;
+}
+
+.track-headings {
+  display: grid;
+  grid-template-columns: minmax(0, 364px) 42px minmax(0, 364px);
+  justify-content: center;
+  align-items: center;
+  max-width: 870px;
+  margin: 0 auto 12px;
+  gap: 12px;
+  padding: 0;
+}
+
+.track-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.64);
+  color: rgba(72, 92, 126, 0.88);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow:
+    10px 10px 24px rgba(148, 163, 184, 0.14),
+    -8px -8px 20px rgba(255, 255, 255, 0.92),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  justify-self: center;
+}
+
+.track-pill-web3 {
+  grid-column: 1;
+  color: rgba(97, 74, 186, 0.9);
+}
+
+.track-pill-ai {
+  grid-column: 3;
+  color: rgba(30, 147, 114, 0.88);
+}
+
+.foundation-roadmap {
+  position: relative;
+  max-width: 870px;
+  margin: 0 auto;
+}
+
+.foundation-roadmap::before,
+.foundation-roadmap::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  width: 188px;
+  pointer-events: none;
+  filter: blur(28px);
+  opacity: 0.26;
+}
+
+.foundation-roadmap::before {
+  left: 8px;
+  background: linear-gradient(180deg, rgba(157, 126, 255, 0.18), rgba(157, 126, 255, 0.04));
+}
+
+.foundation-roadmap::after {
+  right: 8px;
+  background: linear-gradient(180deg, rgba(70, 221, 182, 0.18), rgba(70, 221, 182, 0.04));
+}
+
+.foundation-spine {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, var(--rail-web3), var(--rail-fusion), var(--rail-ai));
+  box-shadow: 0 0 22px rgba(114, 161, 255, 0.18);
+  animation: pulse-rail 5.2s ease-in-out infinite;
+}
+
+.foundation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 364px) 42px minmax(0, 364px);
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+}
+
+.foundation-row + .foundation-row {
+  margin-top: 14px;
+}
+
+.foundation-node,
+.merge-node,
+.branch-core {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
 }
 
-.timeline-wrapper {
-  position: relative;
-  width: 100%;
-  padding: 64px 0;
-}
-
-/* Section Header */
-.section-header {
-  text-align: center;
-  margin-bottom: 56px;
-}
-
-.section-title {
-  font-size: 40px;
-  font-weight: 700;
-  color: var(--vp-c-text-1);
-  margin: 0 0 16px;
-  letter-spacing: -0.02em;
-}
-
-.section-subtitle {
-  font-size: 18px;
-  color: var(--vp-c-text-2);
-  margin: 0;
-}
-
-/* Track Labels */
-.track-labels {
-  display: flex;
-  justify-content: space-between;
-  max-width: 900px;
-  margin: 0 auto 40px;
-  padding: 0 80px;
-}
-
-.track-label {
-  font-size: 15px;
-  font-weight: 600;
-  padding: 6px 20px;
-  border-radius: 20px;
-}
-
-.label-web3 {
-  background: rgba(139, 92, 246, 0.1);
-  color: #8b5cf6;
-}
-
-.label-ai {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-}
-
-/* Timeline Phase */
-.timeline-phase {
-  position: relative;
-}
-
-/* Vertical Line */
-.timeline-line {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--vp-c-divider);
-  transform: translateX(-50%);
-}
-
-.parallel-phase .timeline-line {
-  background: linear-gradient(to bottom, #8b5cf6, #3b82f6, #10b981);
-}
-
-/* Timeline Row */
-.timeline-row {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 20px 0;
-  gap: 32px;
-}
-
-.timeline-row .timeline-card {
-  flex: 1;
-  opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.timeline-row .timeline-card.side-left {
-  transform: translateX(-24px);
-}
-
-.timeline-row .timeline-card.side-right {
-  transform: translateX(24px);
-}
-
-.timeline-row .timeline-card.visible {
-  opacity: 1;
-  transform: translate(0);
-}
-
-/* Timeline Dot */
-.timeline-dot {
-  flex-shrink: 0;
+.foundation-node span,
+.merge-node span,
+.branch-core span {
+  display: inline-flex;
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--vp-c-bg);
-  border: 3px solid #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
-  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(224, 233, 247, 0.72));
+  box-shadow:
+    8px 8px 18px rgba(148, 163, 184, 0.18),
+    -6px -6px 16px rgba(255, 255, 255, 0.98),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.88),
+    inset -1px -1px 0 rgba(171, 195, 240, 0.3);
+  animation: pulse-node 4.6s ease-in-out infinite;
 }
 
-/* End Dot */
-.timeline-end {
-  display: flex;
-  justify-content: center;
-  padding-top: 24px;
+.merge-bridge {
+  position: relative;
+  width: min(500px, 72%);
+  height: 40px;
+  margin: 0 auto 8px;
 }
 
-.end-dot {
-  width: 12px;
-  height: 12px;
+.merge-line {
+  position: absolute;
+  top: 20px;
+  width: calc(50% - 20px);
+  height: 1px;
+}
+
+.merge-line-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(140, 118, 255, 0.16), rgba(114, 161, 255, 1));
+  box-shadow: 0 0 14px rgba(114, 161, 255, 0.16);
+}
+
+.merge-line-right {
+  right: 0;
+  background: linear-gradient(90deg, rgba(62, 214, 177, 0.16), rgba(114, 161, 255, 1));
+  box-shadow: 0 0 14px rgba(114, 161, 255, 0.16);
+  transform: scaleX(-1);
+}
+
+.merge-core {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  transform: translateX(-50%);
   border-radius: 50%;
-  background: var(--vp-c-divider);
+  border: 1px solid rgba(255, 255, 255, 0.98);
+  background:
+    radial-gradient(circle at 50% 34%, rgba(174, 208, 255, 0.28), transparent 46%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(223, 235, 249, 0.82));
+  box-shadow:
+    10px 10px 22px rgba(148, 163, 184, 0.18),
+    -8px -8px 18px rgba(255, 255, 255, 0.98),
+    0 0 18px rgba(126, 171, 235, 0.18),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.88);
+  animation: pulse-node 4.4s ease-in-out infinite;
 }
 
-/* ========== Mobile ========== */
+.merge-stack {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.merge-stack::before {
+  content: '';
+  position: absolute;
+  inset: 16px 36px;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(126, 171, 235, 0.18), transparent 48%),
+    linear-gradient(180deg, rgba(126, 171, 235, 0.16), rgba(126, 171, 235, 0.03));
+  filter: blur(22px);
+  opacity: 0.34;
+}
+
+.merge-spine {
+  position: absolute;
+  left: 30px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(114, 161, 255, 1), rgba(126, 171, 235, 0.76));
+  box-shadow: 0 0 20px rgba(114, 161, 255, 0.22);
+}
+
+.merge-row {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 468px);
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+.merge-row + .merge-row {
+  margin-top: 12px;
+}
+
+.branch-network {
+  max-width: 870px;
+  margin: 0 auto 14px;
+}
+
+.branch-core {
+  margin-bottom: 12px;
+}
+
+.branch-rail {
+  width: calc(100% - 120px);
+  height: 3px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, rgba(140, 118, 255, 0.74), rgba(114, 161, 255, 0.96), rgba(240, 179, 108, 0.82));
+  box-shadow:
+    0 0 20px rgba(114, 161, 255, 0.16),
+    0 0 28px rgba(255, 187, 96, 0.08);
+}
+
+.branch-drop-lines {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.branch-drop-lines span {
+  display: block;
+  justify-self: center;
+  width: 2px;
+  height: 28px;
+  background: linear-gradient(180deg, rgba(114, 161, 255, 0.94), rgba(240, 179, 108, 0));
+}
+
+.branch-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 264px));
+  justify-content: center;
+  gap: 12px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.branch-grid::before {
+  content: '';
+  position: absolute;
+  inset: auto 8% -10px;
+  height: 140px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 187, 96, 0.14), transparent 62%);
+  filter: blur(26px);
+  opacity: 0.52;
+}
+
+.roadmap-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.roadmap-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.foundation-row .roadmap-reveal,
+.merge-row.roadmap-reveal,
+.branch-grid .roadmap-reveal {
+  animation: float-card 7s ease-in-out infinite;
+}
+
+.foundation-row:nth-child(2n) .roadmap-reveal,
+.branch-grid .roadmap-reveal:nth-child(2n) {
+  animation-delay: 1.2s;
+}
+
+.branch-grid .roadmap-reveal:nth-child(3n) {
+  animation-delay: 2.2s;
+}
+
+@keyframes float-card {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes drift-halo {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translate3d(0, 8px, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-node {
+  0%,
+  100% {
+    box-shadow:
+      8px 8px 18px rgba(148, 163, 184, 0.18),
+      -6px -6px 16px rgba(255, 255, 255, 0.98),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.88),
+      inset -1px -1px 0 rgba(171, 195, 240, 0.3);
+  }
+  50% {
+    box-shadow:
+      10px 10px 22px rgba(148, 163, 184, 0.24),
+      -8px -8px 18px rgba(255, 255, 255, 1),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.92),
+      inset -1px -1px 0 rgba(141, 174, 236, 0.42);
+  }
+}
+
+@keyframes pulse-rail {
+  0%,
+  100% {
+    opacity: 0.88;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1100px) {
+  .timeline-shell {
+    padding: 8px 14px 28px;
+  }
+
+  .foundation-row {
+    grid-template-columns: minmax(0, 320px) 30px minmax(0, 320px);
+    gap: 10px;
+  }
+
+  .branch-grid {
+    grid-template-columns: repeat(2, minmax(0, 264px));
+  }
+
+  .branch-drop-lines {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .timeline-section {
-    padding: 0 16px;
-    min-height: auto;
+    margin-top: 0;
+    padding: 42px 0 44px;
   }
 
-  .timeline-wrapper {
-    padding: 40px 0 60px;
+  .timeline-shell {
+    padding: 4px 8px 20px;
   }
 
-  .section-title {
-    font-size: 28px;
+  .track-headings {
+    grid-template-columns: minmax(0, 320px) 30px minmax(0, 320px);
+    gap: 10px;
+    margin-bottom: 14px;
   }
 
-  .track-labels {
-    padding: 0 16px;
+  .foundation-spine {
+    left: 14px;
   }
 
-  .timeline-line,
-  .parallel-phase .timeline-line {
-    left: 24px;
-  }
-
-  .timeline-row {
-    flex-direction: column;
-    padding: 8px 0 8px 48px;
+  .foundation-row {
+    grid-template-columns: 28px minmax(0, 1fr);
     gap: 12px;
   }
 
-  .timeline-dot {
-    position: absolute;
-    left: 18px;
-    top: 20px;
+  .foundation-row > :first-child {
+    order: 2;
   }
 
-  .timeline-row .timeline-card.side-left,
-  .timeline-row .timeline-card.side-right {
-    transform: translateX(16px);
+  .foundation-row > :last-child {
+    order: 3;
   }
 
-  .timeline-row .timeline-card.visible {
-    transform: translate(0);
+  .foundation-node {
+    order: 1;
+  }
+
+  .merge-spine {
+    left: 14px;
+  }
+
+  .merge-row {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .branch-rail {
+    width: calc(100% - 40px);
+  }
+
+  .branch-grid,
+  .branch-drop-lines {
+    grid-template-columns: 1fr;
+  }
+
+  .branch-drop-lines span {
+    height: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .track-headings {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 }
 </style>

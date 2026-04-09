@@ -18,3 +18,22 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
 .vp-home .Timeline {
   background: transparent;
 }
+
+.vp-home {
+  background: #fff;
+}
+
+.vp-home .vp-home-hero {
+  position: relative;
+  z-index: 1;
+}
+
+.vp-home .vp-home-hero .name,
+.vp-home .vp-home-hero .text,
+.vp-home .vp-home-hero .tagline {
+  color: inherit;
+}
+
+.vp-home .vp-home-hero .actions .vp-button {
+  border-radius: 999px;
+}
