@@ -145,10 +145,11 @@ function navigate() {
 
 .card-title {
   margin: 0;
+  font-family: inherit;
   font-size: 17px;
-  font-weight: 600;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.04em;
   color: rgba(24, 36, 58, 0.96);
   text-align: center;
   text-wrap: balance;
@@ -157,11 +158,12 @@ function navigate() {
 .card-desc {
   max-width: 24ch;
   margin: 0 auto;
+  font-family: inherit;
   font-size: 12px;
-  font-weight: 500;
-  line-height: 1.55;
-  letter-spacing: -0.01em;
-  color: rgba(88, 103, 128, 0.9);
+  font-weight: 400;
+  line-height: 1.52;
+  letter-spacing: -0.015em;
+  color: rgba(92, 106, 128, 0.88);
   text-align: center;
   text-wrap: balance;
 }
@@ -253,36 +255,36 @@ function navigate() {
 }
 
 .tone-future {
-  border-color: rgba(255, 187, 96, 0.26);
+  border-color: rgba(255, 187, 96, 0.34);
   background:
-    radial-gradient(circle at 50% 10%, rgba(255, 204, 140, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(255, 252, 246, 0.94), rgba(255, 247, 235, 0.72)),
-    rgba(255, 255, 255, 0.54);
+    radial-gradient(circle at 50% 10%, rgba(255, 204, 140, 0.22), transparent 36%),
+    linear-gradient(180deg, rgba(255, 252, 246, 0.98), rgba(255, 244, 227, 0.8)),
+    rgba(255, 255, 255, 0.58);
   box-shadow:
-    18px 18px 36px rgba(148, 163, 184, 0.2),
+    18px 18px 38px rgba(148, 163, 184, 0.2),
     -12px -12px 28px rgba(255, 255, 255, 0.96),
-    0 10px 24px rgba(255, 187, 96, 0.08),
-    inset 0 0 0 1px rgba(255, 214, 158, 0.14),
+    0 12px 30px rgba(255, 187, 96, 0.12),
+    inset 0 0 0 1px rgba(255, 214, 158, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.88);
 }
 
 .tone-future .card-icon {
-  background: rgba(255, 187, 96, 0.16);
+  background: rgba(255, 187, 96, 0.2);
   box-shadow:
-    8px 8px 16px rgba(148, 163, 184, 0.12),
+    8px 8px 18px rgba(148, 163, 184, 0.12),
     -6px -6px 14px rgba(255, 255, 255, 0.98),
     inset 1px 1px 0 rgba(255, 255, 255, 0.76),
-    inset 0 0 0 1px rgba(255, 187, 96, 0.1);
+    inset 0 0 0 1px rgba(255, 187, 96, 0.14);
 }
 
 .timeline-card.clickable.tone-future:hover {
-  border-color: rgba(255, 187, 96, 0.42);
+  border-color: rgba(255, 187, 96, 0.5);
   box-shadow:
-    20px 20px 38px rgba(148, 163, 184, 0.22),
+    22px 22px 40px rgba(148, 163, 184, 0.22),
     -12px -12px 28px rgba(255, 255, 255, 1),
-    0 0 0 1px rgba(255, 187, 96, 0.1),
-    0 12px 30px rgba(255, 187, 96, 0.12),
-    inset 0 0 0 1px rgba(255, 214, 158, 0.18),
+    0 0 0 1px rgba(255, 187, 96, 0.12),
+    0 14px 34px rgba(255, 187, 96, 0.16),
+    inset 0 0 0 1px rgba(255, 214, 158, 0.22),
     inset 1px 1px 0 rgba(255, 255, 255, 0.92);
 }
 
@@ -303,11 +305,12 @@ function navigate() {
 }
 
 .variant-branch .card-title {
-  font-size: 18px;
+  font-size: 18.5px;
 }
 
 .variant-branch .card-desc {
-  font-size: 12.5px;
+  font-size: 13px;
+  font-weight: 500;
   color: rgba(84, 98, 118, 0.92);
 }
 

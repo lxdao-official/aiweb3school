@@ -66,6 +66,10 @@ onMounted(() => {
   <section class="timeline-section" ref="timelineRef">
     <div class="timeline-shell">
       <section class="phase phase-foundation">
+        <div class="phase-header phase-header-major roadmap-reveal">
+          <h3 class="phase-title phase-title-major">基础课程</h3>
+        </div>
+
         <div class="track-headings roadmap-reveal">
           <span class="track-pill track-pill-web3">Web3</span>
           <span class="track-pill track-pill-ai">AI</span>
@@ -104,6 +108,10 @@ onMounted(() => {
       </section>
 
       <section class="phase phase-merge">
+        <div class="phase-header phase-header-minor roadmap-reveal">
+          <h3 class="phase-title phase-pill phase-pill-fusion">AI × Web3</h3>
+        </div>
+
         <div class="merge-bridge roadmap-reveal">
           <span class="merge-line merge-line-left" />
           <span class="merge-core" />
@@ -129,6 +137,10 @@ onMounted(() => {
       </section>
 
       <section class="phase phase-branch">
+        <div class="phase-header phase-header-major roadmap-reveal">
+          <h3 class="phase-title phase-title-major">赛道实践</h3>
+        </div>
+
         <div class="branch-network roadmap-reveal">
           <div class="branch-core">
             <span />
@@ -203,6 +215,87 @@ onMounted(() => {
   margin-top: 30px;
 }
 
+.phase-header {
+  width: 100%;
+  text-align: center;
+}
+
+.phase-header-major {
+  margin-bottom: 14px;
+}
+
+.phase-header-minor {
+  margin-bottom: 10px;
+}
+
+.phase-title {
+  margin: 0;
+  color: rgba(26, 39, 61, 0.94);
+  text-align: center;
+}
+
+.phase-title-major {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+}
+
+.phase-title-minor {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.04em;
+}
+
+.phase-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.64);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow:
+    10px 10px 24px rgba(148, 163, 184, 0.14),
+    -8px -8px 20px rgba(255, 255, 255, 0.92),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.phase-pill-fusion {
+  color: transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 250, 255, 0.56)),
+    rgba(255, 255, 255, 0.64);
+  box-shadow:
+    10px 10px 24px rgba(148, 163, 184, 0.14),
+    -8px -8px 20px rgba(255, 255, 255, 0.92),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.76),
+    inset 0 0 0 1px rgba(126, 171, 235, 0.08);
+  background-clip: padding-box;
+  position: relative;
+}
+
+.phase-pill-fusion::before {
+  content: 'AI × Web3';
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, rgba(97, 74, 186, 0.94), rgba(114, 161, 255, 0.94), rgba(30, 147, 114, 0.9));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .track-headings {
   display: grid;
   grid-template-columns: minmax(0, 364px) 42px minmax(0, 364px);
@@ -216,6 +309,7 @@ onMounted(() => {
 
 .track-pill {
   display: inline-flex;
+  font-family: inherit;
   align-items: center;
   justify-content: center;
   min-height: 42px;
@@ -225,8 +319,8 @@ onMounted(() => {
   background: rgba(255, 255, 255, 0.64);
   color: rgba(72, 92, 126, 0.88);
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   box-shadow:
     10px 10px 24px rgba(148, 163, 184, 0.14),
     -8px -8px 20px rgba(255, 255, 255, 0.92),
@@ -427,7 +521,7 @@ onMounted(() => {
   background: linear-gradient(90deg, rgba(140, 118, 255, 0.74), rgba(114, 161, 255, 0.96), rgba(240, 179, 108, 0.82));
   box-shadow:
     0 0 20px rgba(114, 161, 255, 0.16),
-    0 0 28px rgba(255, 187, 96, 0.08);
+    0 0 32px rgba(255, 187, 96, 0.12);
 }
 
 .branch-drop-lines {
@@ -439,7 +533,7 @@ onMounted(() => {
 .branch-drop-lines span {
   display: block;
   justify-self: center;
-  width: 2px;
+  width: 3px;
   height: 28px;
   background: linear-gradient(180deg, rgba(114, 161, 255, 0.94), rgba(240, 179, 108, 0));
 }
@@ -461,9 +555,9 @@ onMounted(() => {
   height: 140px;
   pointer-events: none;
   border-radius: 999px;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 187, 96, 0.14), transparent 62%);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 187, 96, 0.18), transparent 62%);
   filter: blur(26px);
-  opacity: 0.52;
+  opacity: 0.64;
 }
 
 .roadmap-reveal {
@@ -577,6 +671,14 @@ onMounted(() => {
     grid-template-columns: minmax(0, 320px) 30px minmax(0, 320px);
     gap: 10px;
     margin-bottom: 14px;
+  }
+
+  .phase-title-major {
+    font-size: 24px;
+  }
+
+  .phase-title-minor {
+    font-size: 18px;
   }
 
   .foundation-spine {
