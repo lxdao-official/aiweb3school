@@ -302,7 +302,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   max-width: 870px;
-  margin: 0 auto 12px;
+  margin: 0 auto 20px;
   gap: 12px;
   padding: 0;
 }
@@ -419,15 +419,15 @@ onMounted(() => {
 
 .merge-bridge {
   position: relative;
-  width: min(438px, 68%);
-  height: 40px;
-  margin: 0 auto 8px;
+  width: min(404px, 64%);
+  height: 36px;
+  margin: 0 auto 6px;
 }
 
 .merge-line {
   position: absolute;
-  top: 20px;
-  width: calc(50% - 20px);
+  top: 18px;
+  width: calc(50% - 18px);
   height: 1px;
 }
 
@@ -447,9 +447,9 @@ onMounted(() => {
 .merge-core {
   position: absolute;
   left: 50%;
-  top: 10px;
-  width: 20px;
-  height: 20px;
+  top: 9px;
+  width: 18px;
+  height: 18px;
   transform: translateX(-50%);
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.98);
@@ -466,39 +466,34 @@ onMounted(() => {
 
 .merge-stack {
   position: relative;
-  max-width: 492px;
+  max-width: 446px;
   margin: 0 auto;
 }
 
 .merge-stack::before {
   content: '';
   position: absolute;
-  inset: 16px 30px;
+  inset: 14px 24px;
   pointer-events: none;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 0%, rgba(126, 171, 235, 0.18), transparent 48%),
-    linear-gradient(180deg, rgba(126, 171, 235, 0.16), rgba(126, 171, 235, 0.03));
-  filter: blur(22px);
-  opacity: 0.34;
+    radial-gradient(circle at 18% 16%, rgba(157, 126, 255, 0.12), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(70, 221, 182, 0.11), transparent 32%),
+    radial-gradient(circle at 50% 0%, rgba(126, 171, 235, 0.14), transparent 46%),
+    linear-gradient(180deg, rgba(126, 171, 235, 0.12), rgba(126, 171, 235, 0.02));
+  filter: blur(20px);
+  opacity: 0.3;
 }
 
 .merge-spine {
-  position: absolute;
-  left: 26px;
-  top: 14px;
-  bottom: 14px;
-  width: 2px;
-  background: linear-gradient(180deg, rgba(114, 161, 255, 1), rgba(126, 171, 235, 0.76));
-  box-shadow: 0 0 20px rgba(114, 161, 255, 0.22);
+  display: none;
 }
 
 .merge-row {
-  display: grid;
-  grid-template-columns: 26px minmax(0, 404px);
-  justify-content: center;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 6px;
 }
 
 .merge-row + .merge-row {

@@ -294,22 +294,31 @@ function navigate() {
 
 .variant-fusion {
   min-height: 104px;
-  max-width: 404px;
+  max-width: 360px;
   justify-self: start;
 }
 
 .variant-fusion .card-content {
-  padding: 11px 12px 12px;
+  padding: 10px 18px 11px;
 }
 
 .variant-fusion .card-title {
-  font-size: 16.5px;
+  font-size: 15.5px;
 }
 
 .variant-fusion .card-desc {
-  max-width: 21ch;
-  font-size: 11.5px;
-  line-height: 1.48;
+  max-width: 26ch;
+  font-size: 10.8px;
+  line-height: 1.44;
+}
+
+.tone-fusion {
+  background:
+    radial-gradient(circle at 18% 14%, rgba(157, 126, 255, 0.08), transparent 28%),
+    radial-gradient(circle at 82% 16%, rgba(70, 221, 182, 0.08), transparent 26%),
+    radial-gradient(circle at 50% 12%, rgba(167, 201, 255, 0.15), transparent 34%),
+    linear-gradient(180deg, rgba(251, 253, 255, 0.96), rgba(239, 245, 255, 0.76)),
+    rgba(255, 255, 255, 0.56);
 }
 
 .variant-branch {
