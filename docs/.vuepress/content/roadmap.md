@@ -12,6 +12,7 @@
 - 需要删除卡片时，直接删掉对应对象
 - `link` 是卡片跳转链接；保留就可点击，删掉就只显示不跳转
 - `title` 和 `description` 是主要展示内容
+- `topics` 是主节点旁边衍生的小知识点；基础课程会向外侧展开，AI × Web3 会向两边展开，赛道实践暂时不需要
 - `icon` 可以换成任意简短符号或 emoji
 - `kicker` 目前已不显示，可先保留，后面如果要恢复辅助标签可以直接继续用
 
@@ -27,6 +28,7 @@
       "kicker": "Web3 Foundations",
       "tone": "web3",
       "variant": "foundation",
+      "topics": ["账户模型", "交易生命周期", "共识机制"],
       "link": "/zh/blockchain-basics/"
     },
     "right": {
@@ -36,6 +38,7 @@
       "kicker": "AI Foundations",
       "tone": "ai",
       "variant": "foundation",
+      "topics": ["数据集", "训练流程", "模型评估"],
       "link": "/zh/machine-learning-basics/"
     }
   },
@@ -47,6 +50,7 @@
       "kicker": "Execution Layer",
       "tone": "web3",
       "variant": "foundation",
+      "topics": ["Solidity", "权限设计", "合约调用"],
       "link": "/zh/smart-contracts/"
     },
     "right": {
@@ -56,6 +60,7 @@
       "kicker": "Model Layer",
       "tone": "ai",
       "variant": "foundation",
+      "topics": ["Transformer", "上下文窗口", "推理边界"],
       "link": "/zh/deep-learning-intro/"
     }
   },
@@ -67,6 +72,7 @@
       "kicker": "Value Flow",
       "tone": "web3",
       "variant": "foundation",
+      "topics": ["稳定币", "DEX", "借贷协议"],
       "link": "/zh/defi-intro/"
     },
     "right": {
@@ -76,6 +82,7 @@
       "kicker": "Workflow Design",
       "tone": "ai",
       "variant": "foundation",
+      "topics": ["Prompt", "RAG", "工具调用"],
       "link": "/zh/ai-tools/"
     }
   },
@@ -87,6 +94,7 @@
       "kicker": "Tooling",
       "tone": "web3",
       "variant": "foundation",
+      "topics": ["钱包", "RPC", "SDK"],
       "link": "/zh/web3-tools/"
     },
     "right": {
@@ -96,6 +104,7 @@
       "kicker": "Agent Systems",
       "tone": "ai",
       "variant": "foundation",
+      "topics": ["记忆", "规划", "工具使用"],
       "link": "/zh/ai-agents/"
     }
   },
@@ -107,6 +116,7 @@
       "kicker": "Security + Data",
       "tone": "web3",
       "variant": "foundation",
+      "topics": ["预言机", "索引", "审计意识"],
       "link": "/zh/resources/"
     },
     "right": {
@@ -116,6 +126,7 @@
       "kicker": "Evaluation Layer",
       "tone": "ai",
       "variant": "foundation",
+      "topics": ["评估框架", "长期记忆", "多模态输入"],
       "link": "/zh/resources/"
     }
   }
@@ -133,6 +144,7 @@
     "kicker": "Execution Spine",
     "tone": "fusion",
     "variant": "fusion",
+    "topics": ["钱包权限", "链上动作", "工具编排", "安全确认"],
     "link": "/zh/project-guide/"
   },
   {
@@ -142,6 +154,7 @@
     "kicker": "Cross-domain Ability",
     "tone": "fusion",
     "variant": "fusion",
+    "topics": ["链上索引", "检索记忆", "执行回传", "质量评估"],
     "link": "/zh/case-studies/"
   },
   {
@@ -151,6 +164,7 @@
     "kicker": "Project Training",
     "tone": "fusion",
     "variant": "fusion",
+    "topics": ["协议机制", "风险边界", "自动化体验", "产品判断"],
     "link": "/zh/project-guide/"
   },
   {
@@ -160,6 +174,7 @@
     "kicker": "Context Systems",
     "tone": "fusion",
     "variant": "fusion",
+    "topics": ["链上身份", "信誉状态", "用户上下文", "权限策略"],
     "link": "/zh/resources/"
   }
 ]

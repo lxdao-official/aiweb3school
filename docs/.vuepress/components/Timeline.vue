@@ -11,6 +11,7 @@ interface RoadmapCard {
   tone: 'web3' | 'ai' | 'fusion' | 'future'
   variant: 'foundation' | 'fusion' | 'branch'
   link?: string
+  topics?: string[]
 }
 
 interface FoundationRow {
@@ -166,9 +167,10 @@ onMounted(() => {
 .timeline-section {
   position: relative;
   margin-top: 0;
-  padding: 64px 0 72px;
+  padding: 56px 0 72px;
   overflow: clip;
   isolation: isolate;
+  background: #fbfbf8;
 }
 
 .timeline-section::before {
@@ -181,11 +183,10 @@ onMounted(() => {
   pointer-events: none;
   z-index: -2;
   background:
-    radial-gradient(circle at 16% 22%, rgba(141, 118, 255, 0.14), transparent 28%),
-    radial-gradient(circle at 84% 18%, rgba(80, 220, 185, 0.12), transparent 24%),
-    radial-gradient(circle at 52% 52%, rgba(106, 164, 255, 0.1), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9) 18%, rgba(255, 255, 255, 0.96) 100%);
-  animation: drift-halo 14s ease-in-out infinite;
+    linear-gradient(rgba(42, 68, 76, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42, 68, 76, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(250, 250, 246, 0.96));
+  background-size: 28px 28px, 28px 28px, auto;
 }
 
 .timeline-section::after {
@@ -194,17 +195,17 @@ onMounted(() => {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.18) 24%, rgba(255, 255, 255, 0) 100%);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.86), transparent 34%);
 }
 
 .timeline-shell {
-  --rail-web3: rgba(140, 118, 255, 0.85);
-  --rail-ai: rgba(62, 214, 177, 0.82);
-  --rail-fusion: rgba(114, 161, 255, 0.84);
+  --rail-web3: #2d6cdf;
+  --rail-ai: #2a8a64;
+  --rail-fusion: #263f48;
   position: relative;
-  max-width: 1240px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 18px 18px 34px;
+  padding: 18px 22px 34px;
 }
 
 .phase + .phase {
@@ -234,70 +235,42 @@ onMounted(() => {
   font-size: 30px;
   font-weight: 700;
   line-height: 1.08;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .phase-title-minor {
   font-size: 21px;
   font-weight: 700;
   line-height: 1.14;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .phase-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
-  padding: 0 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.64);
+  min-height: 34px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: 2px solid #263f48;
+  background: #fff4bf;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  box-shadow:
-    10px 10px 24px rgba(148, 163, 184, 0.14),
-    -8px -8px 20px rgba(255, 255, 255, 0.92),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .phase-pill-fusion {
-  color: transparent;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 250, 255, 0.56)),
-    rgba(255, 255, 255, 0.64);
-  box-shadow:
-    10px 10px 24px rgba(148, 163, 184, 0.14),
-    -8px -8px 20px rgba(255, 255, 255, 0.92),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.76),
-    inset 0 0 0 1px rgba(126, 171, 235, 0.08);
-  background-clip: padding-box;
-  position: relative;
-}
-
-.phase-pill-fusion::before {
-  content: 'AI × Web3';
-  position: absolute;
-  inset: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, rgba(97, 74, 186, 0.94), rgba(114, 161, 255, 0.94), rgba(30, 147, 114, 0.9));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #1e3440;
+  background: #dcf4ff;
 }
 
 .track-headings {
   display: grid;
-  grid-template-columns: minmax(0, 364px) 42px minmax(0, 364px);
+  grid-template-columns: minmax(0, 440px) 46px minmax(0, 440px);
   justify-content: center;
   align-items: center;
-  max-width: 870px;
+  max-width: 980px;
   margin: 0 auto 20px;
   gap: 12px;
   padding: 0;
@@ -308,37 +281,31 @@ onMounted(() => {
   font-family: inherit;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
-  padding: 0 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.64);
-  color: rgba(72, 92, 126, 0.88);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  box-shadow:
-    10px 10px 24px rgba(148, 163, 184, 0.14),
-    -8px -8px 20px rgba(255, 255, 255, 0.92),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  min-height: 34px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: 2px solid #263f48;
+  background: #fff4bf;
+  color: #263f48;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
   justify-self: center;
 }
 
 .track-pill-web3 {
   grid-column: 1;
-  color: rgba(97, 74, 186, 0.9);
+  color: #245bb7;
 }
 
 .track-pill-ai {
   grid-column: 3;
-  color: rgba(30, 147, 114, 0.88);
+  color: #23724f;
 }
 
 .foundation-roadmap {
   position: relative;
-  max-width: 870px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
@@ -350,8 +317,7 @@ onMounted(() => {
   bottom: 12px;
   width: 188px;
   pointer-events: none;
-  filter: blur(28px);
-  opacity: 0.26;
+  opacity: 0;
 }
 
 .foundation-roadmap::before {
@@ -369,23 +335,21 @@ onMounted(() => {
   left: 50%;
   top: 14px;
   bottom: 14px;
-  width: 2px;
+  width: 3px;
   transform: translateX(-50%);
-  background: linear-gradient(180deg, var(--rail-web3), var(--rail-fusion), var(--rail-ai));
-  box-shadow: 0 0 22px rgba(114, 161, 255, 0.18);
-  animation: pulse-rail 5.2s ease-in-out infinite;
+  background: var(--rail-fusion);
 }
 
 .foundation-row {
   display: grid;
-  grid-template-columns: minmax(0, 364px) 42px minmax(0, 364px);
+  grid-template-columns: minmax(0, 440px) 46px minmax(0, 440px);
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
 }
 
 .foundation-row + .foundation-row {
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .foundation-node,
@@ -400,43 +364,35 @@ onMounted(() => {
 .merge-node span,
 .branch-core span {
   display: inline-flex;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(224, 233, 247, 0.72));
-  box-shadow:
-    8px 8px 18px rgba(148, 163, 184, 0.18),
-    -6px -6px 16px rgba(255, 255, 255, 0.98),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.88),
-    inset -1px -1px 0 rgba(171, 195, 240, 0.3);
-  animation: pulse-node 4.6s ease-in-out infinite;
+  border: 3px solid #263f48;
+  background: #fbfbf8;
 }
 
 .merge-bridge {
   position: relative;
-  width: min(404px, 64%);
-  height: 36px;
-  margin: 0 auto 6px;
+  width: min(520px, 72%);
+  height: 40px;
+  margin: 0 auto 10px;
 }
 
 .merge-line {
   position: absolute;
   top: 18px;
   width: calc(50% - 18px);
-  height: 1px;
+  height: 3px;
 }
 
 .merge-line-left {
   left: 0;
-  background: linear-gradient(90deg, rgba(140, 118, 255, 0.16), rgba(114, 161, 255, 1));
-  box-shadow: 0 0 14px rgba(114, 161, 255, 0.16);
+  background: #263f48;
 }
 
 .merge-line-right {
   right: 0;
-  background: linear-gradient(90deg, rgba(62, 214, 177, 0.16), rgba(114, 161, 255, 1));
-  box-shadow: 0 0 14px rgba(114, 161, 255, 0.16);
+  background: #263f48;
   transform: scaleX(-1);
 }
 
@@ -444,25 +400,17 @@ onMounted(() => {
   position: absolute;
   left: 50%;
   top: 9px;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   transform: translateX(-50%);
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.98);
-  background:
-    radial-gradient(circle at 50% 34%, rgba(174, 208, 255, 0.28), transparent 46%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(223, 235, 249, 0.82));
-  box-shadow:
-    10px 10px 22px rgba(148, 163, 184, 0.18),
-    -8px -8px 18px rgba(255, 255, 255, 0.98),
-    0 0 18px rgba(126, 171, 235, 0.18),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.88);
-  animation: pulse-node 4.4s ease-in-out infinite;
+  border: 3px solid #263f48;
+  background: #fbfbf8;
 }
 
 .merge-stack {
   position: relative;
-  max-width: 446px;
+  max-width: 760px;
   margin: 0 auto;
 }
 
@@ -478,7 +426,7 @@ onMounted(() => {
     radial-gradient(circle at 50% 0%, rgba(126, 171, 235, 0.14), transparent 46%),
     linear-gradient(180deg, rgba(126, 171, 235, 0.12), rgba(126, 171, 235, 0.02));
   filter: blur(20px);
-  opacity: 0.3;
+  opacity: 0;
 }
 
 .merge-spine {
@@ -487,17 +435,17 @@ onMounted(() => {
 
 .merge-row {
   display: grid;
-  grid-template-columns: minmax(0, 340px);
+  grid-template-columns: minmax(0, 760px);
   justify-content: center;
   align-items: center;
 }
 
 .merge-row + .merge-row {
-  margin-top: 12px;
+  margin-top: 18px;
 }
 
 .branch-network {
-  max-width: 870px;
+  max-width: 920px;
   margin: 0 auto 14px;
 }
 
@@ -509,15 +457,12 @@ onMounted(() => {
   width: calc(100% - 120px);
   height: 3px;
   margin: 0 auto;
-  background: linear-gradient(90deg, rgba(140, 118, 255, 0.74), rgba(114, 161, 255, 0.96), rgba(240, 179, 108, 0.82));
-  box-shadow:
-    0 0 20px rgba(114, 161, 255, 0.16),
-    0 0 32px rgba(255, 187, 96, 0.12);
+  background: #263f48;
 }
 
 .branch-drop-lines {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -526,16 +471,16 @@ onMounted(() => {
   justify-self: center;
   width: 3px;
   height: 28px;
-  background: linear-gradient(180deg, rgba(114, 161, 255, 0.94), rgba(240, 179, 108, 0));
+  background: #263f48;
 }
 
 .branch-grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 264px));
+  grid-template-columns: repeat(3, minmax(0, 210px));
   justify-content: center;
-  gap: 12px;
-  max-width: 820px;
+  gap: 14px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -548,12 +493,12 @@ onMounted(() => {
   border-radius: 999px;
   background: radial-gradient(circle at 50% 0%, rgba(255, 187, 96, 0.18), transparent 62%);
   filter: blur(26px);
-  opacity: 0.64;
+  opacity: 0;
 }
 
 .roadmap-reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(18px);
   transition:
     opacity 0.7s ease,
     transform 0.7s ease;
@@ -564,83 +509,18 @@ onMounted(() => {
   transform: translateY(0);
 }
 
-.foundation-row .roadmap-reveal,
-.merge-row.roadmap-reveal,
-.branch-grid .roadmap-reveal {
-  animation: float-card 7s ease-in-out infinite;
-}
-
-.foundation-row:nth-child(2n) .roadmap-reveal,
-.branch-grid .roadmap-reveal:nth-child(2n) {
-  animation-delay: 1.2s;
-}
-
-.branch-grid .roadmap-reveal:nth-child(3n) {
-  animation-delay: 2.2s;
-}
-
-@keyframes float-card {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes drift-halo {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0.92;
-  }
-  50% {
-    transform: translate3d(0, 8px, 0);
-    opacity: 1;
-  }
-}
-
-@keyframes pulse-node {
-  0%,
-  100% {
-    box-shadow:
-      8px 8px 18px rgba(148, 163, 184, 0.18),
-      -6px -6px 16px rgba(255, 255, 255, 0.98),
-      inset 1px 1px 0 rgba(255, 255, 255, 0.88),
-      inset -1px -1px 0 rgba(171, 195, 240, 0.3);
-  }
-  50% {
-    box-shadow:
-      10px 10px 22px rgba(148, 163, 184, 0.24),
-      -8px -8px 18px rgba(255, 255, 255, 1),
-      inset 1px 1px 0 rgba(255, 255, 255, 0.92),
-      inset -1px -1px 0 rgba(141, 174, 236, 0.42);
-  }
-}
-
-@keyframes pulse-rail {
-  0%,
-  100% {
-    opacity: 0.88;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
 @media (max-width: 1100px) {
   .timeline-shell {
     padding: 8px 14px 28px;
   }
 
   .foundation-row {
-    grid-template-columns: minmax(0, 320px) 30px minmax(0, 320px);
+    grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr);
     gap: 10px;
   }
 
   .branch-grid {
-    grid-template-columns: repeat(2, minmax(0, 264px));
+    grid-template-columns: repeat(2, minmax(0, 210px));
   }
 
   .branch-drop-lines {
@@ -698,8 +578,7 @@ onMounted(() => {
   }
 
   .merge-row {
-    grid-template-columns: 28px minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .branch-rail {
