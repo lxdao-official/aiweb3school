@@ -334,10 +334,11 @@ function navigate() {
 
 .variant-branch .card-content {
   min-height: 50px;
+  padding: 8px 9px;
 }
 
 .variant-branch .card-title {
-  font-size: 14px;
+  font-size: 12.5px;
 }
 
 @media (max-width: 860px) {

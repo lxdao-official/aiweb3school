@@ -454,7 +454,7 @@ onMounted(() => {
 }
 
 .branch-rail {
-  width: calc(100% - 120px);
+  width: calc(100% - 20px);
   height: 3px;
   margin: 0 auto;
   background: #263f48;
@@ -477,10 +477,10 @@ onMounted(() => {
 .branch-grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 210px));
+  grid-template-columns: repeat(6, minmax(0, 156px));
   justify-content: center;
   gap: 14px;
-  max-width: 720px;
+  max-width: 1020px;
   margin: 0 auto;
 }
 
@@ -520,11 +520,11 @@ onMounted(() => {
   }
 
   .branch-grid {
-    grid-template-columns: repeat(2, minmax(0, 210px));
+    grid-template-columns: repeat(3, minmax(0, 180px));
   }
 
   .branch-drop-lines {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
