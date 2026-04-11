@@ -221,16 +221,18 @@ function navigate() {
 }
 
 .tone-fusion {
-  border-color: rgba(114, 163, 236, 0.34);
+  border-color: rgba(114, 163, 236, 0.42);
   background:
-    radial-gradient(circle at 50% 12%, rgba(167, 201, 255, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(251, 253, 255, 0.95), rgba(238, 245, 255, 0.72)),
-    rgba(255, 255, 255, 0.56);
+    radial-gradient(circle at 16% 14%, rgba(157, 126, 255, 0.12), transparent 30%),
+    radial-gradient(circle at 84% 16%, rgba(70, 221, 182, 0.11), transparent 28%),
+    radial-gradient(circle at 50% 12%, rgba(167, 201, 255, 0.2), transparent 36%),
+    linear-gradient(180deg, rgba(244, 249, 255, 0.98), rgba(225, 236, 255, 0.88)),
+    rgba(244, 250, 255, 0.7);
   box-shadow:
-    18px 18px 36px rgba(148, 163, 184, 0.2),
+    18px 18px 38px rgba(148, 163, 184, 0.22),
     -12px -12px 28px rgba(255, 255, 255, 0.96),
-    0 8px 24px rgba(126, 171, 235, 0.08),
-    inset 0 0 0 1px rgba(173, 196, 233, 0.18),
+    0 12px 30px rgba(126, 171, 235, 0.12),
+    inset 0 0 0 1px rgba(173, 196, 233, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.88);
 }
 
@@ -244,13 +246,13 @@ function navigate() {
 }
 
 .timeline-card.clickable.tone-fusion:hover {
-  border-color: rgba(114, 163, 236, 0.5);
+  border-color: rgba(114, 163, 236, 0.56);
   box-shadow:
     20px 20px 38px rgba(148, 163, 184, 0.22),
     -12px -12px 28px rgba(255, 255, 255, 1),
-    0 0 0 1px rgba(126, 171, 235, 0.12),
-    0 10px 28px rgba(126, 171, 235, 0.12),
-    inset 0 0 0 1px rgba(173, 196, 233, 0.22),
+    0 0 0 1px rgba(126, 171, 235, 0.16),
+    0 14px 34px rgba(126, 171, 235, 0.16),
+    inset 0 0 0 1px rgba(173, 196, 233, 0.26),
     inset 0 1px 0 rgba(255, 255, 255, 0.92);
 }
 
@@ -294,12 +296,12 @@ function navigate() {
 
 .variant-fusion {
   min-height: 104px;
-  max-width: 360px;
-  justify-self: start;
+  max-width: 340px;
+  justify-self: center;
 }
 
 .variant-fusion .card-content {
-  padding: 10px 18px 11px;
+  padding: 10px 16px 11px;
 }
 
 .variant-fusion .card-title {
@@ -307,18 +309,9 @@ function navigate() {
 }
 
 .variant-fusion .card-desc {
-  max-width: 26ch;
+  max-width: 24ch;
   font-size: 10.8px;
   line-height: 1.44;
-}
-
-.tone-fusion {
-  background:
-    radial-gradient(circle at 18% 14%, rgba(157, 126, 255, 0.08), transparent 28%),
-    radial-gradient(circle at 82% 16%, rgba(70, 221, 182, 0.08), transparent 26%),
-    radial-gradient(circle at 50% 12%, rgba(167, 201, 255, 0.15), transparent 34%),
-    linear-gradient(180deg, rgba(251, 253, 255, 0.96), rgba(239, 245, 255, 0.76)),
-    rgba(255, 255, 255, 0.56);
 }
 
 .variant-branch {

@@ -127,10 +127,6 @@ onMounted(() => {
             class="merge-row roadmap-reveal"
             :style="{ transitionDelay: `${index * 90}ms` }"
           >
-            <div class="merge-node">
-              <span />
-            </div>
-
             <TimelineCard v-bind="card" side="center" />
           </div>
         </div>
@@ -490,10 +486,10 @@ onMounted(() => {
 }
 
 .merge-row {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 340px);
+  justify-content: center;
   align-items: center;
-  gap: 6px;
 }
 
 .merge-row + .merge-row {
