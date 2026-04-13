@@ -8,19 +8,20 @@ type CardSide = 'left' | 'right' | 'center'
 
 const props = defineProps<{
   title: string
-  description: string
+  description?: string
   link?: string
-  icon: string
+  icon?: string
   tone: CardTone
   variant: CardVariant
   side?: CardSide
   kicker?: string
   topics?: string[]
+  todos?: string[]
 }>()
 
 const router = useRouter()
 
-const topicItems = computed(() => props.topics ?? [])
+const topicItems = computed(() => props.topics ?? props.todos ?? [])
 
 const leftTopics = computed(() => {
   if (props.variant === 'branch') return []
@@ -62,9 +63,7 @@ function navigate() {
     </ul>
 
     <div class="card-content">
-      <span class="card-icon">{{ icon }}</span>
       <h4 class="card-title">{{ title }}</h4>
-      <p class="card-desc">{{ description }}</p>
     </div>
 
     <ul
@@ -151,7 +150,7 @@ function navigate() {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0;
   min-height: 46px;
   padding: 8px 12px;
   border: 2px solid #263f48;
@@ -234,17 +233,6 @@ function navigate() {
   transition: transform 0.25s ease;
 }
 
-.card-icon {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  font-size: 13px;
-  color: #263f48;
-}
-
 .card-title {
   margin: 0;
   font-family: inherit;
@@ -253,20 +241,6 @@ function navigate() {
   line-height: 1.15;
   letter-spacing: 0;
   color: #17252e;
-  text-align: center;
-  text-wrap: balance;
-}
-
-.card-desc {
-  display: none;
-  max-width: 22ch;
-  margin: 2px auto 0;
-  font-family: inherit;
-  font-size: 10.5px;
-  font-weight: 400;
-  line-height: 1.35;
-  letter-spacing: 0;
-  color: rgba(38, 63, 72, 0.75);
   text-align: center;
   text-wrap: balance;
 }
