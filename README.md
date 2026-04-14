@@ -86,13 +86,13 @@ bun run docs:preview
 部署结构说明：
 
 - `Dockerfile` 使用多阶段构建，先用 Bun 构建 VuePress 静态文件
-- 最终镜像使用 Nginx 提供静态站点服务
+- 最终镜像使用 Node 静态服务进程提供站点内容
 
 首次部署：
 
 ```bash
 docker build -t aiweb3school:latest .
-docker run -d --name aiweb3school --restart unless-stopped -p 8080:80 aiweb3school:latest
+docker run -d --name aiweb3school --restart unless-stopped -p 8080:3000 aiweb3school:latest
 ```
 
 默认会把站点映射到服务器的 `8080` 端口，你可以直接访问：
@@ -104,7 +104,7 @@ http://<server-ip>:8080
 如果要修改宿主机端口，可以在执行前设置环境变量：
 
 ```bash
-docker run -d --name aiweb3school --restart unless-stopped -p 80:80 aiweb3school:latest
+docker run -d --name aiweb3school --restart unless-stopped -p 80:3000 aiweb3school:latest
 ```
 
 常用命令：
@@ -113,7 +113,7 @@ docker run -d --name aiweb3school --restart unless-stopped -p 80:80 aiweb3school
 docker logs -f aiweb3school
 docker stop aiweb3school && docker rm aiweb3school
 docker build -t aiweb3school:latest .
-docker run -d --name aiweb3school --restart unless-stopped -p 8080:80 aiweb3school:latest
+docker run -d --name aiweb3school --restart unless-stopped -p 8080:3000 aiweb3school:latest
 ```
 
 如果服务器前面还有 Nginx、Caddy 或云负载均衡，建议将它们反向代理到容器暴露的端口。
