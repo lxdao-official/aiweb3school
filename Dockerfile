@@ -24,10 +24,24 @@ ENV NODE_OPTIONS=--max_old_space_size=8192
 
 RUN bun run docs:build
 
-FROM nginx:1.27-alpine AS runner
-COPY --from=builder /app/docs/.vuepress/dist /usr/share/nginx/html
+FROM node:20-slim AS runner
+WORKDIR /app
 
-EXPOSE 80
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOST=0.0.0.0
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 appuser
+
+COPY --from=builder --chown=appuser:nodejs /app/docs/.vuepress/dist ./dist
+COPY --chown=appuser:nodejs server.js ./server.js
+
+USER appuser
+
+EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+    CMD node -e "fetch('http://127.0.0.1:' + (process.env.PORT || 3000)).then((res) => { if (!res.ok) process.exit(1); }).catch(() => process.exit(1))"
+
+CMD ["node", "server.js"]
