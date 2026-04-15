@@ -15,15 +15,16 @@ html[data-theme='light'] h5 { color: var(--my-h5-color); }
 html[data-theme='light'] h6 { color: var(--my-h6-color); }
 
 html[data-theme='light'] .vp-home {
-  background:
-    radial-gradient(58% 72% at 4% 0%, rgba(91, 92, 246, 0.04), transparent 70%),
-    radial-gradient(52% 68% at 96% 0%, rgba(167, 139, 250, 0.06), transparent 72%),
-    linear-gradient(180deg, #fbfdff 0%, #f6f8fd 100%);
+  background: linear-gradient(180deg, #fcfdff 0%, #f7f9fd 100%);
+}
+
+html[data-theme='light'] .vp-home .vp-home-hero.first {
+  margin-top: 18px;
 }
 
 html[data-theme='light'] .vp-home .vp-home-hero {
-  margin: 28px auto 0;
-  width: min(1120px, calc(100vw - 40px));
+  margin: 18px auto 0;
+  width: min(760px, calc(100vw - 40px));
   border: 1px solid rgba(139, 92, 246, 0.28);
   border-radius: 28px;
   background:
@@ -41,11 +42,11 @@ html[data-theme='light'] .vp-home .vp-home-hero .bg-filter {
 
 html[data-theme='light'] .vp-home .vp-home-hero .hero-container {
   max-width: none;
-  padding: 28px 32px 36px;
+  padding: 18px 26px 24px;
 }
 
 html[data-theme='light'] .vp-home .vp-home-hero .hero-content {
-  max-width: 920px;
+  max-width: 620px;
   margin: 0 auto;
   text-align: center;
 }
@@ -53,10 +54,10 @@ html[data-theme='light'] .vp-home .vp-home-hero .hero-content {
 html[data-theme='light'] .vp-home .vp-home-hero .hero-tagline {
   position: relative;
   width: 100%;
-  max-width: 360px;
-  margin: 0 auto 18px;
+  max-width: 320px;
+  margin: 0 auto 12px;
   color: rgba(170, 104, 255, 0.92);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0.12em;
@@ -86,7 +87,7 @@ html[data-theme='light'] .vp-home .vp-home-hero .hero-name {
   color: rgba(31, 49, 65, 0.96);
   background: none;
   -webkit-text-fill-color: initial;
-  font-size: clamp(44px, 6vw, 68px);
+  font-size: clamp(36px, 5vw, 54px);
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -102,8 +103,8 @@ html[data-theme='light'] .vp-home .vp-home-hero .hero-tagline {
 html[data-theme='light'] .vp-home .vp-home-hero .hero-text {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin: 18px auto 30px;
+  gap: 14px;
+  margin: 14px auto 20px;
 }
 
 html[data-theme='light'] .vp-home .vp-home-hero .hero-summary {
@@ -121,8 +122,8 @@ html[data-theme='light'] .vp-home .vp-home-hero .hero-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
-  padding: 0 18px;
+  min-height: 38px;
+  padding: 0 16px;
   border: 1px solid rgba(142, 81, 255, 0.3);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.3);
@@ -130,7 +131,7 @@ html[data-theme='light'] .vp-home .vp-home-hero .hero-pill {
     0 0 8px rgba(139, 92, 246, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
   color: rgba(76, 90, 106, 0.96);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -161,11 +162,11 @@ html[data-theme='light'] .vp-home .Timeline {
 
 @media (max-width: 900px) {
   html[data-theme='light'] .vp-home .vp-home-hero {
-    width: min(100vw - 32px, 1120px);
+    width: min(100vw - 32px, 760px);
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-container {
-    padding: 28px 22px 30px;
+    padding: 18px 20px 22px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-tagline::before,
@@ -176,18 +177,18 @@ html[data-theme='light'] .vp-home .Timeline {
 
 @media (max-width: 560px) {
   html[data-theme='light'] .vp-home .vp-home-hero {
-    width: min(100vw - 24px, 1120px);
+    width: min(100vw - 24px, 760px);
     border-radius: 22px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-container {
-    padding: 24px 16px 24px;
+    padding: 16px 14px 18px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-tagline {
-    max-width: 280px;
+    max-width: 250px;
     font-size: 14px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-tagline::before,
@@ -200,8 +201,8 @@ html[data-theme='light'] .vp-home .Timeline {
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-pill {
-    min-height: 38px;
-    padding: 0 14px;
-    font-size: 14px;
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 13px;
   }
 }
