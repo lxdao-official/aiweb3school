@@ -44,6 +44,8 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
   max-width: none !important;
   margin-left: calc(50% - 50vw) !important;
   margin-right: calc(50% - 50vw) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .vp-home .vp-home-hero .home-hero-bg {
