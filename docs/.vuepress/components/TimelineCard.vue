@@ -1,148 +1,350 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vuepress/client'
+
+type CardTone = 'web3' | 'ai' | 'fusion' | 'future'
+type CardVariant = 'foundation' | 'fusion' | 'branch'
+type CardSide = 'left' | 'right' | 'center'
 
 const props = defineProps<{
   title: string
-  description: string
-  link: string
-  icon: string
-  color: 'web3' | 'ai'
-  side: 'left' | 'right'
+  description?: string
+  link?: string
+  icon?: string
+  tone: CardTone
+  variant: CardVariant
+  side?: CardSide
+  kicker?: string
+  topics?: string[]
+  todos?: string[]
 }>()
 
 const router = useRouter()
 
+const topicItems = computed(() => props.topics ?? props.todos ?? [])
+
+const leftTopics = computed(() => {
+  if (props.variant === 'branch') return []
+  if (props.side === 'left') return topicItems.value
+  if (props.variant === 'fusion') return topicItems.value.filter((_, index) => index % 2 === 0)
+  return []
+})
+
+const rightTopics = computed(() => {
+  if (props.variant === 'branch') return []
+  if (props.side === 'right') return topicItems.value
+  if (props.variant === 'fusion') return topicItems.value.filter((_, index) => index % 2 === 1)
+  return []
+})
+
 function navigate() {
+  if (!props.link) return
   router.push(props.link)
 }
 </script>
 
 <template>
-  <div
+  <article
     class="timeline-card"
-    :class="[`side-${side}`, `color-${color}`]"
+    :class="[
+      { clickable: Boolean(link) },
+      `tone-${tone}`,
+      `variant-${variant}`,
+      `side-${side ?? 'center'}`,
+    ]"
     @click="navigate"
   >
-    <div class="card-inner">
-      <div class="card-header">
-        <span class="card-icon">{{ icon }}</span>
-        <h4 class="card-title">{{ title }}</h4>
-      </div>
-      <p class="card-desc">{{ description }}</p>
-      <span class="card-arrow">→</span>
+    <ul
+      v-if="leftTopics.length"
+      class="topic-branch topic-branch-left"
+      aria-label="延伸知识点"
+    >
+      <li v-for="topic in leftTopics" :key="topic">{{ topic }}</li>
+    </ul>
+
+    <div class="card-content">
+      <h4 class="card-title">{{ title }}</h4>
     </div>
-  </div>
+
+    <ul
+      v-if="rightTopics.length"
+      class="topic-branch topic-branch-right"
+      aria-label="延伸知识点"
+    >
+      <li v-for="topic in rightTopics" :key="topic">{{ topic }}</li>
+    </ul>
+  </article>
 </template>
 
 <style scoped>
 .timeline-card {
+  position: relative;
+  display: grid;
+  align-items: center;
+  gap: 10px;
+  overflow: visible;
+  min-height: 0;
+  width: 100%;
+  color: #17252e;
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.timeline-card.clickable {
   cursor: pointer;
 }
 
-.card-inner {
-  position: relative;
-  padding: 28px 32px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.card-inner:hover {
+.timeline-card.clickable:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  filter: saturate(1.08);
 }
 
-.color-web3 .card-inner {
-  border-left: 3px solid #8b5cf6;
-}
-.color-web3 .card-inner:hover {
-  border-color: #8b5cf6;
+.side-left {
+  grid-template-columns: minmax(0, 1fr) 172px;
 }
 
-.color-ai .card-inner {
-  border-left: 3px solid #10b981;
-}
-.color-ai .card-inner:hover {
-  border-color: #10b981;
+.side-right {
+  grid-template-columns: 172px minmax(0, 1fr);
 }
 
-.side-right .card-inner {
-  border-left: none;
-  border-right-width: 3px;
-  border-right-style: solid;
-}
-.side-right.color-ai .card-inner {
-  border-right-color: #10b981;
-}
-.side-right.color-web3 .card-inner {
-  border-right-color: #8b5cf6;
+.side-center.variant-fusion {
+  grid-template-columns: minmax(0, 1fr) 210px minmax(0, 1fr);
 }
 
-.card-header {
+.variant-branch {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.side-left .topic-branch-left {
+  grid-column: 1;
+}
+
+.side-left .card-content {
+  grid-column: 2;
+}
+
+.side-right .card-content {
+  grid-column: 1;
+}
+
+.side-right .topic-branch-right {
+  grid-column: 2;
+}
+
+.side-center.variant-fusion .topic-branch-left {
+  grid-column: 1;
+}
+
+.side-center.variant-fusion .card-content {
+  grid-column: 2;
+}
+
+.side-center.variant-fusion .topic-branch-right {
+  grid-column: 3;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  justify-content: center;
+  gap: 0;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 2px solid #263f48;
+  border-radius: 6px;
+  background: #f4ff00;
+  text-align: center;
+  box-shadow: 0 2px 0 rgba(38, 63, 72, 0.18);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
 }
 
-.card-icon {
-  font-size: 28px;
-  line-height: 1;
+.card-content::before,
+.card-content::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  border-top: 3px solid var(--branch-color, #263f48);
+  transform: translateY(-50%);
+}
+
+.card-content::before {
+  right: 100%;
+}
+
+.card-content::after {
+  left: 100%;
+}
+
+.side-left .card-content::after,
+.side-right .card-content::before,
+.variant-branch .card-content::before,
+.variant-branch .card-content::after {
+  display: none;
+}
+
+.topic-branch {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic-branch::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  border-top: 3px dotted var(--branch-color, #263f48);
+  transform: translateY(-50%);
+}
+
+.topic-branch-left::before {
+  left: 100%;
+}
+
+.topic-branch-right::before {
+  right: 100%;
+}
+
+.topic-branch li {
+  min-width: 76px;
+  padding: 5px 8px;
+  border: 2px solid #263f48;
+  border-radius: 5px;
+  background: #fff1a8;
+  color: #1b2c34;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  box-shadow: 0 1px 0 rgba(38, 63, 72, 0.16);
+  transition: transform 0.25s ease;
 }
 
 .card-title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-}
-
-.card-desc {
-  margin: 0;
+  font-family: inherit;
   font-size: 14px;
-  color: var(--vp-c-text-2);
-  line-height: 1.7;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: #17252e;
+  text-align: center;
+  text-wrap: balance;
 }
 
-.card-arrow {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: var(--vp-c-text-3);
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+.tone-web3 {
+  --branch-color: #2d6cdf;
 }
 
-.card-inner:hover .card-arrow {
-  opacity: 1;
-  transform: translateY(-50%) translateX(2px);
+.tone-web3 .card-content {
+  background: #dce8ff;
 }
 
-.side-right .card-arrow {
-  right: auto;
-  left: 16px;
+.tone-web3 .topic-branch li {
+  background: #edf3ff;
 }
 
-@media (max-width: 768px) {
-  .side-right .card-inner {
-    border-right: none;
-    border-left-width: 3px;
-    border-left-style: solid;
+.tone-ai {
+  --branch-color: #2a8a64;
+}
+
+.tone-ai .card-content {
+  background: #dff6e9;
+}
+
+.tone-ai .topic-branch li {
+  background: #effaf2;
+}
+
+.tone-fusion {
+  --branch-color: #263f48;
+}
+
+.tone-fusion .card-content {
+  background: #dcf4ff;
+}
+
+.tone-fusion .topic-branch li {
+  background: #f3fbff;
+}
+
+.tone-future {
+  --branch-color: #c98213;
+}
+
+.tone-future .card-content {
+  background: #ffe7a8;
+}
+
+.timeline-card.clickable:hover .card-content,
+.timeline-card.clickable:hover .topic-branch li {
+  transform: translateY(-1px);
+}
+
+.variant-fusion .card-content {
+  min-height: 50px;
+}
+
+.variant-fusion .card-title {
+  font-size: 13px;
+}
+
+.variant-fusion .topic-branch li {
+  min-width: 88px;
+}
+
+.variant-branch .card-content {
+  min-height: 50px;
+  padding: 8px 9px;
+}
+
+.variant-branch .card-title {
+  font-size: 12.5px;
+}
+
+@media (max-width: 860px) {
+  .timeline-card {
+    grid-template-columns: 1fr !important;
+    justify-items: stretch;
   }
-  .side-right.color-ai .card-inner {
-    border-left-color: #10b981;
-    border-right-color: transparent;
+
+  .topic-branch-left,
+  .topic-branch-right,
+  .side-left .card-content,
+  .side-right .card-content,
+  .side-center.variant-fusion .card-content {
+    grid-column: 1;
   }
-  .side-right.color-web3 .card-inner {
-    border-left-color: #8b5cf6;
-    border-right-color: transparent;
+
+  .topic-branch {
+    order: 2;
   }
-  .side-right .card-arrow {
-    left: auto;
-    right: 16px;
+
+  .card-content {
+    order: 1;
+  }
+
+  .card-content::before,
+  .card-content::after,
+  .topic-branch::before {
+    display: none;
+  }
+
+  .topic-branch li {
+    min-width: 74px;
   }
 }
 </style>
