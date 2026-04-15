@@ -26,21 +26,22 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
   position: relative;
   left: 50%;
   right: 50%;
-  margin: 0 0 -36px -50vw !important;
+  margin: 0 0 -64px -50vw !important;
   width: 100vw !important;
   max-width: 100vw !important;
-  height: auto;
-  min-height: 0;
+  height: calc(100vh - var(--vp-nav-height)) !important;
+  min-height: calc(100vh - var(--vp-nav-height)) !important;
   border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .vp-home .vp-home-hero .hero-container {
   display: block !important;
   width: 100vw !important;
+  height: 100% !important;
   max-width: none !important;
   margin-left: calc(50% - 50vw) !important;
   margin-right: calc(50% - 50vw) !important;
@@ -63,6 +64,7 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
 .vp-home .vp-home-hero .hero-content {
   display: block !important;
   width: 100vw !important;
+  height: 100% !important;
   max-width: none !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -76,6 +78,7 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
 .vp-home .vp-home-hero .hero-name {
   display: block !important;
   width: 100vw !important;
+  height: 100% !important;
   max-width: none !important;
   margin: 0 !important;
   color: transparent;
@@ -92,7 +95,9 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
   display: block;
   width: 100vw;
   max-width: none;
-  height: auto;
+  height: calc(100vh - var(--vp-nav-height));
+  object-fit: cover;
+  object-position: center top;
   border-radius: 0;
 }
 
@@ -106,7 +111,7 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
 
 @media (max-width: 900px) {
   .vp-home .vp-home-hero {
-    margin-bottom: -24px !important;
+    margin-bottom: -40px !important;
   }
 }
 
