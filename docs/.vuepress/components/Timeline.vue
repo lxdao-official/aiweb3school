@@ -93,20 +93,24 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 
 .roadmap-stage {
   position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
   overflow: hidden;
-  padding: 54px 24px 72px;
-  border-radius: 30px;
+  padding: 72px 0 96px;
   background:
-    radial-gradient(42% 60% at 4% 100%, rgba(123, 203, 255, 0.22), transparent 70%),
-    radial-gradient(40% 60% at 95% 76%, rgba(255, 177, 228, 0.2), transparent 72%),
-    radial-gradient(42% 52% at 50% 50%, rgba(216, 186, 255, 0.1), transparent 72%),
-    linear-gradient(180deg, #ffffff 0%, #fdfcff 100%);
-  border: 1px solid rgba(186, 153, 255, 0.26);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+    radial-gradient(46% 54% at 6% 92%, rgba(148, 214, 255, 0.26), transparent 72%),
+    radial-gradient(42% 50% at 94% 78%, rgba(255, 192, 232, 0.24), transparent 74%),
+    radial-gradient(28% 24% at 50% 46%, rgba(227, 204, 255, 0.12), transparent 80%),
+    linear-gradient(180deg, #fffefe 0%, #fffdfd 100%);
 }
 
 .roadmap-stage-frame {
   position: relative;
+  width: min(1120px, calc(100vw - 40px));
+  margin: 0 auto;
   min-height: 640px;
 }
 
@@ -411,10 +415,17 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
     padding: 20px 0 60px;
   }
 
-  .roadmap-stage,
   .homepage-board {
     padding: 18px 14px 20px;
     border-radius: 22px;
+  }
+
+  .roadmap-stage {
+    padding: 44px 0 60px;
+  }
+
+  .roadmap-stage-frame {
+    width: min(100vw - 24px, 1120px);
   }
 
   .roadmap-panel-head h4,
