@@ -3,12 +3,10 @@ pageLayout: home
 externalLinkIcon: false
 config:
   - type: hero
-    backgroundImage: /images/homepage-hero-bg.png
     hero:
       tagline: ''
       name: |
-        <span class="hero-logo" aria-hidden="true"></span>
-        AI x Web3<br>School
+        <img class="hero-art" src="/images/homepage-hero-bg.png" alt="AI x Web3 School">
       text: ''
   - type: Timeline
 ---
