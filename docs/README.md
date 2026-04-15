@@ -3,6 +3,7 @@ pageLayout: home
 externalLinkIcon: false
 config:
   - type: hero
+    backgroundImage: /images/homepage-hero-bg.png
     hero:
       tagline: ''
       name: |
