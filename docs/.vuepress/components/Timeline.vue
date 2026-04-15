@@ -1,43 +1,63 @@
 <script setup lang="ts">
-const roadmapCards = [
-  {
-    title: '基础课程',
-    text: '从 Web3 与 AI 的共通基础开始，先建立词汇、工具和整体认知。',
-  },
-  {
-    title: '交叉能力',
-    text: '把 Prompt、Agent、链上数据和协议理解放到同一条学习脉络里。',
-  },
-  {
-    title: '赛道实践',
-    text: '围绕支付、Agent、身份、数据与协议标准展开真实场景训练。',
-  },
-  {
-    title: '合作生态',
-    text: '课程、社群与伙伴资源协同开放，方便后续持续更新内容与活动。',
-  },
-]
-
+const leftPanel = ['账户模型', '交易生命周期', 'Gas 与费用', '共识机制']
+const rightTopPanel = ['监督学习', '无监督学习', '训练集', '验证集']
+const rightBottomPanel = ['Agent Payments', 'Onchain Agent', 'Identity', 'AI × DeFi']
 const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${index + 1}` }))
 </script>
 
 <template>
   <section class="timeline-wrap">
-    <section class="homepage-board">
-      <div class="board-head">
-        <span></span>
-        <h3>Roadmap</h3>
-        <span></span>
-      </div>
-      <div class="board-list">
-        <article v-for="card in roadmapCards" :key="card.title" class="board-card roadmap-card">
-          <h4>{{ card.title }}</h4>
-          <p>{{ card.text }}</p>
-        </article>
+    <section class="roadmap-stage">
+      <div class="roadmap-stage-frame">
+        <div class="roadmap-panel left-panel">
+          <div class="roadmap-panel-head">
+            <span></span>
+            <h4>Web3 基础</h4>
+            <span></span>
+          </div>
+          <div class="roadmap-panel-list">
+            <div v-for="item in leftPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+          </div>
+        </div>
+
+        <div class="roadmap-center">
+          <div class="roadmap-node roadmap-node-top">基础课程</div>
+          <div class="roadmap-node roadmap-node-core">AI × Web3 路线图</div>
+          <div class="roadmap-line road-line-vertical-top"></div>
+          <div class="roadmap-label">AI × Web3</div>
+          <div class="roadmap-node roadmap-node-bottom">赛道实践</div>
+          <div class="roadmap-line road-line-vertical-bottom"></div>
+        </div>
+
+        <div class="roadmap-panel right-panel right-top">
+          <div class="roadmap-panel-head">
+            <span></span>
+            <h4>AI 基础</h4>
+            <span></span>
+          </div>
+          <div class="roadmap-panel-list">
+            <div v-for="item in rightTopPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+          </div>
+        </div>
+
+        <div class="roadmap-panel right-panel right-bottom">
+          <div class="roadmap-panel-head">
+            <span></span>
+            <h4>热门方向</h4>
+            <span></span>
+          </div>
+          <div class="roadmap-panel-list">
+            <div v-for="item in rightBottomPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+          </div>
+        </div>
+
+        <div class="roadmap-dash road-dash-left"></div>
+        <div class="roadmap-dash road-dash-right-top"></div>
+        <div class="roadmap-dash road-dash-right-bottom"></div>
       </div>
     </section>
 
-    <section class="homepage-board">
+    <section class="homepage-board signup-board">
       <div class="board-head">
         <span></span>
         <h3>共学营</h3>
@@ -49,7 +69,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
       </div>
     </section>
 
-    <section class="homepage-board">
+    <section class="homepage-board sponsor-board">
       <div class="board-head">
         <span></span>
         <h3>合作伙伴</h3>
@@ -68,94 +88,219 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 .timeline-wrap {
   width: min(1120px, calc(100vw - 40px));
   margin: 0 auto;
-  padding: 14px 0 86px;
+  padding: 28px 0 96px;
+}
+
+.roadmap-stage {
+  position: relative;
+  overflow: hidden;
+  padding: 54px 24px 72px;
+  border-radius: 30px;
   background:
-    radial-gradient(58% 72% at 4% 0%, rgba(91, 92, 246, 0.06), transparent 70%),
-    radial-gradient(52% 68% at 96% 0%, rgba(167, 139, 250, 0.08), transparent 72%),
-    linear-gradient(180deg, #f8fbff 0%, #f4f7fc 100%);
+    radial-gradient(42% 60% at 4% 100%, rgba(123, 203, 255, 0.22), transparent 70%),
+    radial-gradient(40% 60% at 95% 76%, rgba(255, 177, 228, 0.2), transparent 72%),
+    radial-gradient(42% 52% at 50% 50%, rgba(216, 186, 255, 0.1), transparent 72%),
+    linear-gradient(180deg, #ffffff 0%, #fdfcff 100%);
+  border: 1px solid rgba(186, 153, 255, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
 }
 
-.homepage-board + .homepage-board {
-  margin-top: 24px;
+.roadmap-stage-frame {
+  position: relative;
+  min-height: 640px;
 }
 
-.homepage-board {
-  padding: 18px 20px 20px;
-  border: 1px solid rgba(139, 92, 246, 0.28);
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.04);
+.roadmap-panel {
+  position: absolute;
+  width: 244px;
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(190, 147, 255, 0.8);
+  background: rgba(255, 255, 255, 0.34);
   box-shadow:
-    0 0 40px rgba(109, 40, 217, 0.12),
-    inset 0 1px 0 rgba(196, 181, 253, 0.06);
-  backdrop-filter: blur(10px);
+    0 0 18px rgba(170, 104, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
+.left-panel {
+  top: 58px;
+  left: 36px;
+}
+
+.right-top {
+  top: 58px;
+  right: 36px;
+}
+
+.right-bottom {
+  top: 398px;
+  right: 36px;
+}
+
+.roadmap-panel-head,
 .board-head {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 12px;
 }
 
+.roadmap-panel-head {
+  margin-bottom: 16px;
+}
+
+.roadmap-panel-head span,
 .board-head span {
-  width: 63px;
+  width: 54px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(167, 139, 250, 0) 0%, rgba(167, 139, 250, 0.5) 100%);
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0) 0%, rgba(167, 139, 250, 0.52) 100%);
 }
 
+.roadmap-panel-head span:last-child,
 .board-head span:last-child {
-  background: linear-gradient(90deg, rgba(167, 139, 250, 0.5) 0%, rgba(167, 139, 250, 0) 100%);
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0.52) 0%, rgba(167, 139, 250, 0) 100%);
 }
 
+.roadmap-panel-head h4,
 .board-head h3 {
   margin: 0;
-  color: rgba(202, 213, 226, 0.96);
-  font-size: 28px;
+  color: rgba(170, 104, 255, 0.9);
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
-.board-list,
-.sponsor-grid {
+.roadmap-panel-list {
   display: grid;
-  gap: 16px;
+  gap: 10px;
 }
 
-.board-list {
-  grid-template-columns: 1fr;
-}
-
-.sponsor-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
+.roadmap-panel-item,
 .board-card {
-  border: 1px solid rgba(142, 81, 255, 0.3);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow:
-    0 0 8px rgba(139, 92, 246, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(186, 153, 255, 0.72);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 8px rgba(170, 104, 255, 0.08);
 }
 
-.roadmap-card {
-  min-height: 88px;
-  padding: 16px 18px;
-}
-
-.roadmap-card h4 {
-  margin: 0 0 10px;
-  color: #cad5e2;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.roadmap-card p {
-  margin: 0;
+.roadmap-panel-item {
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
   color: rgba(114, 119, 124, 0.96);
   font-size: 14px;
-  line-height: 1.65;
+  font-weight: 600;
+}
+
+.roadmap-center {
+  position: relative;
+  width: 100%;
+  min-height: 640px;
+}
+
+.roadmap-node {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 174px;
+  min-height: 38px;
+  padding: 0 28px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(218, 172, 255, 0.92);
+  background: rgba(255, 246, 255, 0.65);
+  color: rgba(87, 67, 112, 0.94);
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(205, 126, 255, 0.1);
+  z-index: 2;
+}
+
+.roadmap-node-core {
+  top: 158px;
+  border-color: rgba(129, 222, 255, 0.96);
+  background: rgba(237, 251, 255, 0.88);
+  color: rgba(56, 87, 106, 0.96);
+  box-shadow: 0 0 28px rgba(130, 222, 255, 0.22);
+}
+
+.roadmap-node-top {
+  top: 70px;
+}
+
+.roadmap-node-bottom {
+  top: 438px;
+}
+
+.roadmap-label {
+  position: absolute;
+  left: 50%;
+  top: 302px;
+  transform: translateX(-50%);
+  color: rgba(114, 119, 124, 0.92);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.roadmap-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  background: linear-gradient(180deg, rgba(233, 166, 255, 0.86) 0%, rgba(203, 140, 255, 0.88) 100%);
+  box-shadow: 0 0 10px rgba(184, 112, 255, 0.14);
+}
+
+.road-line-vertical-top {
+  top: 108px;
+  height: 92px;
+}
+
+.road-line-vertical-bottom {
+  top: 327px;
+  height: 112px;
+}
+
+.roadmap-dash {
+  position: absolute;
+  height: 1px;
+  border-top: 1.5px dashed rgba(228, 173, 255, 0.82);
+}
+
+.road-dash-left {
+  top: 88px;
+  left: 280px;
+  width: calc(50% - 368px);
+}
+
+.road-dash-right-top {
+  top: 88px;
+  right: 280px;
+  width: calc(50% - 368px);
+}
+
+.road-dash-right-bottom {
+  top: 457px;
+  right: 280px;
+  width: calc(50% - 368px);
+}
+
+.homepage-board {
+  margin-top: 28px;
+  padding: 18px 20px 20px;
+  border: 1px solid rgba(186, 153, 255, 0.26);
+  border-radius: 28px;
+  background:
+    radial-gradient(42% 60% at 4% 100%, rgba(123, 203, 255, 0.18), transparent 72%),
+    radial-gradient(40% 60% at 95% 76%, rgba(255, 177, 228, 0.14), transparent 74%),
+    rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 0 20px rgba(170, 104, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .signup-card {
@@ -164,7 +309,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 24px;
   padding: 28px 24px;
 }
 
@@ -186,21 +331,21 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   min-width: 98px;
   min-height: 44px;
   padding: 0 22px;
-  border: 1.6px solid rgba(31, 49, 65, 0.88);
+  border: 1.6px solid rgba(87, 67, 112, 0.76);
   border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 246, 255, 0.92) 100%);
-  color: #203247;
+  background: rgba(255, 255, 255, 0.72);
+  color: #3f3856;
   font-size: 24px;
   text-decoration: none;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.86),
-    inset 0 -1px 0 rgba(32, 50, 71, 0.16),
-    0 4px 10px rgba(30, 56, 88, 0.15);
-  transition: transform 0.22s ease;
+    0 0 8px rgba(170, 104, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.banner-btn:hover {
-  transform: translateY(-1px);
+.sponsor-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .sponsor-card {
@@ -214,77 +359,80 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   width: 74%;
   max-width: 216px;
   height: 24px;
-  border: 1.4px dashed rgba(142, 81, 255, 0.26);
+  border: 1.4px dashed rgba(186, 153, 255, 0.36);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.32);
 }
 
-@media (max-width: 900px) {
-  .timeline-wrap {
-    padding: 34px 0 62px;
+@media (max-width: 1100px) {
+  .roadmap-stage-frame {
+    min-height: auto;
+    display: grid;
+    gap: 22px;
   }
 
-  .homepage-board {
-    padding: 18px 18px 24px;
+  .roadmap-panel,
+  .roadmap-node,
+  .roadmap-label,
+  .roadmap-line,
+  .roadmap-dash {
+    position: static;
+    left: auto;
+    top: auto;
+    right: auto;
+    transform: none;
+    width: auto;
   }
 
-  .board-head h3 {
-    font-size: 24px;
+  .roadmap-center {
+    min-height: auto;
+    display: grid;
+    justify-items: center;
+    gap: 18px;
   }
 
-  .sponsor-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .roadmap-line {
+    width: 1.5px;
+    height: 34px;
   }
 
-  .signup-title {
-    font-size: 30px;
+  .roadmap-dash {
+    display: none;
+  }
+
+  .roadmap-panel {
+    width: 100%;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 768px) {
   .timeline-wrap {
     width: min(100vw - 24px, 1120px);
-    padding: 26px 0 48px;
+    padding: 20px 0 60px;
   }
 
+  .roadmap-stage,
   .homepage-board {
-    padding: 16px 14px 20px;
+    padding: 18px 14px 20px;
     border-radius: 22px;
   }
 
-  .board-head {
-    gap: 10px;
-  }
-
-  .board-head span {
-    width: 38px;
-  }
-
+  .roadmap-panel-head h4,
   .board-head h3 {
     font-size: 22px;
   }
 
-  .sponsor-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .roadmap-card {
-    min-height: 102px;
-  }
-
-  .signup-card {
-    min-height: 150px;
-    padding: 22px 18px;
+  .roadmap-node {
+    min-width: 156px;
+    padding: 0 18px;
   }
 
   .signup-title {
-    font-size: 26px;
+    font-size: 28px;
   }
 
-  .banner-btn {
-    min-width: 88px;
-    min-height: 40px;
-    font-size: 20px;
+  .sponsor-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

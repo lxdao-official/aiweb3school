@@ -4,10 +4,10 @@ externalLinkIcon: false
 config:
   - type: hero
     hero:
-      tagline: 首页导览
-      name: AI Web3 School
+      tagline: 未来学习入口
+      name: AI x Web3<br>School
       text: |
-        <span class="hero-summary">AI × Web3 融合学习平台，探索人工智能与区块链的交汇点</span>
+        <span class="hero-summary">从 AI 基础、Web3 基础到 AI × Web3 交叉实践，形成一条真正能看见方向的学习路径。</span>
         <span class="hero-pill-row">
           <span class="hero-pill">AI 基础</span>
           <span class="hero-pill">Web3 基础</span>
