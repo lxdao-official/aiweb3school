@@ -14,8 +14,20 @@ html[data-theme='light'] h4 { color: var(--my-h4-color); }
 html[data-theme='light'] h5 { color: var(--my-h5-color); }
 html[data-theme='light'] h6 { color: var(--my-h6-color); }
 
+html[data-theme='light'].layout-home .theme-plume.vp-layout {
+  background:
+    radial-gradient(46% 54% at 6% 92%, rgba(148, 214, 255, 0.26), transparent 72%),
+    radial-gradient(42% 50% at 94% 78%, rgba(255, 192, 232, 0.24), transparent 74%),
+    radial-gradient(28% 24% at 50% 46%, rgba(227, 204, 255, 0.12), transparent 80%),
+    linear-gradient(180deg, #fffefe 0%, #fffdfd 100%);
+}
+
 .vp-home {
-  background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+  background:
+    radial-gradient(46% 54% at 6% 92%, rgba(148, 214, 255, 0.26), transparent 72%),
+    radial-gradient(42% 50% at 94% 78%, rgba(255, 192, 232, 0.24), transparent 74%),
+    radial-gradient(28% 24% at 50% 46%, rgba(227, 204, 255, 0.12), transparent 80%),
+    linear-gradient(180deg, #fffefe 0%, #fffdfd 100%);
 }
 
 .vp-home .vp-home-hero.first {
@@ -109,12 +121,14 @@ html[data-theme='light'] h6 { color: var(--my-h6-color); }
   background: transparent;
 }
 
+.vp-home .layout,
+.vp-home .layout:nth-child(odd),
+.vp-home .layout:nth-child(even) {
+  background: transparent !important;
+}
+
 .vp-footer {
-  background:
-    radial-gradient(46% 54% at 6% 92%, rgba(148, 214, 255, 0.26), transparent 72%),
-    radial-gradient(42% 50% at 94% 78%, rgba(255, 192, 232, 0.24), transparent 74%),
-    radial-gradient(28% 24% at 50% 46%, rgba(227, 204, 255, 0.12), transparent 80%),
-    linear-gradient(180deg, #fffefe 0%, #fffdfd 100%) !important;
+  background: transparent !important;
   border-top: none !important;
 }
 
