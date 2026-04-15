@@ -86,25 +86,25 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 
 <style scoped>
 .timeline-wrap {
-  width: min(1120px, calc(100vw - 40px));
-  margin: 0 auto;
-  padding: 28px 0 96px;
-}
-
-.roadmap-stage {
   position: relative;
   left: 50%;
   right: 50%;
   width: 100vw;
   margin-left: -50vw;
   margin-right: -50vw;
-  overflow: hidden;
-  padding: 72px 0 96px;
+  padding: 28px 0 96px;
   background:
     radial-gradient(46% 54% at 6% 92%, rgba(148, 214, 255, 0.26), transparent 72%),
     radial-gradient(42% 50% at 94% 78%, rgba(255, 192, 232, 0.24), transparent 74%),
     radial-gradient(28% 24% at 50% 46%, rgba(227, 204, 255, 0.12), transparent 80%),
     linear-gradient(180deg, #fffefe 0%, #fffdfd 100%);
+}
+
+.roadmap-stage {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 0 96px;
+  background: transparent;
 }
 
 .roadmap-stage-frame {
@@ -294,7 +294,8 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 }
 
 .homepage-board {
-  margin-top: 28px;
+  width: min(1120px, calc(100vw - 40px));
+  margin: 28px auto 0;
   padding: 18px 20px 20px;
   border: 1px solid rgba(186, 153, 255, 0.26);
   border-radius: 28px;
@@ -411,7 +412,6 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 
 @media (max-width: 768px) {
   .timeline-wrap {
-    width: min(100vw - 24px, 1120px);
     padding: 20px 0 60px;
   }
 
@@ -425,6 +425,10 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   }
 
   .roadmap-stage-frame {
+    width: min(100vw - 24px, 1120px);
+  }
+
+  .homepage-board {
     width: min(100vw - 24px, 1120px);
   }
 
