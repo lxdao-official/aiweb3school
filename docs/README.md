@@ -3,8 +3,6 @@ pageLayout: home
 externalLinkIcon: false
 config:
   - type: hero
-    full: true
-    background: tint-plate
     hero:
       name: AI Web3 School
       text: AI × Web3 融合学习平台，探索人工智能与区块链的交汇点
