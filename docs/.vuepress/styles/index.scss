@@ -19,13 +19,15 @@ html[data-theme='light'] .vp-home {
 }
 
 html[data-theme='light'] .vp-home .vp-home-hero.first {
-  margin-top: 18px;
+  margin-top: calc(0px - var(--vp-nav-height));
 }
 
 html[data-theme='light'] .vp-home .vp-home-hero {
-  margin: 18px auto 0;
-  width: min(1120px, calc(100vw - 32px));
-  min-height: 446px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 1528 / 812;
+  min-height: 420px;
   border: 0;
   border-radius: 0;
   background: linear-gradient(180deg, rgba(8, 7, 16, 0.16) 0%, rgba(8, 7, 16, 0.28) 100%);
@@ -36,6 +38,8 @@ html[data-theme='light'] .vp-home .vp-home-hero {
 html[data-theme='light'] .vp-home .vp-home-hero .home-hero-bg {
   inset: 0;
   opacity: 1;
+  background-position: center top;
+  background-size: cover;
 }
 
 html[data-theme='light'] .vp-home .vp-home-hero::before {
@@ -64,12 +68,12 @@ html[data-theme='light'] .vp-home .vp-home-hero .hero-content {
   position: relative;
   z-index: 2;
   max-width: none;
-  min-height: 446px;
+  min-height: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   margin: 0;
-  padding: 56px 38px;
+  padding: 72px 56px;
   text-align: left;
 }
 
@@ -126,13 +130,11 @@ html[data-theme='light'] .vp-home .Timeline {
 
 @media (max-width: 900px) {
   html[data-theme='light'] .vp-home .vp-home-hero {
-    width: min(100vw - 24px, 1120px);
-    min-height: 390px;
+    min-height: 340px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-content {
-    min-height: 390px;
-    padding: 42px 26px;
+    padding: 48px 30px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-name {
@@ -148,14 +150,11 @@ html[data-theme='light'] .vp-home .Timeline {
 
 @media (max-width: 560px) {
   html[data-theme='light'] .vp-home .vp-home-hero {
-    width: 100vw;
-    min-height: 320px;
-    margin-top: 0;
+    min-height: 260px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-content {
-    min-height: 320px;
-    padding: 28px 18px;
+    padding: 34px 18px;
   }
 
   html[data-theme='light'] .vp-home .vp-home-hero .hero-name {
