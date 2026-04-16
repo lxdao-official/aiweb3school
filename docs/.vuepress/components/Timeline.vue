@@ -84,7 +84,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   </section>
 </template>
 
-<style scoped>
+<style>
 .timeline-wrap {
   position: relative;
   left: 50%;
@@ -100,7 +100,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
     linear-gradient(180deg, #fffefe 0%, #fffdfd 100%);
 }
 
-:global(html[data-theme='dark']) .timeline-wrap {
+html[data-theme='dark'] .timeline-wrap {
   background:
     radial-gradient(34% 30% at 10% 92%, rgba(95, 226, 255, 0.26), transparent 72%),
     radial-gradient(38% 44% at 92% 68%, rgba(204, 92, 255, 0.24), transparent 72%),
@@ -134,7 +134,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
     inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
-:global(html[data-theme='dark']) .roadmap-panel {
+html[data-theme='dark'] .roadmap-panel {
   border-color: rgba(132, 92, 235, 0.72);
   background: rgba(42, 29, 57, 0.42);
   box-shadow:
@@ -190,8 +190,8 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   letter-spacing: 0.02em;
 }
 
-:global(html[data-theme='dark']) .roadmap-panel-head h4,
-:global(html[data-theme='dark']) .board-head h3 {
+html[data-theme='dark'] .roadmap-panel-head h4,
+html[data-theme='dark'] .board-head h3 {
   color: rgba(186, 144, 255, 0.96);
 }
 
@@ -208,8 +208,8 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   box-shadow: 0 0 8px rgba(170, 104, 255, 0.08);
 }
 
-:global(html[data-theme='dark']) .roadmap-panel-item,
-:global(html[data-theme='dark']) .board-card {
+html[data-theme='dark'] .roadmap-panel-item,
+html[data-theme='dark'] .board-card {
   border-color: rgba(121, 90, 214, 0.82);
   background: rgba(50, 37, 66, 0.4);
   box-shadow: 0 0 14px rgba(126, 85, 255, 0.1);
@@ -226,7 +226,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   font-weight: 600;
 }
 
-:global(html[data-theme='dark']) .roadmap-panel-item {
+html[data-theme='dark'] .roadmap-panel-item {
   color: rgba(244, 240, 255, 0.86);
 }
 
@@ -256,7 +256,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   z-index: 2;
 }
 
-:global(html[data-theme='dark']) .roadmap-node {
+html[data-theme='dark'] .roadmap-node {
   border-color: rgba(125, 84, 233, 0.9);
   background: rgba(55, 32, 88, 0.88);
   color: rgba(249, 245, 255, 0.95);
@@ -273,7 +273,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   box-shadow: 0 0 28px rgba(130, 222, 255, 0.22);
 }
 
-:global(html[data-theme='dark']) .roadmap-node-core {
+html[data-theme='dark'] .roadmap-node-core {
   border-color: rgba(24, 198, 255, 0.84);
   background: rgba(16, 39, 63, 0.9);
   color: rgba(226, 249, 255, 0.96);
@@ -300,7 +300,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   font-weight: 600;
 }
 
-:global(html[data-theme='dark']) .roadmap-label {
+html[data-theme='dark'] .roadmap-label {
   color: rgba(240, 232, 255, 0.82);
 }
 
@@ -313,7 +313,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   box-shadow: 0 0 10px rgba(184, 112, 255, 0.14);
 }
 
-:global(html[data-theme='dark']) .roadmap-line {
+html[data-theme='dark'] .roadmap-line {
   background: linear-gradient(180deg, rgba(166, 112, 255, 0.88) 0%, rgba(104, 80, 212, 0.94) 100%);
   box-shadow: 0 0 16px rgba(140, 95, 255, 0.22);
 }
@@ -334,7 +334,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   border-top: 1.5px dashed rgba(228, 173, 255, 0.82);
 }
 
-:global(html[data-theme='dark']) .roadmap-dash {
+html[data-theme='dark'] .roadmap-dash {
   border-top-color: rgba(154, 117, 245, 0.58);
 }
 
@@ -371,7 +371,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-:global(html[data-theme='dark']) .homepage-board {
+html[data-theme='dark'] .homepage-board {
   border-color: rgba(127, 93, 214, 0.58);
   background:
     radial-gradient(38% 52% at 4% 100%, rgba(74, 186, 255, 0.16), transparent 72%),
@@ -403,7 +403,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   letter-spacing: 0.04em;
 }
 
-:global(html[data-theme='dark']) .signup-title {
+html[data-theme='dark'] .signup-title {
   color: rgba(244, 240, 255, 0.94);
   text-shadow: 0 0 18px rgba(164, 119, 255, 0.14);
 }
@@ -426,7 +426,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-:global(html[data-theme='dark']) .banner-btn {
+html[data-theme='dark'] .banner-btn {
   border-color: rgba(133, 102, 220, 0.88);
   background: rgba(33, 22, 49, 0.78);
   color: rgba(244, 239, 255, 0.95);
@@ -457,7 +457,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
   background: rgba(255, 255, 255, 0.32);
 }
 
-:global(html[data-theme='dark']) .logo-placeholder {
+html[data-theme='dark'] .logo-placeholder {
   border-color: rgba(130, 98, 220, 0.46);
   background: rgba(54, 40, 70, 0.4);
 }
