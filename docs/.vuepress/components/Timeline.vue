@@ -192,6 +192,7 @@ html[data-theme='dark'] .roadmap-panel {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 html[data-theme='dark'] .roadmap-panel-head h4,
@@ -529,9 +530,19 @@ html[data-theme='dark'] .logo-placeholder {
     width: min(100vw - 24px, 1120px);
   }
 
+  .roadmap-panel-head,
+  .board-head {
+    gap: 8px;
+  }
+
+  .roadmap-panel-head span,
+  .board-head span {
+    width: 34px;
+  }
+
   .roadmap-panel-head h4,
   .board-head h3 {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .roadmap-node {
