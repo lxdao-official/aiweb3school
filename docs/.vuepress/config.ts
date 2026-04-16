@@ -11,6 +11,11 @@ export default defineUserConfig({
       lang: 'zh-CN',
       description: 'AI × Web3 学习平台',
     },
+    '/en/': {
+      title: 'AI Web3 School',
+      lang: 'en-US',
+      description: 'AI × Web3 learning platform',
+    },
   },
 
   head: [

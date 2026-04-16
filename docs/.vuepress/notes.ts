@@ -52,3 +52,56 @@ export const zhNotes = defineNotesConfig({
   link: '/',
   notes: [schoolNote],
 });
+
+const schoolNoteEn = defineNoteConfig({
+  dir: 'en',
+  link: '/en',
+  sidebar: [
+    { text: 'AI Web3 School', link: '/en/' },
+    {
+      text: 'Part 1: AI Foundations',
+      collapsed: false,
+      items: [
+        { text: 'AI Fundamentals', link: '/en/ai-fundamentals/' },
+        { text: 'Machine Learning Basics', link: '/en/machine-learning-basics/' },
+        { text: 'Deep Learning Intro', link: '/en/deep-learning-intro/' },
+        { text: 'AI Tools & Platforms', link: '/en/ai-tools/' },
+      ],
+    },
+    {
+      text: 'Part 2: Web3 Foundations',
+      collapsed: false,
+      items: [
+        { text: 'Blockchain Basics', link: '/en/blockchain-basics/' },
+        { text: 'Smart Contracts', link: '/en/smart-contracts/' },
+        { text: 'DeFi Intro', link: '/en/defi-intro/' },
+        { text: 'Web3 Tooling', link: '/en/web3-tools/' },
+      ],
+    },
+    {
+      text: 'Part 3: AI × Web3',
+      collapsed: false,
+      items: [
+        { text: 'AI Agents on Blockchain', link: '/en/ai-agents/' },
+        { text: 'AI + DeFi', link: '/en/ai-defi/' },
+        { text: 'AI + NFT', link: '/en/ai-nft/' },
+        { text: 'Decentralized AI', link: '/en/decentralized-ai/' },
+      ],
+    },
+    {
+      text: 'Part 4: Practice & Resources',
+      collapsed: false,
+      items: [
+        { text: 'Project Guide', link: '/en/project-guide/' },
+        { text: 'Case Studies', link: '/en/case-studies/' },
+        { text: 'Resources', link: '/en/resources/' },
+      ],
+    },
+  ],
+});
+
+export const enNotes = defineNotesConfig({
+  dir: '/',
+  link: '/',
+  notes: [schoolNoteEn],
+});
