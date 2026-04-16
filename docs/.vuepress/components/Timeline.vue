@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const leftPanel = ['账户模型', '交易生命周期', 'Gas 与费用', '共识机制']
-const rightTopPanel = ['监督学习', '无监督学习', '训练集', '验证集']
-const rightBottomPanel = ['Agent Payments', 'Onchain Agent', 'Identity', 'AI × DeFi']
+import { computed } from 'vue'
+import { useRouteLocale } from 'vuepress/client'
+import { homeI18n, type HomeLocale } from '../content/home-i18n'
+
+const routeLocale = useRouteLocale()
+const localeKey = computed<HomeLocale>(() => routeLocale.value === '/en/' ? 'en' : 'zh')
+const content = computed(() => homeI18n[localeKey.value])
 const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${index + 1}` }))
 </script>
 
@@ -12,42 +16,42 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
         <div class="roadmap-panel left-panel">
           <div class="roadmap-panel-head">
             <span></span>
-            <h4>Web3 基础</h4>
+            <h4>{{ content.roadmap.leftPanelTitle }}</h4>
             <span></span>
           </div>
           <div class="roadmap-panel-list">
-            <div v-for="item in leftPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+            <div v-for="item in content.roadmap.leftPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
           </div>
         </div>
 
         <div class="roadmap-center">
-          <div class="roadmap-node roadmap-node-top">基础课程</div>
-          <div class="roadmap-node roadmap-node-core">AI × Web3 路线图</div>
+          <div class="roadmap-node roadmap-node-top">{{ content.roadmap.centerTop }}</div>
+          <div class="roadmap-node roadmap-node-core">{{ content.roadmap.centerCore }}</div>
           <div class="roadmap-line road-line-vertical-top"></div>
-          <div class="roadmap-label">AI × Web3</div>
-          <div class="roadmap-node roadmap-node-bottom">赛道实践</div>
+          <div class="roadmap-label">{{ content.roadmap.centerLabel }}</div>
+          <div class="roadmap-node roadmap-node-bottom">{{ content.roadmap.centerBottom }}</div>
           <div class="roadmap-line road-line-vertical-bottom"></div>
         </div>
 
         <div class="roadmap-panel right-panel right-top">
           <div class="roadmap-panel-head">
             <span></span>
-            <h4>AI 基础</h4>
+            <h4>{{ content.roadmap.rightTopTitle }}</h4>
             <span></span>
           </div>
           <div class="roadmap-panel-list">
-            <div v-for="item in rightTopPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+            <div v-for="item in content.roadmap.rightTopPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
           </div>
         </div>
 
         <div class="roadmap-panel right-panel right-bottom">
           <div class="roadmap-panel-head">
             <span></span>
-            <h4>热门方向</h4>
+            <h4>{{ content.roadmap.rightBottomTitle }}</h4>
             <span></span>
           </div>
           <div class="roadmap-panel-list">
-            <div v-for="item in rightBottomPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+            <div v-for="item in content.roadmap.rightBottomPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
           </div>
         </div>
 
@@ -60,24 +64,24 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
     <section class="homepage-board signup-board">
       <div class="board-head">
         <span></span>
-        <h3>共学营</h3>
+        <h3>{{ content.signup.boardTitle }}</h3>
         <span></span>
       </div>
       <div class="board-card signup-card">
-        <p class="signup-title">AI x Web3 共学营</p>
-        <a class="banner-btn" href="./zh/README.md">报名</a>
+        <p class="signup-title">{{ content.signup.title }}</p>
+        <a class="banner-btn" :href="content.signup.href">{{ content.signup.cta }}</a>
       </div>
     </section>
 
     <section class="homepage-board sponsor-board">
       <div class="board-head">
         <span></span>
-        <h3>合作伙伴</h3>
+        <h3>{{ content.sponsors.title }}</h3>
         <span></span>
       </div>
       <div class="sponsor-grid">
         <div v-for="slot in sponsorSlots" :key="slot.id" class="board-card sponsor-card">
-          <div class="logo-placeholder" aria-label="合作伙伴 Logo 占位" />
+          <div class="logo-placeholder" :aria-label="content.sponsors.ariaLabel" />
         </div>
       </div>
     </section>
