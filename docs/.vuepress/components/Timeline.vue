@@ -429,6 +429,12 @@ html[data-theme='dark'] .signup-title {
   box-shadow:
     0 0 8px rgba(170, 104, 255, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    color 0.22s ease;
 }
 
 html[data-theme='dark'] .banner-btn {
@@ -438,6 +444,25 @@ html[data-theme='dark'] .banner-btn {
   box-shadow:
     0 0 18px rgba(126, 85, 255, 0.14),
     inset 0 1px 0 rgba(214, 196, 255, 0.08);
+}
+
+.banner-btn:hover,
+.banner-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(125, 84, 233, 0.92);
+  box-shadow:
+    0 10px 22px rgba(170, 104, 255, 0.18),
+    0 0 18px rgba(170, 104, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+html[data-theme='dark'] .banner-btn:hover,
+html[data-theme='dark'] .banner-btn:focus-visible {
+  border-color: rgba(158, 126, 245, 0.98);
+  box-shadow:
+    0 12px 26px rgba(27, 15, 47, 0.46),
+    0 0 20px rgba(126, 85, 255, 0.24),
+    inset 0 1px 0 rgba(221, 204, 255, 0.1);
 }
 
 .sponsor-grid {
