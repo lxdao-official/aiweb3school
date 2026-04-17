@@ -378,7 +378,7 @@ html[data-theme='dark'] .roadmap-line {
 
 .road-line-vertical-top {
   top: 124px;
-  height: 92px;
+  height: 50px;
 }
 
 .road-line-vertical-middle {
