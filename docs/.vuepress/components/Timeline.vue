@@ -31,6 +31,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
           <div class="roadmap-node roadmap-node-top">{{ content.roadmap.centerTop }}</div>
           <div class="roadmap-node roadmap-node-core">{{ content.roadmap.centerCore }}</div>
           <div class="roadmap-line road-line-vertical-top"></div>
+          <div class="roadmap-line road-line-vertical-middle"></div>
           <div class="roadmap-label">{{ content.roadmap.centerLabel }}</div>
           <div class="roadmap-node roadmap-node-bottom">{{ content.roadmap.centerBottom }}</div>
           <div class="roadmap-line road-line-vertical-bottom"></div>
@@ -377,6 +378,11 @@ html[data-theme='dark'] .roadmap-line {
 
 .road-line-vertical-top {
   top: 124px;
+  height: 92px;
+}
+
+.road-line-vertical-middle {
+  top: 212px;
   height: 92px;
 }
 
