@@ -3,8 +3,11 @@ export type HomeLocale = 'zh' | 'en'
 export const homeI18n = {
   zh: {
     roadmap: {
+      stageTag: '基础能力层',
       leftPanelTitle: '核心方向',
       leftPanel: ['AI Agent', 'AI + DeFi', 'AI + NFT', '去中心化 AI'],
+      leftBottomTitle: '项目过程',
+      leftBottomPanel: ['开发基础', '案例拆解', '交付与安全'],
       centerTop: '核心路径',
       centerCore: 'AI × Web3 路线图',
       centerLabel: 'AI × Web3',
@@ -27,8 +30,11 @@ export const homeI18n = {
   },
   en: {
     roadmap: {
+      stageTag: 'Foundation Layer',
       leftPanelTitle: 'Core Directions',
       leftPanel: ['AI Agents', 'AI + DeFi', 'AI + NFT', 'Decentralized AI'],
+      leftBottomTitle: 'Build Process',
+      leftBottomPanel: ['Dev Basics', 'Case Studies', 'Safety & Delivery'],
       centerTop: 'Core Track',
       centerCore: 'AI × Web3 Roadmap',
       centerLabel: 'AI × Web3',
