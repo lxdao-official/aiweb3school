@@ -11,69 +11,45 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 
 <template>
   <section class="timeline-wrap">
-    <section class="roadmap-stage">
+    <section v-for="stage in content.roadmap.stages" :key="stage.stageTag" class="roadmap-stage">
       <div class="roadmap-stage-frame">
-        <div class="roadmap-stage-tag">{{ content.roadmap.stageTag }}</div>
+        <div class="roadmap-stage-tag">{{ stage.stageTag }}</div>
         <div class="roadmap-stage-line"></div>
 
         <div class="roadmap-panel left-panel">
           <div class="roadmap-panel-head">
             <span></span>
-            <h4>{{ content.roadmap.leftPanelTitle }}</h4>
+            <h4>{{ stage.leftPanelTitle }}</h4>
             <span></span>
           </div>
           <div class="roadmap-panel-list">
-            <div v-for="item in content.roadmap.leftPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+            <div v-for="item in stage.leftPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
           </div>
         </div>
 
         <div class="roadmap-center">
-          <div class="roadmap-node roadmap-node-top">{{ content.roadmap.centerTop }}</div>
-          <div class="roadmap-node roadmap-node-core">{{ content.roadmap.centerCore }}</div>
+          <div class="roadmap-node roadmap-node-top">{{ stage.centerTop }}</div>
+          <div class="roadmap-node roadmap-node-core">{{ stage.centerCore }}</div>
           <div class="roadmap-line road-line-vertical-top"></div>
           <div class="roadmap-line road-line-vertical-middle"></div>
-          <div class="roadmap-label">{{ content.roadmap.centerLabel }}</div>
-          <div class="roadmap-node roadmap-node-bottom">{{ content.roadmap.centerBottom }}</div>
+          <div class="roadmap-label">{{ stage.centerLabel }}</div>
+          <div class="roadmap-node roadmap-node-bottom">{{ stage.centerBottom }}</div>
           <div class="roadmap-line road-line-vertical-bottom"></div>
         </div>
 
-        <div class="roadmap-panel right-panel right-top">
+        <div class="roadmap-panel right-panel">
           <div class="roadmap-panel-head">
             <span></span>
-            <h4>{{ content.roadmap.rightTopTitle }}</h4>
+            <h4>{{ stage.rightPanelTitle }}</h4>
             <span></span>
           </div>
           <div class="roadmap-panel-list">
-            <div v-for="item in content.roadmap.rightTopPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
-          </div>
-        </div>
-
-        <div class="roadmap-panel left-panel left-bottom">
-          <div class="roadmap-panel-head">
-            <span></span>
-            <h4>{{ content.roadmap.leftBottomTitle }}</h4>
-            <span></span>
-          </div>
-          <div class="roadmap-panel-list">
-            <div v-for="item in content.roadmap.leftBottomPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
-          </div>
-        </div>
-
-        <div class="roadmap-panel right-panel right-bottom">
-          <div class="roadmap-panel-head">
-            <span></span>
-            <h4>{{ content.roadmap.rightBottomTitle }}</h4>
-            <span></span>
-          </div>
-          <div class="roadmap-panel-list">
-            <div v-for="item in content.roadmap.rightBottomPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
+            <div v-for="item in stage.rightPanel" :key="item" class="roadmap-panel-item">{{ item }}</div>
           </div>
         </div>
 
         <div class="roadmap-dash road-dash-left"></div>
-        <div class="roadmap-dash road-dash-left-bottom"></div>
-        <div class="roadmap-dash road-dash-right-top"></div>
-        <div class="roadmap-dash road-dash-right-bottom"></div>
+        <div class="roadmap-dash road-dash-right"></div>
       </div>
     </section>
 
@@ -131,15 +107,19 @@ html[data-theme='dark'] .timeline-wrap {
 .roadmap-stage {
   position: relative;
   overflow: hidden;
-  padding: 72px 0 96px;
+  padding: 56px 0 48px;
   background: transparent;
+}
+
+.roadmap-stage:last-of-type {
+  padding-bottom: 88px;
 }
 
 .roadmap-stage-frame {
   position: relative;
   width: min(1120px, calc(100vw - 40px));
   margin: 0 auto;
-  min-height: 704px;
+  min-height: 560px;
 }
 
 .roadmap-stage-tag {
@@ -199,19 +179,9 @@ html[data-theme='dark'] .roadmap-panel {
   left: 36px;
 }
 
-.right-top {
+.right-panel {
   top: 74px;
   right: 36px;
-}
-
-.right-bottom {
-  top: 414px;
-  right: 36px;
-}
-
-.left-bottom {
-  top: 414px;
-  left: 36px;
 }
 
 .roadmap-panel-head,
@@ -291,7 +261,7 @@ html[data-theme='dark'] .roadmap-panel-item {
 .roadmap-center {
   position: relative;
   width: 100%;
-  min-height: 704px;
+  min-height: 560px;
 }
 
 .roadmap-node {
@@ -345,13 +315,13 @@ html[data-theme='dark'] .roadmap-node-core {
 }
 
 .roadmap-node-bottom {
-  top: 454px;
+  top: 420px;
 }
 
 .roadmap-label {
   position: absolute;
   left: 50%;
-  top: 318px;
+  top: 302px;
   transform: translateX(-50%);
   color: rgba(114, 119, 124, 0.92);
   font-size: 15px;
@@ -383,12 +353,12 @@ html[data-theme='dark'] .roadmap-line {
 
 .road-line-vertical-middle {
   top: 212px;
-  height: 92px;
+  height: 74px;
 }
 
 .road-line-vertical-bottom {
-  top: 343px;
-  height: 112px;
+  top: 327px;
+  height: 94px;
 }
 
 .roadmap-dash {
@@ -407,21 +377,9 @@ html[data-theme='dark'] .roadmap-dash {
   width: calc(50% - 368px);
 }
 
-.road-dash-right-top {
+.road-dash-right {
   top: 104px;
   right: 280px;
-  width: calc(50% - 368px);
-}
-
-.road-dash-right-bottom {
-  top: 473px;
-  right: 280px;
-  width: calc(50% - 368px);
-}
-
-.road-dash-left-bottom {
-  top: 473px;
-  left: 280px;
   width: calc(50% - 368px);
 }
 
@@ -625,7 +583,7 @@ html[data-theme='dark'] .logo-placeholder {
   }
 
   .roadmap-stage {
-    padding: 44px 0 60px;
+    padding: 36px 0 44px;
   }
 
   .roadmap-stage-frame {
