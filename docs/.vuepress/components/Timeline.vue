@@ -419,51 +419,51 @@ html[data-theme='dark'] .roadmap-dash {
 }
 
 .roadmap-stage-continued .roadmap-stage-frame {
-  min-height: 440px;
+  min-height: 560px;
 }
 
 .roadmap-stage-continued .roadmap-stage-connector-top {
-  height: 72px;
+  height: 56px;
 }
 
 .roadmap-stage-continued .roadmap-stage-connector-bottom {
-  top: 380px;
+  top: 514px;
 }
 
 .roadmap-stage-continued .left-panel,
 .roadmap-stage-continued .right-panel {
-  top: 24px;
+  top: 74px;
 }
 
 .roadmap-stage-continued .roadmap-center {
-  min-height: 440px;
+  min-height: 560px;
 }
 
 .roadmap-stage-continued .roadmap-node-core {
-  top: 68px;
+  top: 174px;
 }
 
 .roadmap-stage-continued .roadmap-label {
-  top: 190px;
+  top: 302px;
 }
 
 .roadmap-stage-continued .roadmap-node-bottom {
-  top: 292px;
+  top: 420px;
 }
 
 .roadmap-stage-continued .road-line-vertical-middle {
-  top: 106px;
-  height: 68px;
+  top: 212px;
+  height: 74px;
 }
 
 .roadmap-stage-continued .road-line-vertical-bottom {
-  top: 229px;
-  height: 64px;
+  top: 327px;
+  height: 94px;
 }
 
 .roadmap-stage-continued .road-dash-left,
 .roadmap-stage-continued .road-dash-right {
-  top: 44px;
+  top: 104px;
 }
 
 .homepage-board {
