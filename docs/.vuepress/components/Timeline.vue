@@ -15,8 +15,8 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
       <div v-if="index > 0" class="roadmap-stage-connector roadmap-stage-connector-top"></div>
       <div v-if="index < content.roadmap.stages.length - 1" class="roadmap-stage-connector roadmap-stage-connector-bottom"></div>
       <div class="roadmap-stage-frame">
-        <div class="roadmap-stage-tag">{{ stage.stageTag }}</div>
-        <div class="roadmap-stage-line"></div>
+        <div v-if="index === 0" class="roadmap-stage-tag">{{ stage.stageTag }}</div>
+        <div v-if="index === 0" class="roadmap-stage-line"></div>
 
         <div class="roadmap-panel left-panel">
           <div class="roadmap-panel-head">
