@@ -11,7 +11,9 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 
 <template>
   <section class="timeline-wrap">
-    <section v-for="stage in content.roadmap.stages" :key="stage.stageTag" class="roadmap-stage">
+    <section v-for="(stage, index) in content.roadmap.stages" :key="stage.stageTag" class="roadmap-stage">
+      <div v-if="index > 0" class="roadmap-stage-connector roadmap-stage-connector-top"></div>
+      <div v-if="index < content.roadmap.stages.length - 1" class="roadmap-stage-connector roadmap-stage-connector-bottom"></div>
       <div class="roadmap-stage-frame">
         <div class="roadmap-stage-tag">{{ stage.stageTag }}</div>
         <div class="roadmap-stage-line"></div>
@@ -113,6 +115,31 @@ html[data-theme='dark'] .timeline-wrap {
 
 .roadmap-stage:last-of-type {
   padding-bottom: 88px;
+}
+
+.roadmap-stage-connector {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  background: linear-gradient(180deg, rgba(233, 166, 255, 0.86) 0%, rgba(203, 140, 255, 0.88) 100%);
+  box-shadow: 0 0 10px rgba(184, 112, 255, 0.14);
+  z-index: 1;
+}
+
+html[data-theme='dark'] .roadmap-stage-connector {
+  background: linear-gradient(180deg, rgba(166, 112, 255, 0.88) 0%, rgba(104, 80, 212, 0.94) 100%);
+  box-shadow: 0 0 16px rgba(140, 95, 255, 0.22);
+}
+
+.roadmap-stage-connector-top {
+  top: 0;
+  height: 50px;
+}
+
+.roadmap-stage-connector-bottom {
+  top: 514px;
+  bottom: 0;
 }
 
 .roadmap-stage-frame {
@@ -526,6 +553,7 @@ html[data-theme='dark'] .logo-placeholder {
   .roadmap-label,
   .roadmap-line,
   .roadmap-dash,
+  .roadmap-stage-connector,
   .roadmap-stage-tag,
   .roadmap-stage-line {
     position: static;
@@ -564,6 +592,10 @@ html[data-theme='dark'] .logo-placeholder {
   }
 
   .roadmap-dash {
+    display: none;
+  }
+
+  .roadmap-stage-connector {
     display: none;
   }
 
