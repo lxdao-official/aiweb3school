@@ -117,6 +117,10 @@ html[data-theme='dark'] .timeline-wrap {
   padding-top: 72px;
 }
 
+.roadmap-stage-continued {
+  margin-top: -188px;
+}
+
 .roadmap-stage:last-of-type {
   padding-bottom: 88px;
 }
@@ -419,7 +423,7 @@ html[data-theme='dark'] .roadmap-dash {
 }
 
 .roadmap-stage-continued .roadmap-stage-connector-top {
-  height: 124px;
+  height: 92px;
 }
 
 .roadmap-stage-continued .roadmap-stage-connector-bottom {
@@ -594,6 +598,10 @@ html[data-theme='dark'] .logo-placeholder {
 }
 
 @media (max-width: 1100px) {
+  .roadmap-stage-continued {
+    margin-top: 0;
+  }
+
   .roadmap-stage-frame {
     min-height: auto;
     display: grid;
