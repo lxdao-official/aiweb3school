@@ -118,7 +118,7 @@ html[data-theme='dark'] .timeline-wrap {
 }
 
 .roadmap-stage-continued {
-  margin-top: -272px;
+  margin-top: -224px;
 }
 
 .roadmap-stage:last-of-type {
