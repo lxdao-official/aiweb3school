@@ -118,7 +118,7 @@ html[data-theme='dark'] .timeline-wrap {
 }
 
 .roadmap-stage-continued {
-  margin-top: -188px;
+  margin-top: -272px;
 }
 
 .roadmap-stage:last-of-type {
@@ -423,7 +423,7 @@ html[data-theme='dark'] .roadmap-dash {
 }
 
 .roadmap-stage-continued .roadmap-stage-connector-top {
-  height: 92px;
+  height: 72px;
 }
 
 .roadmap-stage-continued .roadmap-stage-connector-bottom {
