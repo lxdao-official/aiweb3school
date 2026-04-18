@@ -11,7 +11,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
 
 <template>
   <section class="timeline-wrap">
-    <section v-for="(stage, index) in content.roadmap.stages" :key="stage.stageTag" class="roadmap-stage">
+    <section v-for="(stage, index) in content.roadmap.stages" :key="stage.stageTag" class="roadmap-stage" :class="{ 'roadmap-stage-continued': index > 0 }">
       <div v-if="index > 0" class="roadmap-stage-connector roadmap-stage-connector-top"></div>
       <div v-if="index < content.roadmap.stages.length - 1" class="roadmap-stage-connector roadmap-stage-connector-bottom"></div>
       <div class="roadmap-stage-frame">
@@ -30,9 +30,9 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
         </div>
 
         <div class="roadmap-center">
-          <div class="roadmap-node roadmap-node-top">{{ stage.centerTop }}</div>
+          <div v-if="index === 0" class="roadmap-node roadmap-node-top">{{ stage.centerTop }}</div>
           <div class="roadmap-node roadmap-node-core">{{ stage.centerCore }}</div>
-          <div class="roadmap-line road-line-vertical-top"></div>
+          <div v-if="index === 0" class="roadmap-line road-line-vertical-top"></div>
           <div class="roadmap-line road-line-vertical-middle"></div>
           <div class="roadmap-label">{{ stage.centerLabel }}</div>
           <div class="roadmap-node roadmap-node-bottom">{{ stage.centerBottom }}</div>
@@ -109,16 +109,16 @@ html[data-theme='dark'] .timeline-wrap {
 .roadmap-stage {
   position: relative;
   overflow: hidden;
-  padding: 28px 0 24px;
+  padding: 56px 0 48px;
   background: transparent;
 }
 
-.roadmap-stage + .roadmap-stage {
-  margin-top: -228px;
+.roadmap-stage:first-of-type {
+  padding-top: 72px;
 }
 
 .roadmap-stage:last-of-type {
-  padding-bottom: 72px;
+  padding-bottom: 88px;
 }
 
 .roadmap-stage-connector {
@@ -138,11 +138,11 @@ html[data-theme='dark'] .roadmap-stage-connector {
 
 .roadmap-stage-connector-top {
   top: 0;
-  height: 28px;
+  height: 56px;
 }
 
 .roadmap-stage-connector-bottom {
-  top: 368px;
+  top: 514px;
   bottom: 0;
 }
 
@@ -150,7 +150,7 @@ html[data-theme='dark'] .roadmap-stage-connector {
   position: relative;
   width: min(1120px, calc(100vw - 40px));
   margin: 0 auto;
-  min-height: 408px;
+  min-height: 560px;
 }
 
 .roadmap-stage-tag {
@@ -171,11 +171,11 @@ html[data-theme='dark'] .roadmap-stage-tag {
 
 .roadmap-stage-line {
   position: absolute;
-  top: 22px;
+  top: 30px;
   left: 50%;
   transform: translateX(-50%);
   width: 1.5px;
-  height: 28px;
+  height: 44px;
   background: linear-gradient(180deg, rgba(233, 166, 255, 0.86) 0%, rgba(203, 140, 255, 0.88) 100%);
   box-shadow: 0 0 10px rgba(184, 112, 255, 0.14);
 }
@@ -206,12 +206,12 @@ html[data-theme='dark'] .roadmap-panel {
 }
 
 .left-panel {
-  top: 28px;
+  top: 74px;
   left: 36px;
 }
 
 .right-panel {
-  top: 28px;
+  top: 74px;
   right: 36px;
 }
 
@@ -292,7 +292,7 @@ html[data-theme='dark'] .roadmap-panel-item {
 .roadmap-center {
   position: relative;
   width: 100%;
-  min-height: 408px;
+  min-height: 560px;
 }
 
 .roadmap-node {
@@ -325,7 +325,7 @@ html[data-theme='dark'] .roadmap-node {
 }
 
 .roadmap-node-core {
-  top: 116px;
+  top: 174px;
   border-color: rgba(129, 222, 255, 0.96);
   background: rgba(237, 251, 255, 0.88);
   color: rgba(56, 87, 106, 0.96);
@@ -342,17 +342,17 @@ html[data-theme='dark'] .roadmap-node-core {
 }
 
 .roadmap-node-top {
-  top: 28px;
+  top: 86px;
 }
 
 .roadmap-node-bottom {
-  top: 296px;
+  top: 420px;
 }
 
 .roadmap-label {
   position: absolute;
   left: 50%;
-  top: 220px;
+  top: 302px;
   transform: translateX(-50%);
   color: rgba(114, 119, 124, 0.92);
   font-size: 15px;
@@ -378,18 +378,18 @@ html[data-theme='dark'] .roadmap-line {
 }
 
 .road-line-vertical-top {
-  top: 66px;
+  top: 124px;
   height: 50px;
 }
 
 .road-line-vertical-middle {
-  top: 154px;
-  height: 46px;
+  top: 212px;
+  height: 74px;
 }
 
 .road-line-vertical-bottom {
-  top: 245px;
-  height: 52px;
+  top: 327px;
+  height: 94px;
 }
 
 .roadmap-dash {
@@ -403,15 +403,63 @@ html[data-theme='dark'] .roadmap-dash {
 }
 
 .road-dash-left {
-  top: 46px;
+  top: 104px;
   left: 280px;
   width: calc(50% - 368px);
 }
 
 .road-dash-right {
-  top: 46px;
+  top: 104px;
   right: 280px;
   width: calc(50% - 368px);
+}
+
+.roadmap-stage-continued .roadmap-stage-frame {
+  min-height: 440px;
+}
+
+.roadmap-stage-continued .roadmap-stage-connector-top {
+  height: 124px;
+}
+
+.roadmap-stage-continued .roadmap-stage-connector-bottom {
+  top: 380px;
+}
+
+.roadmap-stage-continued .left-panel,
+.roadmap-stage-continued .right-panel {
+  top: 24px;
+}
+
+.roadmap-stage-continued .roadmap-center {
+  min-height: 440px;
+}
+
+.roadmap-stage-continued .roadmap-node-core {
+  top: 68px;
+}
+
+.roadmap-stage-continued .roadmap-label {
+  top: 190px;
+}
+
+.roadmap-stage-continued .roadmap-node-bottom {
+  top: 292px;
+}
+
+.roadmap-stage-continued .road-line-vertical-middle {
+  top: 106px;
+  height: 68px;
+}
+
+.roadmap-stage-continued .road-line-vertical-bottom {
+  top: 229px;
+  height: 64px;
+}
+
+.roadmap-stage-continued .road-dash-left,
+.roadmap-stage-continued .road-dash-right {
+  top: 44px;
 }
 
 .homepage-board {
@@ -546,10 +594,6 @@ html[data-theme='dark'] .logo-placeholder {
 }
 
 @media (max-width: 1100px) {
-  .roadmap-stage + .roadmap-stage {
-    margin-top: 0;
-  }
-
   .roadmap-stage-frame {
     min-height: auto;
     display: grid;
@@ -623,7 +667,7 @@ html[data-theme='dark'] .logo-placeholder {
   }
 
   .roadmap-stage {
-    padding: 28px 0 32px;
+    padding: 36px 0 44px;
   }
 
   .roadmap-stage-frame {
