@@ -21,24 +21,14 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
           </div>
           <div class="roadmap-panel roadmap-intro-panel roadmap-panel-plain">
             <div class="roadmap-intro-grid">
-              <div class="roadmap-intro-block">
+              <div v-for="column in content.roadmap.intro.columns" :key="column.title" class="roadmap-intro-block">
                 <div class="roadmap-panel-head">
                   <span></span>
-                  <h4>{{ content.roadmap.intro.leftTitle }}</h4>
+                  <h4>{{ column.title }}</h4>
                   <span></span>
                 </div>
                 <div class="roadmap-panel-list">
-                  <div v-for="item in content.roadmap.intro.leftItems" :key="item" class="roadmap-panel-item">{{ item }}</div>
-                </div>
-              </div>
-              <div class="roadmap-intro-block">
-                <div class="roadmap-panel-head">
-                  <span></span>
-                  <h4>{{ content.roadmap.intro.rightTitle }}</h4>
-                  <span></span>
-                </div>
-                <div class="roadmap-panel-list">
-                  <div v-for="item in content.roadmap.intro.rightItems" :key="item" class="roadmap-panel-item">{{ item }}</div>
+                  <div v-for="item in column.items" :key="item" class="roadmap-panel-item">{{ item }}</div>
                 </div>
               </div>
             </div>
@@ -279,7 +269,7 @@ html[data-theme='dark'] .roadmap-shell::before {
 }
 
 .roadmap-intro-panel {
-  width: min(620px, 100%);
+  width: min(980px, 100%);
   padding: 0;
 }
 
@@ -301,13 +291,14 @@ html[data-theme='dark'] .roadmap-shell::before {
 
 .roadmap-intro-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 18px;
 }
 
 .roadmap-intro-block {
   display: grid;
   justify-items: center;
+  align-content: start;
   gap: 12px;
 }
 

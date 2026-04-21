@@ -5,12 +5,22 @@ export const homeI18n = {
     roadmap: {
       intro: {
         stageTag: '问题定义层',
-        leftTitle: '在讨论什么',
-        leftItems: ['Agent', '支付与结算', '身份与权限', '链上执行', '开放协作'],
-        centerTitle: 'AI × Web3 入门地图',
+        centerTitle: 'AI × Web3 问题空间',
         centerLabel: 'Problem Space',
-        rightTitle: '分析框架',
-        rightItems: ['谁发起任务', '谁执行', '谁付钱', '谁验收', '谁承担风险'],
+        columns: [
+          {
+            title: '为什么会有 AI × Web3',
+            items: ['AI 的执行边界', '开放网络协作', '真实任务与责任'],
+          },
+          {
+            title: '核心张力',
+            items: ['自动化与可控性', '开放性与安全性', '执行与授权', '效率与验证'],
+          },
+          {
+            title: '分析框架',
+            items: ['谁参与', '谁执行', '谁支付', '谁验证', '谁担风险'],
+          },
+        ],
       },
       foundation: {
         stageTag: '基础能力层',
@@ -62,12 +72,22 @@ export const homeI18n = {
     roadmap: {
       intro: {
         stageTag: 'Problem Layer',
-        leftTitle: 'What Is Being Discussed',
-        leftItems: ['Agents', 'Payments & Settlement', 'Identity & Permissions', 'Onchain Execution', 'Open Coordination'],
-        centerTitle: 'AI × Web3 Entry Map',
+        centerTitle: 'AI × Web3 Problem Space',
         centerLabel: 'Problem Space',
-        rightTitle: 'Analysis Framework',
-        rightItems: ['Who starts the task', 'Who executes it', 'Who pays', 'Who verifies', 'Who bears the risk'],
+        columns: [
+          {
+            title: 'Why AI × Web3',
+            items: ['Execution Boundaries of AI', 'Open Network Coordination', 'Real Tasks & Responsibility'],
+          },
+          {
+            title: 'Core Tensions',
+            items: ['Automation & Control', 'Openness & Security', 'Execution & Authorization', 'Efficiency & Verification'],
+          },
+          {
+            title: 'Analysis Framework',
+            items: ['Who participates', 'Who executes', 'Who pays', 'Who verifies', 'Who bears risk'],
+          },
+        ],
       },
       foundation: {
         stageTag: 'Foundation Layer',
