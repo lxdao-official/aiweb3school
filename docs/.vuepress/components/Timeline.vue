@@ -253,9 +253,9 @@ html[data-theme='dark'] .roadmap-shell::before {
 
 .roadmap-foundation-grid {
   position: relative;
-  grid-template-columns: minmax(280px, 336px) 232px minmax(280px, 336px);
+  grid-template-columns: minmax(300px, 360px) 220px minmax(300px, 360px);
   justify-content: center;
-  gap: 28px;
+  gap: 20px;
 }
 
 .roadmap-section-head {
@@ -394,7 +394,7 @@ html[data-theme='dark'] .roadmap-cluster-plain {
 .roadmap-foundation-rail {
   position: absolute;
   top: 16px;
-  bottom: 16px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   width: 1.5px;
@@ -422,26 +422,35 @@ html[data-theme='dark'] .roadmap-foundation-rail {
 
 .roadmap-foundation-branch {
   position: relative;
-  display: flex;
+  display: grid;
   align-items: center;
-  gap: 0;
-  width: 50%;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .roadmap-foundation-branch.is-left {
-  margin-right: auto;
+  justify-items: stretch;
 }
 
 .roadmap-foundation-branch.is-right {
-  margin-left: auto;
-  flex-direction: row-reverse;
+  justify-items: stretch;
 }
 
 .roadmap-foundation-branch::after {
   content: '';
-  flex: 1;
-  min-width: 20px;
+  grid-row: 1;
+  width: 28px;
   border-top: 1.5px dashed rgba(228, 173, 255, 0.82);
+}
+
+.roadmap-foundation-branch.is-left::after {
+  grid-column: 1;
+  justify-self: end;
+}
+
+.roadmap-foundation-branch.is-right::after {
+  grid-column: 2;
+  justify-self: start;
 }
 
 html[data-theme='dark'] .roadmap-foundation-branch::after {
@@ -455,13 +464,26 @@ html[data-theme='dark'] .roadmap-foundation-branch::after {
 }
 
 .roadmap-node-branch {
+  grid-row: 1;
   width: auto;
-  max-width: 240px;
+  max-width: 220px;
   min-height: 30px;
-  min-width: 172px;
+  min-width: 156px;
   padding: 0 16px;
   font-size: 14px;
   font-weight: 600;
+}
+
+.roadmap-foundation-branch.is-left .roadmap-node-branch {
+  grid-column: 1;
+  justify-self: end;
+  margin-right: 28px;
+}
+
+.roadmap-foundation-branch.is-right .roadmap-node-branch {
+  grid-column: 2;
+  justify-self: start;
+  margin-left: 28px;
 }
 
 .roadmap-foundation-arrow {
