@@ -19,7 +19,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
             <div class="roadmap-node roadmap-node-core">{{ content.roadmap.intro.centerTitle }}</div>
             <div class="roadmap-label">{{ content.roadmap.intro.centerLabel }}</div>
           </div>
-          <div class="roadmap-panel roadmap-intro-panel">
+          <div class="roadmap-panel roadmap-intro-panel roadmap-panel-plain">
             <div class="roadmap-intro-grid">
               <div class="roadmap-intro-block">
                 <div class="roadmap-panel-head">
@@ -105,7 +105,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.core.centerLabel }}</div>
         </div>
         <div class="roadmap-cluster-grid">
-          <div v-for="cluster in content.roadmap.core.clusters" :key="cluster.title" class="roadmap-cluster">
+          <div v-for="cluster in content.roadmap.core.clusters" :key="cluster.title" class="roadmap-cluster roadmap-cluster-plain">
             <div class="roadmap-cluster-head">{{ cluster.title }}</div>
             <div class="roadmap-cluster-list">
               <div v-for="item in cluster.items" :key="item" class="roadmap-cluster-item">{{ item }}</div>
@@ -120,7 +120,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.support.centerLabel }}</div>
         </div>
         <div class="roadmap-support-grid">
-          <div class="roadmap-panel roadmap-panel-wide">
+          <div class="roadmap-panel roadmap-panel-wide roadmap-panel-plain">
             <div class="roadmap-panel-head">
               <span></span>
               <h4>{{ content.roadmap.support.leftTitle }}</h4>
@@ -131,7 +131,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
             </div>
           </div>
 
-          <div class="roadmap-panel roadmap-panel-wide">
+          <div class="roadmap-panel roadmap-panel-wide roadmap-panel-plain">
             <div class="roadmap-panel-head">
               <span></span>
               <h4>{{ content.roadmap.support.rightTitle }}</h4>
@@ -280,12 +280,13 @@ html[data-theme='dark'] .roadmap-shell::before {
 }
 
 .roadmap-center-stack-compact {
-  padding-top: 80px;
+  padding-top: 0;
+  transform: translateY(-10px);
 }
 
 .roadmap-intro-panel {
   width: min(620px, 100%);
-  padding: 18px 16px 16px;
+  padding: 0;
 }
 
 .roadmap-intro-panel .roadmap-panel-list {
@@ -296,8 +297,8 @@ html[data-theme='dark'] .roadmap-shell::before {
 .roadmap-intro-panel .roadmap-panel-item {
   width: auto;
   max-width: 100%;
-  min-width: 0;
-  padding: 0 14px;
+  min-width: 172px;
+  padding: 0 16px;
 }
 
 .roadmap-intro-grid {
@@ -333,6 +334,30 @@ html[data-theme='dark'] .board-card {
   box-shadow:
     0 0 28px rgba(126, 85, 255, 0.12),
     inset 0 1px 0 rgba(213, 194, 255, 0.08);
+}
+
+.roadmap-panel-plain {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-theme='dark'] .roadmap-panel-plain {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.roadmap-cluster-plain {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-theme='dark'] .roadmap-cluster-plain {
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 .roadmap-panel {
@@ -399,8 +424,8 @@ html[data-theme='dark'] .roadmap-foundation-rail {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: calc(50% - 14px);
+  gap: 0;
+  width: 50%;
 }
 
 .roadmap-foundation-branch.is-left {
@@ -415,7 +440,7 @@ html[data-theme='dark'] .roadmap-foundation-rail {
 .roadmap-foundation-branch::after {
   content: '';
   flex: 1;
-  min-width: 14px;
+  min-width: 20px;
   border-top: 1.5px dashed rgba(228, 173, 255, 0.82);
 }
 
@@ -425,16 +450,16 @@ html[data-theme='dark'] .roadmap-foundation-branch::after {
 
 .roadmap-node-branch-title {
   min-height: 40px;
-  min-width: 132px;
+  min-width: 180px;
   padding: 0 18px;
 }
 
 .roadmap-node-branch {
   width: auto;
-  max-width: 180px;
+  max-width: 240px;
   min-height: 30px;
-  min-width: 0;
-  padding: 0 14px;
+  min-width: 172px;
+  padding: 0 16px;
   font-size: 14px;
   font-weight: 600;
 }
@@ -442,8 +467,8 @@ html[data-theme='dark'] .roadmap-foundation-branch::after {
 .roadmap-foundation-arrow {
   position: absolute;
   bottom: 8px;
-  width: 212px;
-  height: 3px;
+  width: 188px;
+  height: 1px;
   border-radius: 999px;
   background: linear-gradient(90deg, rgba(233, 166, 255, 0.82) 0%, rgba(203, 140, 255, 0.88) 100%);
   box-shadow: 0 0 12px rgba(184, 112, 255, 0.16);
@@ -454,10 +479,10 @@ html[data-theme='dark'] .roadmap-foundation-branch::after {
   position: absolute;
   top: 50%;
   right: -1px;
-  width: 16px;
-  height: 16px;
-  border-top: 2.5px solid rgba(203, 140, 255, 0.9);
-  border-right: 2.5px solid rgba(203, 140, 255, 0.9);
+  width: 18px;
+  height: 18px;
+  border-top: 3px solid rgba(203, 140, 255, 0.9);
+  border-right: 3px solid rgba(203, 140, 255, 0.9);
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -488,8 +513,8 @@ html[data-theme='dark'] .roadmap-foundation-arrow::after {
   right: auto;
   border-top: none;
   border-right: none;
-  border-bottom: 2.5px solid rgba(203, 140, 255, 0.9);
-  border-left: 2.5px solid rgba(203, 140, 255, 0.9);
+  border-bottom: 3px solid rgba(203, 140, 255, 0.9);
+  border-left: 3px solid rgba(203, 140, 255, 0.9);
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -552,8 +577,8 @@ html[data-theme='dark'] .board-head h3 {
   justify-content: center;
   width: auto;
   max-width: min(100%, 260px);
-  min-width: 0;
-  padding: 0 14px;
+  min-width: 172px;
+  padding: 0 16px;
   border: 1px solid rgba(186, 153, 255, 0.72);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.42);
@@ -647,7 +672,9 @@ html[data-theme='dark'] .roadmap-label {
 }
 
 .roadmap-cluster {
-  padding: 14px 12px;
+  width: min(100%, 340px);
+  justify-self: center;
+  padding: 14px 16px 16px;
 }
 
 .roadmap-cluster-head {
