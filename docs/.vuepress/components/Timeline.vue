@@ -49,6 +49,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
       <section class="roadmap-section roadmap-foundation">
         <div class="roadmap-section-head">
           <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.foundation.stageTag }}</div>
+          <div class="roadmap-node roadmap-node-core">{{ content.roadmap.foundation.centerTitle }}</div>
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.foundation.centerLabel }}</div>
         </div>
         <div class="roadmap-foundation-grid">
@@ -72,9 +73,7 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
             </div>
           </div>
 
-          <div class="roadmap-center-stack roadmap-center-stack-compact">
-            <div class="roadmap-node roadmap-node-core">{{ content.roadmap.foundation.centerTitle }}</div>
-          </div>
+          <div class="roadmap-foundation-spacer" aria-hidden="true"></div>
 
           <div class="roadmap-foundation-lane roadmap-foundation-lane-right">
             <div class="roadmap-foundation-mini">
@@ -279,14 +278,13 @@ html[data-theme='dark'] .roadmap-shell::before {
   padding-top: 10px;
 }
 
-.roadmap-center-stack-compact {
-  padding-top: 0;
-  transform: translateY(-10px);
-}
-
 .roadmap-intro-panel {
   width: min(620px, 100%);
   padding: 0;
+}
+
+.roadmap-foundation-spacer {
+  min-height: 1px;
 }
 
 .roadmap-intro-panel .roadmap-panel-list {
@@ -893,10 +891,6 @@ html[data-theme='dark'] .logo-placeholder {
   .roadmap-project-grid {
     grid-template-columns: 1fr;
     padding: 0;
-  }
-
-  .roadmap-center-stack-compact {
-    padding-top: 0;
   }
 
   .roadmap-intro-grid {
