@@ -51,12 +51,21 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
                   <div class="roadmap-node roadmap-node-branch-title">{{ content.roadmap.foundation.leftTitle }}</div>
                 </div>
                 <div
-                  v-for="(item, index) in content.roadmap.foundation.leftItems"
-                  :key="item"
-                  class="roadmap-foundation-branch"
-                  :class="index % 2 === 0 ? 'is-left' : 'is-right'"
+                  v-for="group in content.roadmap.foundation.leftGroups"
+                  :key="group.title"
+                  class="roadmap-foundation-group"
                 >
-                  <div class="roadmap-node roadmap-node-branch">{{ item }}</div>
+                  <div class="roadmap-foundation-group-title-wrap">
+                    <div class="roadmap-node roadmap-node-branch-group">{{ group.title }}</div>
+                  </div>
+                  <div
+                    v-for="(item, index) in group.items"
+                    :key="`${group.title}-${item}`"
+                    class="roadmap-foundation-branch"
+                    :class="index % 2 === 0 ? 'is-left' : 'is-right'"
+                  >
+                    <div class="roadmap-node roadmap-node-branch">{{ item }}</div>
+                  </div>
                 </div>
               </div>
               <div class="roadmap-foundation-arrow"></div>
@@ -73,12 +82,21 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
                   <div class="roadmap-node roadmap-node-branch-title">{{ content.roadmap.foundation.rightTitle }}</div>
                 </div>
                 <div
-                  v-for="(item, index) in content.roadmap.foundation.rightItems"
-                  :key="item"
-                  class="roadmap-foundation-branch"
-                  :class="index % 2 === 0 ? 'is-left' : 'is-right'"
+                  v-for="group in content.roadmap.foundation.rightGroups"
+                  :key="group.title"
+                  class="roadmap-foundation-group"
                 >
-                  <div class="roadmap-node roadmap-node-branch">{{ item }}</div>
+                  <div class="roadmap-foundation-group-title-wrap">
+                    <div class="roadmap-node roadmap-node-branch-group">{{ group.title }}</div>
+                  </div>
+                  <div
+                    v-for="(item, index) in group.items"
+                    :key="`${group.title}-${item}`"
+                    class="roadmap-foundation-branch"
+                    :class="index % 2 === 0 ? 'is-right' : 'is-left'"
+                  >
+                    <div class="roadmap-node roadmap-node-branch">{{ item }}</div>
+                  </div>
                 </div>
               </div>
               <div class="roadmap-foundation-arrow"></div>
@@ -108,26 +126,38 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
           <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.support.stageTag }}</div>
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.support.centerLabel }}</div>
         </div>
-        <div class="roadmap-support-grid">
-          <div class="roadmap-panel roadmap-panel-wide roadmap-panel-plain">
-            <div class="roadmap-panel-head">
-              <span></span>
-              <h4>{{ content.roadmap.support.leftTitle }}</h4>
-              <span></span>
-            </div>
-            <div class="roadmap-panel-list">
-              <div v-for="item in content.roadmap.support.leftItems" :key="item" class="roadmap-panel-item">{{ item }}</div>
+        <div class="roadmap-panel roadmap-support-panel roadmap-panel-plain">
+          <div class="roadmap-support-columns">
+            <div v-for="column in content.roadmap.support.columns" :key="column.title" class="roadmap-support-column">
+              <div class="roadmap-panel-head">
+                <span></span>
+                <h4>{{ column.title }}</h4>
+                <span></span>
+              </div>
+              <div class="roadmap-panel-list">
+                <div v-for="item in column.items" :key="`${column.title}-${item}`" class="roadmap-panel-item">{{ item }}</div>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div class="roadmap-panel roadmap-panel-wide roadmap-panel-plain">
-            <div class="roadmap-panel-head">
-              <span></span>
-              <h4>{{ content.roadmap.support.rightTitle }}</h4>
-              <span></span>
-            </div>
-            <div class="roadmap-panel-list">
-              <div v-for="item in content.roadmap.support.rightItems" :key="item" class="roadmap-panel-item">{{ item }}</div>
+      <section class="roadmap-section roadmap-frontier">
+        <div class="roadmap-section-head">
+          <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.frontier.stageTag }}</div>
+          <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.frontier.centerLabel }}</div>
+        </div>
+        <div class="roadmap-panel roadmap-frontier-panel roadmap-panel-plain">
+          <div class="roadmap-frontier-grid">
+            <div v-for="column in content.roadmap.frontier.columns" :key="column.title" class="roadmap-frontier-block">
+              <div class="roadmap-panel-head">
+                <span></span>
+                <h4>{{ column.title }}</h4>
+                <span></span>
+              </div>
+              <div class="roadmap-panel-list">
+                <div v-for="item in column.items" :key="item" class="roadmap-panel-item">{{ item }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -142,6 +172,25 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
         <div class="roadmap-project-grid">
           <div v-for="project in content.roadmap.practice.projects" :key="project" class="roadmap-project-card">
             {{ project }}
+          </div>
+        </div>
+      </section>
+
+      <section class="roadmap-section roadmap-appendix">
+        <div class="roadmap-section-head">
+          <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.appendix.stageTag }}</div>
+          <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.appendix.centerLabel }}</div>
+        </div>
+        <div class="roadmap-appendix-grid">
+          <div v-for="column in content.roadmap.appendix.columns" :key="column.title" class="roadmap-panel roadmap-panel-plain roadmap-appendix-panel">
+            <div class="roadmap-panel-head">
+              <span></span>
+              <h4>{{ column.title }}</h4>
+              <span></span>
+            </div>
+            <div class="roadmap-panel-list">
+              <div v-for="item in column.items" :key="item" class="roadmap-panel-item">{{ item }}</div>
+            </div>
           </div>
         </div>
       </section>
@@ -232,8 +281,7 @@ html[data-theme='dark'] .roadmap-shell::before {
   margin-top: 52px;
 }
 
-.roadmap-foundation-grid,
-.roadmap-support-grid {
+.roadmap-foundation-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 260px minmax(0, 1fr);
   align-items: start;
@@ -403,10 +451,25 @@ html[data-theme='dark'] .roadmap-foundation-rail {
   gap: 12px;
 }
 
+.roadmap-foundation-group {
+  display: grid;
+  gap: 12px;
+}
+
+.roadmap-foundation-group + .roadmap-foundation-group {
+  margin-top: 6px;
+}
+
 .roadmap-foundation-branch-title-wrap {
   display: flex;
   justify-content: center;
   margin-bottom: 8px;
+}
+
+.roadmap-foundation-group-title-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 2px 0 2px;
 }
 
 .roadmap-foundation-branch {
@@ -446,17 +509,33 @@ html[data-theme='dark'] .roadmap-foundation-branch::after {
   border-top-color: rgba(154, 117, 245, 0.58);
 }
 
-.roadmap-node-branch-title {
-  min-height: 40px;
-  min-width: 180px;
-  padding: 0 18px;
+.roadmap-node.roadmap-node-branch-title {
+  min-height: 44px;
+  min-width: 220px;
+  padding: 0 24px;
+  border-radius: 14px;
+  border-color: rgba(110, 209, 255, 0.88);
+  background: rgba(235, 249, 255, 0.82);
+  color: rgba(42, 90, 115, 0.96);
+  font-size: 18px;
+  font-weight: 800;
+  box-shadow: 0 0 22px rgba(116, 210, 255, 0.16);
 }
 
-.roadmap-node-branch {
+html[data-theme='dark'] .roadmap-node.roadmap-node-branch-title {
+  border-color: rgba(76, 201, 255, 0.86);
+  background: rgba(14, 48, 74, 0.92);
+  color: rgba(225, 248, 255, 0.96);
+  box-shadow:
+    0 0 22px rgba(38, 198, 255, 0.2),
+    inset 0 1px 0 rgba(196, 239, 255, 0.08);
+}
+
+.roadmap-node.roadmap-node-branch {
   grid-row: 1;
   width: auto;
   max-width: 220px;
-  min-height: 30px;
+  min-height: 32px;
   min-width: 156px;
   padding: 0 16px;
   font-size: 14px;
@@ -473,6 +552,28 @@ html[data-theme='dark'] .roadmap-foundation-branch::after {
   grid-column: 2;
   justify-self: start;
   margin-left: 28px;
+}
+
+.roadmap-node.roadmap-node-branch-group {
+  min-height: 36px;
+  min-width: 152px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  border-color: rgba(255, 193, 129, 0.88);
+  background: rgba(255, 246, 233, 0.82);
+  color: rgba(130, 84, 26, 0.94);
+  box-shadow: 0 0 16px rgba(255, 187, 112, 0.12);
+}
+
+html[data-theme='dark'] .roadmap-node.roadmap-node-branch-group {
+  border-color: rgba(141, 129, 244, 0.84);
+  background: rgba(48, 39, 84, 0.92);
+  color: rgba(241, 237, 255, 0.96);
+  box-shadow:
+    0 0 18px rgba(123, 108, 246, 0.16),
+    inset 0 1px 0 rgba(226, 219, 255, 0.08);
 }
 
 .roadmap-foundation-arrow {
@@ -700,9 +801,58 @@ html[data-theme='dark'] .roadmap-cluster-head {
   color: rgba(186, 144, 255, 0.96);
 }
 
-.roadmap-support-grid {
-  gap: 18px;
+.roadmap-support-panel {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 0;
+}
+
+.roadmap-support-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 18px;
+}
+
+.roadmap-support-column {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 12px;
+}
+
+.roadmap-frontier-panel {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 0;
+}
+
+.roadmap-frontier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 18px;
+}
+
+.roadmap-frontier-block,
+.roadmap-appendix-panel {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 12px;
+}
+
+.roadmap-appendix {
+  padding-top: 8px;
+}
+
+.roadmap-appendix-grid {
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 104px;
+}
+
+.roadmap-appendix-panel {
+  padding: 0;
 }
 
 .roadmap-practice {
@@ -877,9 +1027,11 @@ html[data-theme='dark'] .logo-placeholder {
   }
 
   .roadmap-foundation-grid,
-  .roadmap-support-grid,
+  .roadmap-support-columns,
+  .roadmap-frontier-grid,
   .roadmap-cluster-grid,
-  .roadmap-project-grid {
+  .roadmap-project-grid,
+  .roadmap-appendix-grid {
     grid-template-columns: 1fr;
     padding: 0;
   }
