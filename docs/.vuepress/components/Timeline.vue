@@ -37,10 +37,16 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
       </section>
 
       <section class="roadmap-section roadmap-foundation">
-        <div class="roadmap-section-head">
+        <div class="roadmap-center-stack roadmap-center-stack-linked">
           <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.foundation.stageTag }}</div>
+          <span class="roadmap-center-stack-stem" aria-hidden="true"></span>
           <div class="roadmap-node roadmap-node-core">{{ content.roadmap.foundation.centerTitle }}</div>
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.foundation.centerLabel }}</div>
+        </div>
+        <div class="roadmap-flow roadmap-flow-foundation" aria-hidden="true">
+          <span class="roadmap-flow-stem"></span>
+          <span class="roadmap-flow-branch roadmap-flow-branch-left"></span>
+          <span class="roadmap-flow-branch roadmap-flow-branch-right"></span>
         </div>
         <div class="roadmap-foundation-grid">
           <div class="roadmap-foundation-lane roadmap-foundation-lane-left">
@@ -106,10 +112,16 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
       </section>
 
       <section class="roadmap-section roadmap-core">
-        <div class="roadmap-section-head">
+        <div class="roadmap-center-stack roadmap-center-stack-linked">
           <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.core.stageTag }}</div>
+          <span class="roadmap-center-stack-stem" aria-hidden="true"></span>
           <div class="roadmap-node roadmap-node-core roadmap-node-core-main">{{ content.roadmap.core.centerTitle }}</div>
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.core.centerLabel }}</div>
+        </div>
+        <div class="roadmap-flow roadmap-flow-core" aria-hidden="true">
+          <span class="roadmap-flow-stem"></span>
+          <span class="roadmap-flow-branch roadmap-flow-branch-left"></span>
+          <span class="roadmap-flow-branch roadmap-flow-branch-right"></span>
         </div>
         <div class="roadmap-cluster-grid">
           <div v-for="cluster in content.roadmap.core.clusters" :key="cluster.title" class="roadmap-cluster roadmap-cluster-plain">
@@ -164,8 +176,9 @@ const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${inde
       </section>
 
       <section class="roadmap-section roadmap-practice">
-        <div class="roadmap-section-head">
+        <div class="roadmap-center-stack roadmap-center-stack-linked">
           <div class="roadmap-node roadmap-node-stage">{{ content.roadmap.practice.stageTag }}</div>
+          <span class="roadmap-center-stack-stem" aria-hidden="true"></span>
           <div class="roadmap-node roadmap-node-core roadmap-node-core-main">{{ content.roadmap.practice.centerTitle }}</div>
           <div class="roadmap-label roadmap-label-inline">{{ content.roadmap.practice.centerLabel }}</div>
         </div>
@@ -254,24 +267,6 @@ html[data-theme='dark'] .timeline-wrap {
   padding: 72px 0 88px;
 }
 
-.roadmap-shell::before {
-  content: '';
-  position: absolute;
-  top: 124px;
-  bottom: 152px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1.5px;
-  background: linear-gradient(180deg, rgba(233, 166, 255, 0.78) 0%, rgba(203, 140, 255, 0.88) 100%);
-  box-shadow: 0 0 12px rgba(184, 112, 255, 0.14);
-  z-index: 0;
-}
-
-html[data-theme='dark'] .roadmap-shell::before {
-  background: linear-gradient(180deg, rgba(166, 112, 255, 0.88) 0%, rgba(104, 80, 212, 0.94) 100%);
-  box-shadow: 0 0 16px rgba(140, 95, 255, 0.22);
-}
-
 .roadmap-section {
   position: relative;
   z-index: 1;
@@ -314,6 +309,93 @@ html[data-theme='dark'] .roadmap-shell::before {
   align-content: start;
   gap: 16px;
   padding-top: 10px;
+}
+
+.roadmap-center-stack-linked {
+  gap: 10px;
+}
+
+.roadmap-center-stack-stem {
+  width: 1.5px;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(233, 166, 255, 0.78) 0%, rgba(203, 140, 255, 0.88) 100%);
+  box-shadow: 0 0 10px rgba(184, 112, 255, 0.14);
+}
+
+html[data-theme='dark'] .roadmap-center-stack-stem {
+  background: linear-gradient(180deg, rgba(166, 112, 255, 0.88) 0%, rgba(104, 80, 212, 0.94) 100%);
+  box-shadow: 0 0 14px rgba(140, 95, 255, 0.2);
+}
+
+.roadmap-flow {
+  position: relative;
+  margin: 2px auto 0;
+  pointer-events: none;
+}
+
+.roadmap-flow-stem,
+.roadmap-flow-branch {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(233, 166, 255, 0.82) 0%, rgba(203, 140, 255, 0.88) 100%);
+  box-shadow: 0 0 12px rgba(184, 112, 255, 0.16);
+}
+
+html[data-theme='dark'] .roadmap-flow-stem,
+html[data-theme='dark'] .roadmap-flow-branch {
+  background: linear-gradient(90deg, rgba(166, 112, 255, 0.82) 0%, rgba(104, 80, 212, 0.94) 100%);
+  box-shadow: 0 0 14px rgba(140, 95, 255, 0.16);
+}
+
+.roadmap-flow-stem {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+}
+
+.roadmap-flow-branch {
+  left: 50%;
+  height: 1.5px;
+  transform-origin: left center;
+}
+
+.roadmap-flow-branch-left {
+  transform: rotate(208deg);
+}
+
+.roadmap-flow-branch-right {
+  transform: rotate(-28deg);
+}
+
+.roadmap-flow-foundation {
+  width: min(780px, calc(100% - 120px));
+  height: 92px;
+}
+
+.roadmap-flow-foundation .roadmap-flow-stem {
+  height: 30px;
+}
+
+.roadmap-flow-foundation .roadmap-flow-branch {
+  top: 30px;
+  width: 346px;
+}
+
+.roadmap-flow-core {
+  width: min(620px, calc(100% - 220px));
+  height: 84px;
+}
+
+.roadmap-flow-core .roadmap-flow-stem {
+  height: 26px;
+}
+
+.roadmap-flow-core .roadmap-flow-branch {
+  top: 26px;
+  width: 236px;
 }
 
 .roadmap-intro-panel {
@@ -1020,7 +1102,8 @@ html[data-theme='dark'] .logo-placeholder {
     padding-bottom: 60px;
   }
 
-  .roadmap-shell::before,
+  .roadmap-center-stack-stem,
+  .roadmap-flow,
   .roadmap-foundation-rail,
   .roadmap-foundation-arrow {
     display: none;
