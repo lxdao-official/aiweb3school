@@ -20,7 +20,7 @@ export default defineThemeConfig({
   },
 
   transition: {
-    page: true,
+    page: false,
     postList: true,
     appearance: 'fade',
   },
