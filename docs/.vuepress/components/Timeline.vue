@@ -31,8 +31,8 @@ const roadmapChapters = computed(() => {
 const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${index + 1}` }))
 const nodeTypes = { roadmap: markRaw(RoadmapFlowNode) }
 const viewportWidth = ref(1180)
-const activeTopicNodeId = ref('')
-let topicFeedbackTimer: ReturnType<typeof setTimeout> | undefined
+const activeRoadmapNodeId = ref('')
+let roadmapFeedbackTimer: ReturnType<typeof setTimeout> | undefined
 
 const roadmapViewport = computed(() => createRoadmapViewport(viewportWidth.value))
 const isMobileViewport = computed(() => viewportWidth.value <= 768)
@@ -48,8 +48,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateViewportWidth)
-  if (topicFeedbackTimer) {
-    clearTimeout(topicFeedbackTimer)
+  if (roadmapFeedbackTimer) {
+    clearTimeout(roadmapFeedbackTimer)
   }
 })
 
@@ -62,7 +62,7 @@ const roadmapFlow = computed(() => {
       ...node,
       data: {
         ...node.data,
-        isActive: node.id === activeTopicNodeId.value,
+        isActive: node.id === activeRoadmapNodeId.value,
       },
     })),
   }
@@ -73,26 +73,30 @@ const roadmapDisplayHeight = computed(() => {
 })
 
 function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
-  if (node.data?.variant === 'topic') {
-    triggerTopicFeedback(node.id)
+  const link = node.data?.link
+
+  if (node.data?.variant === 'topic' || node.data?.variant === 'section-title') {
+    triggerRoadmapFeedback(node.id)
+    if (link) {
+      window.location.href = withBase(link)
+    }
     return
   }
 
-  const link = node.data?.link
   if (!link) return
   window.location.href = withBase(link)
 }
 
-function triggerTopicFeedback(nodeId: string) {
-  activeTopicNodeId.value = nodeId
+function triggerRoadmapFeedback(nodeId: string) {
+  activeRoadmapNodeId.value = nodeId
 
-  if (topicFeedbackTimer) {
-    clearTimeout(topicFeedbackTimer)
+  if (roadmapFeedbackTimer) {
+    clearTimeout(roadmapFeedbackTimer)
   }
 
-  topicFeedbackTimer = setTimeout(() => {
-    if (activeTopicNodeId.value === nodeId) {
-      activeTopicNodeId.value = ''
+  roadmapFeedbackTimer = setTimeout(() => {
+    if (activeRoadmapNodeId.value === nodeId) {
+      activeRoadmapNodeId.value = ''
     }
   }, 900)
 }
@@ -104,8 +108,8 @@ function triggerTopicFeedback(nodeId: string) {
       <RoadmapMobile
         v-if="isMobileViewport"
         :chapters="roadmapChapters"
-        :active-topic-id="activeTopicNodeId"
-        @topic-click="triggerTopicFeedback"
+        :active-node-id="activeRoadmapNodeId"
+        @node-click="triggerRoadmapFeedback"
       />
       <ClientOnly v-else>
         <VueFlow
@@ -422,6 +426,16 @@ html[data-theme='dark'] .roadmap-shell::before {
   color: rgba(122, 80, 28, 0.9);
 }
 
+.roadmap-flow-card.is-topic.is-clickable:hover,
+.vue-flow__node:focus-visible .roadmap-flow-card.is-topic {
+  border-color: rgba(125, 84, 233, 0.94);
+  background: rgba(247, 238, 255, 0.86);
+  box-shadow:
+    0 10px 22px rgba(170, 104, 255, 0.18),
+    0 0 18px rgba(170, 104, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
 .roadmap-flow-card.is-topic.is-active {
   border-color: rgba(125, 84, 233, 0.94);
   background: rgba(247, 238, 255, 0.86);
@@ -450,25 +464,8 @@ html[data-theme='dark'] .roadmap-shell::before {
   filter: drop-shadow(0 0 5px rgba(184, 112, 255, 0.18));
 }
 
-.roadmap-vue-flow .roadmap-flow-edge-dashed .vue-flow__edge-path {
-  stroke-dasharray: 5 7;
-}
-
-.roadmap-vue-flow .roadmap-flow-edge-main .vue-flow__edge-path {
-  stroke-width: 1.8;
-}
-
 .roadmap-vue-flow .roadmap-flow-edge-mainline .vue-flow__edge-path {
   stroke-width: 2.4;
-}
-
-.roadmap-vue-flow .roadmap-flow-edge-branch .vue-flow__edge-path {
-  stroke-width: 1.8;
-}
-
-.roadmap-vue-flow .roadmap-flow-edge-spine .vue-flow__edge-path {
-  stroke-width: 1.6;
-  opacity: 0.74;
 }
 
 .roadmap-vue-flow .roadmap-flow-edge-topic .vue-flow__edge-path {
@@ -587,6 +584,16 @@ html[data-theme='dark'] .roadmap-flow-card.is-practice.is-topic {
   border-color: rgba(203, 141, 72, 0.3);
   background: rgba(72, 49, 25, 0.42);
   color: rgba(255, 242, 220, 0.82);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-topic.is-clickable:hover,
+html[data-theme='dark'] .vue-flow__node:focus-visible .roadmap-flow-card.is-topic {
+  border-color: rgba(158, 126, 245, 0.98);
+  background: rgba(62, 42, 92, 0.92);
+  box-shadow:
+    0 12px 26px rgba(27, 15, 47, 0.46),
+    0 0 20px rgba(126, 85, 255, 0.24),
+    inset 0 1px 0 rgba(221, 204, 255, 0.1);
 }
 
 html[data-theme='dark'] .roadmap-flow-card.is-topic.is-active {

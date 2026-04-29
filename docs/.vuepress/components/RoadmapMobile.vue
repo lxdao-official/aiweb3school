@@ -3,11 +3,11 @@ import type { HomepageRoadmapChapter } from '../content/handbook-roadmap'
 
 defineProps<{
   chapters: HomepageRoadmapChapter[]
-  activeTopicId: string
+  activeNodeId: string
 }>()
 
 const emit = defineEmits<{
-  topicClick: [topicId: string]
+  nodeClick: [nodeId: string]
 }>()
 
 function topicNodeId(chapter: HomepageRoadmapChapter, groupId: string, topicId: string) {
@@ -44,8 +44,8 @@ function topicNodeId(chapter: HomepageRoadmapChapter, groupId: string, topicId: 
                 :key="topic.id"
                 type="button"
                 class="roadmap-mobile-topic"
-                :class="{ 'is-active': activeTopicId === topicNodeId(chapter, group.id, topic.id) }"
-                @click="emit('topicClick', topicNodeId(chapter, group.id, topic.id))"
+                :class="{ 'is-active': activeNodeId === topicNodeId(chapter, group.id, topic.id) }"
+                @click="emit('nodeClick', topicNodeId(chapter, group.id, topic.id))"
               >
                 {{ topic.title }}
               </button>
