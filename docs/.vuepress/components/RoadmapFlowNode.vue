@@ -11,7 +11,10 @@ defineProps<NodeProps<RoadmapFlowNodeData>>()
     :class="[
       `is-${data.tone}`,
       `is-${data.variant}`,
-      { 'is-clickable': Boolean(data.link) },
+      {
+        'is-clickable': data.isInteractive,
+        'is-active': data.isActive,
+      },
     ]"
   >
     <span class="roadmap-flow-title">{{ data.title }}</span>
