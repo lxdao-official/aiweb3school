@@ -58,20 +58,22 @@ function makeNode(
   width: number,
   link?: string,
 ): RoadmapNode {
+  const isReservedInteractive = variant === 'topic' || variant === 'section-title' || Boolean(link)
+
   return {
     id,
     type: 'roadmap',
     position: { x: centerX - width / 2, y },
     width,
     draggable: false,
-    selectable: variant === 'topic' || Boolean(link),
+    selectable: isReservedInteractive,
     connectable: false,
-    focusable: variant === 'topic' || Boolean(link),
+    focusable: isReservedInteractive,
     data: {
       title,
       tone,
       variant,
-      isInteractive: variant === 'topic' || Boolean(link),
+      isInteractive: isReservedInteractive,
       link,
     },
   }

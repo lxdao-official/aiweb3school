@@ -289,13 +289,13 @@ html[data-theme='dark'] :is(.vp-social-link, .vp-flyout .button, .mini-search-bu
 
 .vp-footer p,
 .vp-footer :is(.message, .copyright),
-.vp-footer :deep(a) {
+.vp-footer a {
   color: rgba(114, 119, 124, 0.92) !important;
 }
 
 html[data-theme='dark'] .vp-footer p,
 html[data-theme='dark'] .vp-footer :is(.message, .copyright),
-html[data-theme='dark'] .vp-footer :deep(a) {
+html[data-theme='dark'] .vp-footer a {
   color: rgba(232, 224, 255, 0.82) !important;
 }
 
