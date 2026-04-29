@@ -64,10 +64,16 @@ function makeNode(
     position: { x: centerX - width / 2, y },
     width,
     draggable: false,
-    selectable: Boolean(link),
+    selectable: variant === 'topic' || Boolean(link),
     connectable: false,
-    focusable: Boolean(link),
-    data: { title, tone, variant, link },
+    focusable: variant === 'topic' || Boolean(link),
+    data: {
+      title,
+      tone,
+      variant,
+      isInteractive: variant === 'topic' || Boolean(link),
+      link,
+    },
   }
 }
 
@@ -372,4 +378,3 @@ export function createRoadmapFlow(chapters: HomepageRoadmapChapter[]) {
 
   return { nodes, edges, height: y + 80 }
 }
-
