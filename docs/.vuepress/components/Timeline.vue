@@ -1,244 +1,55 @@
 <script setup lang="ts">
-import { computed, markRaw } from 'vue'
+import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
 import { ClientOnly, useRouteLocale, withBase } from 'vuepress/client'
 import {
-  MarkerType,
   VueFlow,
-  type Edge,
-  type Node,
   type NodeMouseEvent,
 } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
-import RoadmapFlowNode, { type RoadmapFlowNodeData } from './RoadmapFlowNode.vue'
+import RoadmapFlowNode from './RoadmapFlowNode.vue'
 import { homeI18n, type HomeLocale } from '../content/home-i18n'
-import { getRoadmapEntries, handbookRoadmap, type HandbookRoadmapEntry } from '../content/handbook-roadmap'
-
-type RoadmapNode = Node<RoadmapFlowNodeData>
+import { homepageRoadmap } from '../content/handbook-roadmap'
+import {
+  ROADMAP_MIN_HEIGHT,
+  createRoadmapFlow,
+  createRoadmapViewport,
+  type RoadmapNode,
+} from './roadmap-layout'
 
 const routeLocale = useRouteLocale()
 const localeKey = computed<HomeLocale>(() => routeLocale.value === '/en/' ? 'en' : 'zh')
 const content = computed(() => homeI18n[localeKey.value])
-const roadmapContent = computed(() => handbookRoadmap[localeKey.value])
+const roadmapChapters = computed(() => {
+  const localized = homepageRoadmap[localeKey.value]
+  if (!localized.length) {
+    throw new Error(`Missing homepage roadmap chapters for locale: ${localeKey.value}`)
+  }
+  return localized
+})
 const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${index + 1}` }))
 const nodeTypes = { roadmap: markRaw(RoadmapFlowNode) }
+const viewportWidth = ref(1180)
 
-const nodeWidth = {
-  stage: 260,
-  branch: 220,
-  lesson: 190,
-  product: 228,
-  challenge: 210,
-  junction: 10,
+const roadmapViewport = computed(() => createRoadmapViewport(viewportWidth.value))
+
+function updateViewportWidth() {
+  viewportWidth.value = window.innerWidth
 }
 
-const layout = {
-  centerX: 540,
-  aiLaneX: 240,
-  web3LaneX: 840,
-  branchY: 36,
-  firstFoundationY: 132,
-  foundationGap: 78,
-  mergeGap: 104,
-  productGap: 76,
-  challengeGap: 128,
-}
+onMounted(() => {
+  updateViewportWidth()
+  window.addEventListener('resize', updateViewportWidth)
+})
 
-function makeNode(
-  id: string,
-  title: string,
-  tone: RoadmapFlowNodeData['tone'],
-  variant: RoadmapFlowNodeData['variant'],
-  x: number,
-  y: number,
-  width: number,
-  link?: string,
-): RoadmapNode {
-  return {
-    id,
-    type: 'roadmap',
-    position: { x, y },
-    width,
-    draggable: false,
-    selectable: Boolean(link),
-    connectable: false,
-    focusable: Boolean(link),
-    data: { title, tone, variant, link },
-  }
-}
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateViewportWidth)
+})
 
-function makeEdge(source: string, target: string, extra: Partial<Edge> = {}): Edge {
-  return {
-    id: `${source}-${target}`,
-    source,
-    target,
-    type: 'smoothstep',
-    selectable: false,
-    focusable: false,
-    updatable: false,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      color: 'rgba(203, 140, 255, 0.92)',
-      width: 14,
-      height: 14,
-    },
-    class: 'roadmap-flow-edge',
-    ...extra,
-  }
-}
+const roadmapFlow = computed(() => createRoadmapFlow(roadmapChapters.value))
 
-function foundationLane(
-  branch: 'ai' | 'web3',
-  title: string,
-  entries: HandbookRoadmapEntry[],
-  laneCenterX: number,
-  branchY: number,
-): { nodes: RoadmapNode[], edges: Edge[], lastJunctionId: string, lastY: number } {
-  const tone = branch === 'ai' ? 'ai' : 'web3'
-  const nodes: RoadmapNode[] = []
-  const edges: Edge[] = []
-  const branchTitleId = `${branch}-title`
-  const branchLink = entries[0]?.link
-
-  nodes.push(makeNode(
-    branchTitleId,
-    title,
-    tone,
-    'branch-title',
-    laneCenterX - nodeWidth.branch / 2,
-    branchY,
-    nodeWidth.branch,
-    branchLink,
-  ))
-
-  let previousMainId = branchTitleId
-  let lastJunctionId = branchTitleId
-  let lastY = branchY
-
-  entries.forEach((entry, index) => {
-    const y = layout.firstFoundationY + index * layout.foundationGap
-    const junctionId = `${branch}-junction-${entry.id}`
-    const side = branch === 'ai'
-      ? (index % 2 === 0 ? -1 : 1)
-      : (index % 2 === 0 ? 1 : -1)
-    const x = laneCenterX + side * 156 - nodeWidth.lesson / 2
-
-    nodes.push(makeNode(
-      junctionId,
-      '',
-      'junction',
-      'junction',
-      laneCenterX - nodeWidth.junction / 2,
-      y + 16,
-      nodeWidth.junction,
-    ))
-    nodes.push(makeNode(
-      `${branch}-${entry.id}`,
-      entry.title,
-      tone,
-      'lesson',
-      x,
-      y,
-      nodeWidth.lesson,
-      entry.link,
-    ))
-
-    edges.push(makeEdge(previousMainId, junctionId, { class: 'roadmap-flow-edge roadmap-flow-edge-main' }))
-    edges.push(makeEdge(junctionId, `${branch}-${entry.id}`, { class: 'roadmap-flow-edge roadmap-flow-edge-dashed' }))
-    previousMainId = junctionId
-    lastJunctionId = junctionId
-    lastY = y
-  })
-
-  return { nodes, edges, lastJunctionId, lastY }
-}
-
-const roadmapFlow = computed(() => {
-  const labels = roadmapContent.value
-  const aiEntries = getRoadmapEntries(localeKey.value, 'foundation-ai')
-  const web3Entries = getRoadmapEntries(localeKey.value, 'foundation-web3')
-  const productEntries = getRoadmapEntries(localeKey.value, 'product')
-  const challengeEntries = getRoadmapEntries(localeKey.value, 'challenge')
-  const nodes: RoadmapNode[] = []
-  const edges: Edge[] = []
-
-  const aiLane = foundationLane('ai', labels.branches.ai, aiEntries, layout.aiLaneX, layout.branchY)
-  const web3Lane = foundationLane('web3', labels.branches.web3, web3Entries, layout.web3LaneX, layout.branchY)
-  nodes.push(...aiLane.nodes, ...web3Lane.nodes)
-  edges.push(
-    ...aiLane.edges,
-    ...web3Lane.edges,
-  )
-
-  const mergeY = Math.max(aiLane.lastY, web3Lane.lastY) + layout.mergeGap
-  nodes.push(makeNode(
-    'foundation-merge',
-    labels.stages.product,
-    'fusion',
-    'stage',
-    layout.centerX - nodeWidth.stage / 2,
-    mergeY,
-    nodeWidth.stage,
-    productEntries[0]?.link,
-  ))
-  edges.push(
-    makeEdge(aiLane.lastJunctionId, 'foundation-merge', { class: 'roadmap-flow-edge roadmap-flow-edge-main' }),
-    makeEdge(web3Lane.lastJunctionId, 'foundation-merge', { class: 'roadmap-flow-edge roadmap-flow-edge-main' }),
-  )
-
-  const productStartY = mergeY + 92
-  let previousProductId = 'foundation-merge'
-  productEntries.forEach((entry, index) => {
-    const id = `product-${entry.id}`
-    nodes.push(makeNode(
-      id,
-      entry.title,
-      'fusion',
-      'product',
-      layout.centerX - nodeWidth.product / 2,
-      productStartY + index * layout.productGap,
-      nodeWidth.product,
-      entry.link,
-    ))
-    edges.push(makeEdge(previousProductId, id, { class: 'roadmap-flow-edge roadmap-flow-edge-main' }))
-    previousProductId = id
-  })
-
-  const challengeStageY = productStartY + productEntries.length * layout.productGap + 42
-  nodes.push(makeNode(
-    'stage-challenge',
-    labels.stages.challenge,
-    'stage',
-    'stage',
-    layout.centerX - nodeWidth.stage / 2,
-    challengeStageY,
-    nodeWidth.stage,
-    challengeEntries[0]?.link,
-  ))
-  edges.push(makeEdge(previousProductId, 'stage-challenge', { class: 'roadmap-flow-edge roadmap-flow-edge-main' }))
-
-  const challengeY = challengeStageY + layout.challengeGap
-  const challengeSlots = [-300, 0, 300, -150, 150]
-  challengeEntries.forEach((entry, index) => {
-    const id = `challenge-${entry.id}`
-    const row = Math.floor(index / 3)
-    const offset = challengeSlots[index % challengeSlots.length] ?? 0
-    nodes.push(makeNode(
-      id,
-      entry.title,
-      'challenge',
-      'challenge',
-      layout.centerX + offset - nodeWidth.challenge / 2,
-      challengeY + row * 88,
-      nodeWidth.challenge,
-      entry.link,
-    ))
-    edges.push(makeEdge('stage-challenge', id, { class: 'roadmap-flow-edge roadmap-flow-edge-main' }))
-  })
-
-  const height = challengeY + Math.max(1, Math.ceil(challengeEntries.length / 3)) * 110
-
-  return { nodes, edges, height }
+const roadmapDisplayHeight = computed(() => {
+  return Math.max(ROADMAP_MIN_HEIGHT, Math.ceil(roadmapFlow.value.height * roadmapViewport.value.zoom + roadmapViewport.value.y + 48))
 })
 
 function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
@@ -254,7 +65,7 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
       <ClientOnly>
         <VueFlow
           class="roadmap-vue-flow"
-          :style="{ height: `${roadmapFlow.height}px` }"
+          :style="{ height: `${roadmapDisplayHeight}px` }"
           :nodes="roadmapFlow.nodes"
           :edges="roadmapFlow.edges"
           :node-types="nodeTypes"
@@ -268,13 +79,14 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
           :zoom-on-pinch="false"
           :zoom-on-double-click="false"
           :prevent-scrolling="false"
-          :fit-view-on-init="true"
+          :fit-view-on-init="false"
+          :default-viewport="roadmapViewport"
           :min-zoom="0.24"
           :max-zoom="1.18"
           @node-click="handleNodeClick"
         />
         <template #fallback>
-          <div class="roadmap-vue-flow roadmap-flow-loading" :style="{ height: `${roadmapFlow.height}px` }"></div>
+          <div class="roadmap-vue-flow roadmap-flow-loading" :style="{ height: `${roadmapDisplayHeight}px` }"></div>
         </template>
       </ClientOnly>
     </section>
@@ -398,14 +210,19 @@ html[data-theme='dark'] .roadmap-shell::before {
 }
 
 .roadmap-flow-card {
+  appearance: none;
   width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   min-height: 40px;
   padding: 0 16px;
   border: 1px solid rgba(218, 172, 255, 0.92);
   border-radius: 12px;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 9px;
   text-align: center;
   background: rgba(255, 246, 255, 0.76);
   box-shadow: 0 0 16px rgba(205, 126, 255, 0.12);
@@ -418,6 +235,10 @@ html[data-theme='dark'] .roadmap-shell::before {
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     background-color 0.2s ease;
+}
+
+.roadmap-flow-title {
+  display: block;
 }
 
 .roadmap-flow-card.is-clickable {
@@ -434,61 +255,115 @@ html[data-theme='dark'] .roadmap-shell::before {
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.roadmap-flow-card.is-stage,
-.roadmap-flow-card.is-fusion {
-  min-height: 46px;
-  border-color: rgba(129, 222, 255, 0.96);
-  background: rgba(237, 251, 255, 0.9);
-  color: rgba(56, 87, 106, 0.96);
-  box-shadow: 0 0 28px rgba(130, 222, 255, 0.22);
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.roadmap-flow-card.is-branch-title {
-  min-height: 44px;
-  border-color: rgba(110, 209, 255, 0.88);
-  background: rgba(235, 249, 255, 0.84);
-  color: rgba(42, 90, 115, 0.96);
-  font-size: 18px;
-  font-weight: 800;
-  box-shadow: 0 0 22px rgba(116, 210, 255, 0.16);
-}
-
-.roadmap-flow-card.is-lesson {
-  min-height: 34px;
-  border-color: rgba(186, 153, 255, 0.72);
-  background: rgba(255, 255, 255, 0.48);
-  box-shadow: 0 0 8px rgba(170, 104, 255, 0.08);
-  color: rgba(114, 119, 124, 0.96);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.roadmap-flow-card.is-product {
-  min-height: 42px;
-  border-color: rgba(255, 193, 129, 0.88);
-  background: rgba(255, 246, 233, 0.84);
-  color: rgba(130, 84, 26, 0.94);
-  box-shadow: 0 0 16px rgba(255, 187, 112, 0.12);
-}
-
-.roadmap-flow-card.is-challenge {
-  min-height: 42px;
-  border-color: rgba(255, 170, 214, 0.8);
-  background: rgba(255, 245, 251, 0.84);
-  color: rgba(120, 63, 93, 0.96);
-  box-shadow: 0 0 18px rgba(255, 139, 205, 0.12);
-}
-
-.roadmap-flow-card.is-junction {
-  min-height: 10px;
-  width: 10px;
+.roadmap-flow-card.is-section-title {
+  min-height: 52px;
   padding: 0;
-  border-radius: 999px;
-  border-color: rgba(203, 140, 255, 0.92);
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 0 12px rgba(184, 112, 255, 0.18);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(37, 37, 46, 0.94);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.roadmap-flow-card.is-group {
+  min-height: 46px;
+  padding: 0 14px;
+  border-width: 1.8px;
+  border-radius: 8px;
+  border-color: rgba(255, 223, 132, 0.9);
+  background: rgba(255, 229, 126, 0.9);
+  box-shadow: 0 0 14px rgba(255, 211, 92, 0.12);
+  color: rgba(42, 35, 18, 0.96);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.roadmap-flow-card.is-topic {
+  min-height: 36px;
+  padding: 0 12px;
+  border-width: 1.3px;
+  border-radius: 6px;
+  border-color: rgba(255, 220, 132, 0.62);
+  background: rgba(255, 235, 166, 0.72);
+  color: rgba(57, 45, 22, 0.92);
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.roadmap-flow-card.is-ai.is-group {
+  border-color: rgba(110, 209, 255, 0.78);
+  background: rgba(240, 251, 255, 0.7);
+  color: rgba(38, 83, 108, 0.96);
+}
+
+.roadmap-flow-card.is-web3.is-group {
+  border-color: rgba(178, 153, 255, 0.76);
+  background: rgba(248, 245, 255, 0.7);
+  color: rgba(82, 65, 132, 0.96);
+}
+
+.roadmap-flow-card.is-fusion.is-group {
+  border-color: rgba(255, 193, 129, 0.88);
+  background: rgba(255, 248, 236, 0.78);
+  color: rgba(128, 82, 24, 0.96);
+}
+
+.roadmap-flow-card.is-security.is-group {
+  border-color: rgba(255, 151, 194, 0.82);
+  background: rgba(255, 245, 250, 0.82);
+  color: rgba(125, 55, 88, 0.96);
+}
+
+.roadmap-flow-card.is-standard.is-group {
+  border-color: rgba(111, 211, 177, 0.82);
+  background: rgba(239, 255, 249, 0.8);
+  color: rgba(35, 103, 82, 0.96);
+}
+
+.roadmap-flow-card.is-practice.is-group {
+  border-color: rgba(255, 186, 105, 0.9);
+  background: rgba(255, 250, 238, 0.84);
+  color: rgba(126, 78, 20, 0.96);
+}
+
+.roadmap-flow-card.is-ai.is-topic {
+  border-color: rgba(110, 209, 255, 0.34);
+  background: rgba(240, 251, 255, 0.34);
+  color: rgba(45, 83, 105, 0.9);
+}
+
+.roadmap-flow-card.is-web3.is-topic {
+  border-color: rgba(178, 153, 255, 0.34);
+  background: rgba(248, 245, 255, 0.34);
+  color: rgba(82, 66, 126, 0.9);
+}
+
+.roadmap-flow-card.is-fusion.is-topic {
+  border-color: rgba(255, 193, 129, 0.38);
+  background: rgba(255, 248, 236, 0.36);
+  color: rgba(124, 82, 32, 0.9);
+}
+
+.roadmap-flow-card.is-security.is-topic {
+  border-color: rgba(255, 151, 194, 0.36);
+  background: rgba(255, 245, 250, 0.36);
+  color: rgba(119, 58, 88, 0.9);
+}
+
+.roadmap-flow-card.is-standard.is-topic {
+  border-color: rgba(111, 211, 177, 0.38);
+  background: rgba(239, 255, 249, 0.36);
+  color: rgba(39, 98, 79, 0.9);
+}
+
+.roadmap-flow-card.is-practice.is-topic {
+  border-color: rgba(255, 186, 105, 0.4);
+  background: rgba(255, 250, 238, 0.36);
+  color: rgba(122, 80, 28, 0.9);
 }
 
 .roadmap-flow-handle {
@@ -518,6 +393,26 @@ html[data-theme='dark'] .roadmap-shell::before {
   stroke-width: 1.8;
 }
 
+.roadmap-vue-flow .roadmap-flow-edge-mainline .vue-flow__edge-path {
+  stroke-width: 2.4;
+}
+
+.roadmap-vue-flow .roadmap-flow-edge-branch .vue-flow__edge-path {
+  stroke-width: 1.8;
+}
+
+.roadmap-vue-flow .roadmap-flow-edge-spine .vue-flow__edge-path {
+  stroke-width: 1.6;
+  opacity: 0.74;
+}
+
+.roadmap-vue-flow .roadmap-flow-edge-topic .vue-flow__edge-path {
+  stroke-width: 1.15;
+  stroke-dasharray: 4 6;
+  opacity: 0.52;
+  filter: none;
+}
+
 html[data-theme='dark'] .roadmap-flow-card {
   border-color: rgba(125, 84, 233, 0.9);
   background: rgba(55, 32, 88, 0.88);
@@ -536,40 +431,100 @@ html[data-theme='dark'] .vue-flow__node:focus-visible .roadmap-flow-card {
     inset 0 1px 0 rgba(221, 204, 255, 0.1);
 }
 
-html[data-theme='dark'] .roadmap-flow-card.is-stage,
-html[data-theme='dark'] .roadmap-flow-card.is-fusion {
-  border-color: rgba(24, 198, 255, 0.84);
-  background: rgba(16, 39, 63, 0.9);
-  color: rgba(226, 249, 255, 0.96);
-  box-shadow:
-    0 0 24px rgba(0, 195, 255, 0.22),
-    0 0 48px rgba(0, 195, 255, 0.12);
+html[data-theme='dark'] .roadmap-flow-card.is-group {
+  border-color: rgba(125, 84, 233, 0.78);
+  background: rgba(48, 34, 72, 0.78);
+  color: rgba(248, 244, 255, 0.94);
 }
 
-html[data-theme='dark'] .roadmap-flow-card.is-branch-title {
-  border-color: rgba(76, 201, 255, 0.86);
-  background: rgba(14, 48, 74, 0.92);
+html[data-theme='dark'] .roadmap-flow-card.is-topic {
+  border-color: rgba(154, 117, 245, 0.3);
+  background: rgba(35, 25, 52, 0.52);
+  color: rgba(249, 245, 255, 0.82);
+  box-shadow: none;
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-ai.is-group {
+  border-color: rgba(76, 201, 255, 0.78);
+  background: rgba(14, 48, 74, 0.76);
   color: rgba(225, 248, 255, 0.96);
-  box-shadow:
-    0 0 22px rgba(38, 198, 255, 0.2),
-    inset 0 1px 0 rgba(196, 239, 255, 0.08);
 }
 
-html[data-theme='dark'] .roadmap-flow-card.is-product {
-  border-color: rgba(141, 129, 244, 0.84);
-  background: rgba(48, 39, 84, 0.92);
-  color: rgba(241, 237, 255, 0.96);
+html[data-theme='dark'] .roadmap-flow-card.is-ai.is-topic {
+  border-color: rgba(76, 201, 255, 0.3);
+  background: rgba(14, 48, 74, 0.42);
+  color: rgba(225, 248, 255, 0.82);
 }
 
-html[data-theme='dark'] .roadmap-flow-card.is-challenge {
-  border-color: rgba(199, 113, 212, 0.82);
-  background: rgba(64, 34, 72, 0.88);
-  color: rgba(255, 239, 251, 0.94);
+html[data-theme='dark'] .roadmap-flow-card.is-web3.is-group {
+  border-color: rgba(141, 129, 244, 0.8);
+  background: rgba(45, 37, 82, 0.78);
 }
 
-html[data-theme='dark'] .roadmap-flow-card.is-junction {
-  border-color: rgba(154, 117, 245, 0.88);
-  background: rgba(18, 13, 30, 0.94);
+html[data-theme='dark'] .roadmap-flow-card.is-web3.is-topic {
+  border-color: rgba(141, 129, 244, 0.3);
+  background: rgba(45, 37, 82, 0.42);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-fusion.is-group {
+  border-color: rgba(190, 144, 82, 0.84);
+  background: rgba(70, 49, 31, 0.78);
+  color: rgba(255, 242, 218, 0.96);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-fusion.is-topic {
+  border-color: rgba(190, 144, 82, 0.3);
+  background: rgba(70, 49, 31, 0.42);
+  color: rgba(255, 242, 218, 0.82);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-security.is-group {
+  border-color: rgba(199, 113, 166, 0.82);
+  background: rgba(64, 34, 58, 0.8);
+  color: rgba(255, 238, 247, 0.95);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-security.is-topic {
+  border-color: rgba(199, 113, 166, 0.3);
+  background: rgba(64, 34, 58, 0.42);
+  color: rgba(255, 238, 247, 0.82);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-standard.is-group {
+  border-color: rgba(76, 178, 144, 0.82);
+  background: rgba(21, 61, 52, 0.78);
+  color: rgba(231, 255, 247, 0.95);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-standard.is-topic {
+  border-color: rgba(76, 178, 144, 0.3);
+  background: rgba(21, 61, 52, 0.42);
+  color: rgba(231, 255, 247, 0.82);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-practice.is-group {
+  border-color: rgba(203, 141, 72, 0.84);
+  background: rgba(72, 49, 25, 0.78);
+  color: rgba(255, 242, 220, 0.96);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-practice.is-topic {
+  border-color: rgba(203, 141, 72, 0.3);
+  background: rgba(72, 49, 25, 0.42);
+  color: rgba(255, 242, 220, 0.82);
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-section-title {
+  border-color: transparent;
+  background: transparent;
+  color: rgba(244, 240, 255, 0.94);
+  box-shadow: none;
+}
+
+html[data-theme='dark'] .roadmap-flow-card.is-web3.is-section-title,
+html[data-theme='dark'] .roadmap-flow-card.is-web3.is-group,
+html[data-theme='dark'] .roadmap-flow-card.is-web3.is-topic {
+  color: rgba(249, 245, 255, 0.94);
 }
 
 html[data-theme='dark'] .roadmap-vue-flow .vue-flow__edge-path {
