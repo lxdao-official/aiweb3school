@@ -258,6 +258,16 @@ html[data-theme='dark'] .roadmap-shell::before {
   display: none;
 }
 
+@media (max-width: 768px) {
+  .timeline-wrap {
+    padding-top: 32px;
+  }
+
+  .roadmap-shell {
+    margin-top: 0;
+  }
+}
+
 .roadmap-flow-card {
   appearance: none;
   width: 100%;

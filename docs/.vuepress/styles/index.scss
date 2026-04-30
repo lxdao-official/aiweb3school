@@ -204,6 +204,16 @@ html[data-theme='dark'] .vp-home .vp-home-hero::after {
   width: 100%;
   max-width: none;
   height: calc(100vh - var(--vp-nav-height) + 64px);
+  overflow: hidden;
+  line-height: 0;
+  font-size: 0;
+}
+
+.vp-home .vp-home-hero .hero-art img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
   object-fit: cover;
   object-position: center top;
   border-radius: 0;
@@ -302,6 +312,23 @@ html[data-theme='dark'] .vp-footer a {
 @media (max-width: 900px) {
   .vp-home .vp-home-hero {
     margin-bottom: -40px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .vp-home .vp-home-hero {
+    margin-bottom: 0 !important;
+    height: calc(100svh - var(--vp-nav-height) + 36px) !important;
+    min-height: 640px !important;
+  }
+
+  .vp-home .vp-home-hero .hero-art {
+    height: calc(100svh - var(--vp-nav-height) + 36px);
+    min-height: 640px;
+  }
+
+  .vp-home .vp-home-hero .hero-art img {
+    object-position: center top;
   }
 }
 
