@@ -104,14 +104,6 @@ function triggerRoadmapFeedback(nodeId: string) {
 
 <template>
   <section class="timeline-wrap">
-    <section class="wip-notice" aria-live="polite">
-      <span class="wip-pill">{{ content.wip.label }}</span>
-      <div class="wip-copy">
-        <h2>{{ content.wip.title }}</h2>
-        <p>{{ content.wip.description }}</p>
-      </div>
-    </section>
-
     <section class="roadmap-shell">
       <RoadmapMobile
         v-if="isMobileViewport"
@@ -201,100 +193,6 @@ html[data-theme='dark'] .timeline-wrap {
     radial-gradient(46% 26% at 50% 3%, rgba(0, 195, 255, 0.16), transparent 76%),
     radial-gradient(26% 22% at 50% 28%, rgba(136, 74, 255, 0.14), transparent 76%),
     linear-gradient(180deg, #1c0f1e 0%, #110d18 36%, #0d111a 100%);
-}
-
-.wip-notice {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  width: min(1180px, calc(100vw - 40px));
-  margin: 0 auto 28px;
-  padding: 18px 22px;
-  border: 1px solid rgba(245, 158, 11, 0.34);
-  border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(255, 247, 237, 0.92), rgba(255, 255, 255, 0.72)),
-    radial-gradient(80% 160% at 0% 0%, rgba(251, 191, 36, 0.2), transparent 62%);
-  box-shadow:
-    0 14px 38px rgba(180, 83, 9, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-.wip-pill {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(245, 158, 11, 0.13);
-  color: #b45309;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.wip-copy {
-  min-width: 0;
-}
-
-.wip-copy h2 {
-  margin: 0 0 5px;
-  color: rgba(40, 33, 26, 0.94);
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.25;
-}
-
-.wip-copy p {
-  margin: 0;
-  color: rgba(75, 63, 47, 0.76);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-html[data-theme='dark'] .wip-notice {
-  border-color: rgba(251, 191, 36, 0.34);
-  background:
-    linear-gradient(135deg, rgba(53, 35, 20, 0.92), rgba(33, 24, 26, 0.72)),
-    radial-gradient(80% 160% at 0% 0%, rgba(251, 191, 36, 0.16), transparent 62%);
-  box-shadow:
-    0 16px 42px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-html[data-theme='dark'] .wip-pill {
-  background: rgba(251, 191, 36, 0.15);
-  color: #fbbf24;
-}
-
-html[data-theme='dark'] .wip-copy h2 {
-  color: rgba(255, 247, 237, 0.94);
-}
-
-html[data-theme='dark'] .wip-copy p {
-  color: rgba(255, 237, 213, 0.72);
-}
-
-@media (max-width: 768px) {
-  .wip-notice {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-    width: min(100% - 28px, 1180px);
-    margin-bottom: 20px;
-    padding: 16px;
-    border-radius: 18px;
-  }
-
-  .wip-copy h2 {
-    font-size: 17px;
-  }
-
-  .wip-copy p {
-    font-size: 13px;
-  }
 }
 
 .roadmap-shell {

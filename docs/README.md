@@ -6,10 +6,13 @@ config:
     hero:
       tagline: ''
       name: |
-        <picture class="hero-art">
-          <source media="(max-width: 768px)" srcset="/images/homepage-hero-bg-mobile.png">
-          <img src="/images/homepage-hero-bg.png" alt="AI x Web3 School">
-        </picture>
+        <div class="hero-art-frame">
+          <picture class="hero-art">
+            <source media="(max-width: 768px)" srcset="/images/homepage-hero-bg-mobile.png">
+            <img src="/images/homepage-hero-bg.png" alt="AI x Web3 School">
+          </picture>
+          <span class="hero-wip-badge">WIP · 开发中</span>
+        </div>
       text: ''
   - type: Timeline
 ---
