@@ -11,7 +11,7 @@ config:
             <source media="(max-width: 768px)" srcset="/images/homepage-hero-bg-mobile.png">
             <img src="/images/homepage-hero-bg.png" alt="AI x Web3 School">
           </picture>
-          <span class="hero-wip-badge">WIP · 开发中</span>
+          <span class="hero-wip-badge">（开发中）</span>
         </div>
       text: ''
   - type: Timeline

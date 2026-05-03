@@ -218,31 +218,25 @@ html[data-theme='dark'] .vp-home .vp-home-hero::after {
 
 .vp-home .vp-home-hero .hero-wip-badge {
   position: absolute;
-  top: clamp(84px, 12vh, 128px);
-  right: clamp(20px, 7vw, 96px);
+  top: 50%;
+  left: 33%;
   z-index: 4;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 11px;
-  border: 1px solid rgba(245, 158, 11, 0.28);
-  border-radius: 999px;
-  background: rgba(255, 247, 237, 0.66);
-  color: #b45309;
-  box-shadow: 0 8px 24px rgba(180, 83, 9, 0.08);
-  backdrop-filter: blur(10px);
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(18px, 1.7vw, 28px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 0 10px rgba(255, 185, 225, 0.62),
+    0 0 22px rgba(126, 85, 255, 0.36);
   white-space: nowrap;
 }
 
 html[data-theme='dark'] .vp-home .vp-home-hero .hero-wip-badge {
-  border-color: rgba(251, 191, 36, 0.28);
-  background: rgba(53, 35, 20, 0.56);
-  color: #fbbf24;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .vp-home .vp-home-hero .hero-art img {
@@ -359,10 +353,9 @@ html[data-theme='dark'] .vp-footer a {
   }
 
   .vp-home .vp-home-hero .hero-wip-badge {
-    top: 76px;
-    right: 16px;
-    padding: 5px 9px;
-    font-size: 11px;
+    top: 28.5%;
+    left: 55%;
+    font-size: clamp(13px, 4.4vw, 18px);
   }
 
   .vp-home .vp-home-hero .hero-art {
