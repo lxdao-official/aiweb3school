@@ -16,86 +16,86 @@ import PlaygroundLabel from './PlaygroundLabel.vue'
 import PlaygroundAnchor from './PlaygroundAnchor.vue'
 import PlaygroundSectionCard, { type SectionBlock } from './PlaygroundSectionCard.vue'
 import type { RoadmapNode } from './roadmap-layout'
+import {
+  playgroundRoadmap,
+  type RoadmapData,
+  type RoadmapSubCard,
+} from '../content/playground-roadmap-data'
 
 /**
- * Playground · 概念定义
- *  Section = label + (可选 frame) + 主节点 + sub-node card
+ * Roadmap Playground · 样式与布局规则（已固化，请勿因数据而修改）
+ * ─────────────────────────────────────────────────────────────────
+ * 数据来源：docs/.vuepress/content/playground-roadmap-data.ts
+ * 本组件只负责把数据按下面规则排到画布上：
  *
- * 当前布局（已按反馈调整）：
- *  - AI / Web3 没有 frame border，仅 label
- *  - 每个 A/B/C 主节点都挂一张 sub-node card
- *  - 融合主轴 trunk 在 graphWidth/2 居中
- *  - 融合 sub-card 左右交替（C1 右 / C2 左 / C3 右），frame 对称包住整体
- *  - 4 路分支每列一个 frame + label，节点不重叠
+ *  1. 节点：宽 200，渲染由 RoadmapFlowNode 决定，自带 hover 提亮 + cursor pointer
+ *  2. Sub-card：宽 220 (top) / 240 (fusion)，高度按 items 数量自动算
+ *  3. 顶部 AI / Web3：
+ *     - AI 主列固定 X=330（sub 全部留在左半区），Web3 主列 X=990（sub 全部留在右半区）
+ *     - 在自身半区内，sub-card 按节点 index 左右交替挂在主列两侧
+ *     - 中央保持 ≥44px 留白，AI / Web3 的 sub-card 永不交织
+ *  4. 中央融合 section：
+ *     - 主线由 anchor 上下贯穿中央
+ *     - cards 自动按顺序左右交替，行高 130px
+ *     - frame 宽 800、padding 40 包住所有 cards
+ *  5. 4 路分支：
+ *     - 每列独立 frame，宽 260、列间距 32
+ *     - 推荐 3-5 列；超过 5 列会溢出 graphWidth
+ *  6. 主线连边 = smoothstep + 箭头；side 连边 = straight
+ *  7. 节点 / sub-card item 的 link 控制 hover 提亮与 cursor，新窗口打开
  */
 
-// ---------- 几何参数 ----------
+// ============================================================
+// LAYOUT RULES（锁定，不要因数据改动）
+// ============================================================
 const layout = {
-  graphWidth: 1240,
+  // 中心 = 660；AI 半区 0-660，Web3 半区 660-1320
+  graphWidth: 1320,
   graphPaddingY: 60,
 
   nodeWidth: 200,
   nodeHeight: 56,
 
-  // ─── 顶部 AI / Web3（无 frame border，AI sub 全在右、Web3 sub 全在左，中间留分界） ───
+  // 顶部 AI / Web3（每侧 sub-card 在主列左右交替，但永远不跨过中心）
   topLabelY: 16,
   topLabelHeight: 30,
   topNodeStartY: 80,
-  topNodeStepY: 220,         // 留足空间避免同侧 sub-card 重叠
-  topNodeCount: 3,
-  topSubCardWidth: 220,
+  topNodeStepY: 120,           // 因为 alternating，行高可压缩
+  topSubCardWidth: 180,        // 减小宽度让交替时左右两侧都能容下
   topSubCardGapX: 28,
+  aiNodeX: 330,                // 中点：左半区中央（128+180=308 ≤ X ≤ 532-180=352）
+  web3NodeX: 990,              // = graphWidth - aiNodeX 镜像
 
-  // 主列向外贴近，让 A 全部 sub 留在左半区、B 全部 sub 留在右半区
-  aiNodeX: 200,
-  web3NodeX: 1040,
-
-  // ─── 融合 section（主线贯穿中央，3 张 sub-card 平行排列） ───
+  // 融合 section（trunk 居中 660，frame 对称包住 cards）
   fusionTopGap: 110,
   fusionLabelHeight: 30,
   fusionLabelGap: 8,
-  fusionFrameLeftX: 220,
-  fusionFrameWidth: 800,     // 左右对称，中心 = graphWidth/2 = 620
+  fusionFrameLeftX: 270,
+  fusionFrameWidth: 780,       // 中心 = 660
   fusionPadX: 40,
   fusionPadY: 40,
-  fusionTopAnchorOffset: 24,  // 主线上端到 frame 顶
-  fusionBottomAnchorOffset: 24, // 主线下端到 frame 底
-  fusionCardStartOffset: 40,  // 第一张 card 距 frame 顶
-  fusionCardStepY: 130,       // card 之间的垂直步长（alternating）
+  fusionTopAnchorOffset: 24,
+  fusionBottomAnchorOffset: 24,
+  fusionCardStartOffset: 40,
+  fusionCardStepY: 130,
   fusionCardWidth: 240,
-  fusionCardCenterGap: 110,   // card 内侧到中心主线的水平距离
+  fusionCardCenterGap: 110,
 
-  // ─── 4 路分支 sections ───
+  // 4 路分支（4×260 + 3×32 = 1136，居中放在 1320 内 leftX=92）
   splitTopGap: 100,
   splitLabelHeight: 30,
   splitLabelGap: 8,
-  splitColumns: 4,
   splitFrameWidth: 260,
   splitPadX: 30,
   splitPadY: 36,
   splitColGap: 32,
   splitNodeStartOffset: 30,
-  splitNodesPerCol: 3,
   splitStepY: 100,
 }
 
-// ---------- 占位 sub-node 数据（每节点一张，items 支持可选 link） ----------
-// 占位用同一个测试 link，后面替换为真实 handbook 路径
-const DEMO_LINK = '/zh/part1/'
-const L = (title: string) => ({ title, link: DEMO_LINK })
-
-const subDemos: Record<string, SectionBlock[]> = {
-  A1: [{ title: 'AI 分类', items: [L('弱人工智能'), L('强人工智能')] }],
-  A2: [{ title: 'AI 模型', items: [L('LLM'), L('多模态')] }],
-  A3: [{ title: 'AI 应用', items: [L('Agent'), L('AIGC')] }],
-  B1: [{ title: 'Web3 基础', items: [L('公链'), L('DApp')] }],
-  B2: [{ title: 'Web3 协议', items: [L('DeFi'), L('NFT')] }],
-  B3: [{ title: 'Web3 工具', items: [L('钱包'), L('IDE')] }],
-  C1: [{ title: '融合价值', items: [L('自动化'), L('智能化')] }],
-  C2: [{ title: '融合场景', items: [L('链上交易'), L('内容协作')] }],
-  C3: [{ title: '融合风险', items: [L('安全合规'), L('可解释')] }],
-}
-
+// ============================================================
+// 高度计算（与 PlaygroundSectionCard.vue 内部尺寸一致）
+// ============================================================
 function computeSectionCardHeight(sections: SectionBlock[]): number {
   const padTop = 28, padBottom = 28
   const titleRowH = 26, titleGap = 10
@@ -111,7 +111,13 @@ function computeSectionCardHeight(sections: SectionBlock[]): number {
   return h
 }
 
-// ---------- 节点 / 连线工厂 ----------
+function asSectionBlocks(card: RoadmapSubCard): SectionBlock[] {
+  return [{ title: card.title, items: card.items }]
+}
+
+// ============================================================
+// 节点 / 连线工厂
+// ============================================================
 type AnyNode = Node | RoadmapNode
 
 function makeRoadmapNode(
@@ -149,11 +155,9 @@ function makeFrameNode(
 
 function makeAnchorNode(id: string, cx: number, cy: number): AnyNode {
   return {
-    id,
-    type: 'anchor',
+    id, type: 'anchor',
     position: { x: cx - 0.5, y: cy - 0.5 },
-    width: 1,
-    height: 1,
+    width: 1, height: 1,
     draggable: false, selectable: false, connectable: false, focusable: false,
     zIndex: 5,
     data: {},
@@ -207,7 +211,7 @@ function makeMainEdge(source: string, target: string): Edge {
 function makeSideEdge(source: string, target: string, side: 'left' | 'right'): Edge {
   return {
     id: `${source}~${target}`, source, target,
-    type: 'straight', // 直线，避免 smoothstep 在短水平连接上产生奇怪弧线
+    type: 'straight',
     sourceHandle: side === 'right' ? 'right-source' : 'left-source',
     targetHandle: side === 'right' ? 'left-target' : 'right-target',
     selectable: false, focusable: false, updatable: false,
@@ -215,117 +219,117 @@ function makeSideEdge(source: string, target: string, side: 'left' | 'right'): E
   }
 }
 
-// ---------- 构建 ----------
-function buildPlayground() {
+// ============================================================
+// 构建：完全由 data 驱动
+// ============================================================
+function buildFromData(data: RoadmapData) {
   const nodes: AnyNode[] = []
   const edges: Edge[] = []
 
-  // ============ AI 列（无 frame） ============
+  // ─── 顶部 AI 列 ───
   const aiLabelW = 80
   nodes.push(makeLabelNode(
     'LBL-AI',
-    layout.aiNodeX - aiLabelW / 2,
-    layout.topLabelY,
+    layout.aiNodeX - aiLabelW / 2, layout.topLabelY,
     aiLabelW, layout.topLabelHeight,
-    'AI', 'ai',
+    data.topLeft.label, 'ai',
   ))
-
   const aiNodeIds: string[] = []
-  for (let i = 0; i < layout.topNodeCount; i++) {
+  data.topLeft.nodes.forEach((n, i) => {
     const y = layout.topNodeStartY + i * layout.topNodeStepY
-    const id = `A${i + 1}`
-    nodes.push(makeRoadmapNode(id, `AI 主线 · A${i + 1}`, 'group', layout.aiNodeX, y, 'ai', DEMO_LINK))
-    aiNodeIds.push(id)
-
-    // sub-card 固定在右（保持在左半区，与 Web3 区有清晰分界）
-    const subId = `${id}-SUB`
-    const subData = subDemos[id]
-    const subH = computeSectionCardHeight(subData)
-    const subY = y + layout.nodeHeight / 2 - subH / 2
-    const subLeftX = layout.aiNodeX + layout.nodeWidth / 2 + layout.topSubCardGapX
-    const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, subData)
-    nodes.push(node)
-    edges.push(makeSideEdge(id, subId, 'right'))
-  }
+    nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.aiNodeX, y, 'ai', n.link))
+    aiNodeIds.push(n.id)
+    if (n.subCard) {
+      // 在 AI 半区内左右交替（i=0 右 / i=1 左 / i=2 右 …）
+      const side: 'right' | 'left' = i % 2 === 0 ? 'right' : 'left'
+      const subId = `${n.id}-SUB`
+      const sec = asSectionBlocks(n.subCard)
+      const subH = computeSectionCardHeight(sec)
+      const subY = y + layout.nodeHeight / 2 - subH / 2
+      const subLeftX = side === 'right'
+        ? layout.aiNodeX + layout.nodeWidth / 2 + layout.topSubCardGapX
+        : layout.aiNodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
+      const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, sec)
+      nodes.push(node)
+      edges.push(makeSideEdge(n.id, subId, side))
+    }
+  })
   for (let i = 0; i < aiNodeIds.length - 1; i++) {
     edges.push(makeMainEdge(aiNodeIds[i], aiNodeIds[i + 1]))
   }
 
-  // ============ Web3 列（无 frame） ============
+  // ─── 顶部 Web3 列（镜像） ───
   const web3LabelW = 100
   nodes.push(makeLabelNode(
     'LBL-WEB3',
-    layout.web3NodeX - web3LabelW / 2,
-    layout.topLabelY,
+    layout.web3NodeX - web3LabelW / 2, layout.topLabelY,
     web3LabelW, layout.topLabelHeight,
-    'Web3', 'web3',
+    data.topRight.label, 'web3',
   ))
-
   const web3NodeIds: string[] = []
-  for (let i = 0; i < layout.topNodeCount; i++) {
+  data.topRight.nodes.forEach((n, i) => {
     const y = layout.topNodeStartY + i * layout.topNodeStepY
-    const id = `B${i + 1}`
-    nodes.push(makeRoadmapNode(id, `Web3 主线 · B${i + 1}`, 'group', layout.web3NodeX, y, 'web3', DEMO_LINK))
-    web3NodeIds.push(id)
-
-    // sub-card 固定在左（保持在右半区，与 AI 区有清晰分界）
-    const subId = `${id}-SUB`
-    const subData = subDemos[id]
-    const subH = computeSectionCardHeight(subData)
-    const subY = y + layout.nodeHeight / 2 - subH / 2
-    const subLeftX = layout.web3NodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
-    const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, subData)
-    nodes.push(node)
-    edges.push(makeSideEdge(id, subId, 'left'))
-  }
+    nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.web3NodeX, y, 'web3', n.link))
+    web3NodeIds.push(n.id)
+    if (n.subCard) {
+      // 在 Web3 半区内左右交替（与 AI 镜像：i=0 左 / i=1 右 / i=2 左 …）
+      const side: 'right' | 'left' = i % 2 === 0 ? 'left' : 'right'
+      const subId = `${n.id}-SUB`
+      const sec = asSectionBlocks(n.subCard)
+      const subH = computeSectionCardHeight(sec)
+      const subY = y + layout.nodeHeight / 2 - subH / 2
+      const subLeftX = side === 'right'
+        ? layout.web3NodeX + layout.nodeWidth / 2 + layout.topSubCardGapX
+        : layout.web3NodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
+      const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, sec)
+      nodes.push(node)
+      edges.push(makeSideEdge(n.id, subId, side))
+    }
+  })
   for (let i = 0; i < web3NodeIds.length - 1; i++) {
     edges.push(makeMainEdge(web3NodeIds[i], web3NodeIds[i + 1]))
   }
 
-  const lastTopNodeY = layout.topNodeStartY + (layout.topNodeCount - 1) * layout.topNodeStepY
-  const sampleSubH = computeSectionCardHeight(subDemos.A1)
+  const topRowsCount = Math.max(data.topLeft.nodes.length, data.topRight.nodes.length)
+  const lastTopY = layout.topNodeStartY + (topRowsCount - 1) * layout.topNodeStepY
+  // 估算顶部 sub-card 最大高度（取所有顶部 sub-card 中最高的）
+  let topMaxSubH = 0
+  data.topLeft.nodes.concat(data.topRight.nodes).forEach((n) => {
+    if (n.subCard) topMaxSubH = Math.max(topMaxSubH, computeSectionCardHeight(asSectionBlocks(n.subCard)))
+  })
   const topAreaBottomY = Math.max(
-    lastTopNodeY + layout.nodeHeight,
-    lastTopNodeY + layout.nodeHeight / 2 + sampleSubH / 2,
+    lastTopY + layout.nodeHeight,
+    lastTopY + layout.nodeHeight / 2 + topMaxSubH / 2,
   )
 
-  // ============ 融合 section（主线贯穿中央 + 3 张 sub-card 平行排列） ============
+  // ─── 融合 section ───
   const fusionCenterX = layout.graphWidth / 2
   const fusionLabelY = topAreaBottomY + layout.fusionTopGap
   const fusionFrameTop = fusionLabelY + layout.fusionLabelHeight + layout.fusionLabelGap
 
-  // 顶部 anchor：A3 / B3 在此汇合，作为主线起点
   const topAnchorY = fusionFrameTop + layout.fusionTopAnchorOffset
   nodes.push(makeAnchorNode('FUSION-TOP', fusionCenterX, topAnchorY))
-  edges.push(makeMainEdge(aiNodeIds[aiNodeIds.length - 1], 'FUSION-TOP'))
-  edges.push(makeMainEdge(web3NodeIds[web3NodeIds.length - 1], 'FUSION-TOP'))
+  if (aiNodeIds.length) edges.push(makeMainEdge(aiNodeIds[aiNodeIds.length - 1], 'FUSION-TOP'))
+  if (web3NodeIds.length) edges.push(makeMainEdge(web3NodeIds[web3NodeIds.length - 1], 'FUSION-TOP'))
 
-  // 3 张交叉领域 sub-card：左右交替，平行排列（无序，无相互连线）
-  const fusionCards = [
-    { id: 'FUSION-CARD-1', sections: subDemos.C1 }, // 融合价值
-    { id: 'FUSION-CARD-2', sections: subDemos.C2 }, // 融合场景
-    { id: 'FUSION-CARD-3', sections: subDemos.C3 }, // 融合风险
-  ]
   let cardsBottomY = fusionFrameTop
-  fusionCards.forEach((card, i) => {
+  data.fusion.cards.forEach((card, i) => {
     const side: 'right' | 'left' = i % 2 === 0 ? 'right' : 'left'
     const y = fusionFrameTop + layout.fusionCardStartOffset + i * layout.fusionCardStepY
+    const sec = asSectionBlocks(card)
     const cardLeftX = side === 'right'
       ? fusionCenterX + layout.fusionCardCenterGap
       : fusionCenterX - layout.fusionCardCenterGap - layout.fusionCardWidth
-    const { node, height } = makeSectionCardNode(card.id, cardLeftX, y, layout.fusionCardWidth, card.sections)
+    const cardId = `FUSION-CARD-${i + 1}`
+    const { node, height } = makeSectionCardNode(cardId, cardLeftX, y, layout.fusionCardWidth, sec)
     nodes.push(node)
     cardsBottomY = Math.max(cardsBottomY, y + height)
   })
 
-  // 底部 anchor：所有分支从这里分裂
   const bottomAnchorY = cardsBottomY + layout.fusionBottomAnchorOffset
   nodes.push(makeAnchorNode('FUSION-BOTTOM', fusionCenterX, bottomAnchorY))
-
-  // 主线：top → bottom，贯穿整个融合 section
   edges.push(makeMainEdge('FUSION-TOP', 'FUSION-BOTTOM'))
 
-  // 融合 frame
   const fusionFrameH = bottomAnchorY + layout.fusionPadY - fusionFrameTop
   nodes.push(makeFrameNode(
     'FRAME-FUSION',
@@ -340,37 +344,35 @@ function buildPlayground() {
     layout.fusionFrameLeftX + layout.fusionFrameWidth / 2 - fusionLabelW / 2,
     fusionLabelY,
     fusionLabelW, layout.fusionLabelHeight,
-    'AI × Web3 融合起点', 'fusion',
+    data.fusion.label, 'fusion',
   ))
 
-  // ============ 4 路分支 sections ============
+  // ─── 4 路分支 ───
+  const splitCount = data.splits.length
   const splitLabelY = fusionFrameTop + fusionFrameH + layout.splitTopGap
   const splitFrameTop = splitLabelY + layout.splitLabelHeight + layout.splitLabelGap
-
-  const totalSplitW = layout.splitColumns * layout.splitFrameWidth + (layout.splitColumns - 1) * layout.splitColGap
+  const totalSplitW = splitCount * layout.splitFrameWidth + Math.max(0, splitCount - 1) * layout.splitColGap
   const splitFirstFrameLeftX = (layout.graphWidth - totalSplitW) / 2
 
-  const splitColumnFirstIds: string[] = []
   let splitContentBottomY = splitFrameTop
-  const branchLabels = ['D', 'E', 'F', 'G']
+  const splitColumnFirstIds: string[] = []
 
-  for (let c = 0; c < layout.splitColumns; c++) {
+  data.splits.forEach((col, c) => {
     const frameLeftX = splitFirstFrameLeftX + c * (layout.splitFrameWidth + layout.splitColGap)
     const frameCenterX = frameLeftX + layout.splitFrameWidth / 2
     const colIds: string[] = []
 
-    for (let r = 0; r < layout.splitNodesPerCol; r++) {
+    col.nodes.forEach((n, r) => {
       const y = splitFrameTop + layout.splitNodeStartOffset + r * layout.splitStepY
-      const id = `S${c + 1}-${r + 1}`
-      nodes.push(makeRoadmapNode(id, `分支 ${branchLabels[c]}${r + 1}`, 'topic', frameCenterX, y, 'fusion', DEMO_LINK))
-      colIds.push(id)
-    }
+      nodes.push(makeRoadmapNode(n.id, n.title, 'topic', frameCenterX, y, 'fusion', n.link))
+      colIds.push(n.id)
+    })
     for (let r = 0; r < colIds.length - 1; r++) {
       edges.push(makeMainEdge(colIds[r], colIds[r + 1]))
     }
-    splitColumnFirstIds.push(colIds[0])
+    if (colIds.length) splitColumnFirstIds.push(colIds[0])
 
-    const colBottomY = splitFrameTop + layout.splitNodeStartOffset + (layout.splitNodesPerCol - 1) * layout.splitStepY + layout.nodeHeight
+    const colBottomY = splitFrameTop + layout.splitNodeStartOffset + Math.max(0, col.nodes.length - 1) * layout.splitStepY + layout.nodeHeight
     const frameH = colBottomY + layout.splitPadY - splitFrameTop
     splitContentBottomY = Math.max(splitContentBottomY, splitFrameTop + frameH)
     nodes.push(makeFrameNode(`FRAME-S${c + 1}`, frameLeftX, splitFrameTop, layout.splitFrameWidth, frameH, 'fusion'))
@@ -381,11 +383,10 @@ function buildPlayground() {
       frameCenterX - labelW / 2,
       splitLabelY,
       labelW, layout.splitLabelHeight,
-      `分支 ${branchLabels[c]}`, 'fusion',
+      col.label, 'fusion',
     ))
-  }
+  })
 
-  // 主线从融合 section 底部 anchor 分裂到 4 路分支
   splitColumnFirstIds.forEach((firstId) => {
     edges.push(makeMainEdge('FUSION-BOTTOM', firstId))
   })
@@ -393,7 +394,9 @@ function buildPlayground() {
   return { nodes, edges, height: splitContentBottomY + layout.graphPaddingY }
 }
 
-// ---------- 视口 / 自适应 ----------
+// ============================================================
+// 视口 / 自适应
+// ============================================================
 const nodeTypes = {
   roadmap: markRaw(RoadmapFlowNode),
   frame: markRaw(PlaygroundFrame),
@@ -401,7 +404,7 @@ const nodeTypes = {
   anchor: markRaw(PlaygroundAnchor),
   'section-card': markRaw(PlaygroundSectionCard),
 }
-const viewportWidth = ref(1240)
+const viewportWidth = ref(1320)
 
 function updateViewportWidth() {
   viewportWidth.value = window.innerWidth
@@ -414,10 +417,10 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateViewportWidth)
 })
 
-const flow = computed(() => buildPlayground())
+const flow = computed(() => buildFromData(playgroundRoadmap))
 
 const viewport = computed(() => {
-  const shellWidth = Math.min(1240, Math.max(320, viewportWidth.value - 40))
+  const shellWidth = Math.min(1320, Math.max(320, viewportWidth.value - 40))
   const zoom = Math.min(1, Math.max(0.4, (shellWidth - 32) / layout.graphWidth))
   return {
     x: (shellWidth - layout.graphWidth * zoom) / 2,
@@ -431,7 +434,6 @@ const displayHeight = computed(() => {
 })
 
 function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
-  // 仅 roadmap 节点带 link，section-card 内部 item 由 PlaygroundSectionCard 自己处理
   const link = node.data?.link
   if (!link) return
   window.open(link, '_blank')
@@ -440,11 +442,6 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
 
 <template>
   <section class="roadmap-playground">
-    <header class="playground-head">
-      <h3>Roadmap Playground · Section 编排测试</h3>
-      <p>每个主节点都挂一张 sub-node card；融合主轴居中。</p>
-    </header>
-
     <div class="roadmap-playground-shell">
       <ClientOnly>
         <VueFlow
@@ -479,29 +476,7 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
 
 <style scoped>
 .roadmap-playground {
-  width: min(1240px, calc(100vw - 40px));
+  width: min(1320px, calc(100vw - 40px));
   margin: 40px auto;
-}
-
-.playground-head {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.playground-head h3 {
-  margin: 0 0 6px;
-  font-size: 20px;
-  font-weight: 700;
-  color: rgba(170, 104, 255, 0.95);
-}
-
-.playground-head p {
-  margin: 0;
-  color: rgba(63, 56, 86, 0.7);
-  font-size: 14px;
-}
-
-html[data-theme='dark'] .playground-head p {
-  color: rgba(214, 200, 240, 0.7);
 }
 </style>

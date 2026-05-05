@@ -24,4 +24,5 @@ config:
           theme: alt
   - type: CourseBootcampBanner
   - type: Timeline
+  - type: LogoWall
 ---

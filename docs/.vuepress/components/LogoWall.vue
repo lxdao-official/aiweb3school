@@ -1,0 +1,306 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRouteLocale, withBase } from 'vuepress/client'
+
+type LogoItem = {
+  name: string
+  href: string
+  lightSrc: string
+  darkSrc: string
+}
+
+type LogoWallSection = {
+  eyebrow: string
+  title: string
+  items: LogoItem[]
+}
+
+const routeLocale = useRouteLocale()
+const localeKey = computed(() => routeLocale.value === '/en/' ? 'en' : 'zh')
+
+const sharedLogos: LogoItem[] = [
+  {
+    name: 'LXDAO',
+    href: 'https://lxdao.io/',
+    lightSrc: '/images/logos/lxdao-light.png',
+    darkSrc: '/images/logos/lxdao-dark.png',
+  },
+  {
+    name: 'ETHPanda',
+    href: 'https://ethpanda.org/',
+    lightSrc: '/images/logos/ethpanda-light.png',
+    darkSrc: '/images/logos/ethpanda-dark.png',
+  },
+]
+
+const logoWallContent = {
+  zh: [
+    {
+      eyebrow: 'COLLABORATE',
+      title: 'Build Together With',
+      items: sharedLogos,
+    },
+  ],
+  en: [
+    {
+      eyebrow: 'COLLABORATE',
+      title: 'Build Together With',
+      items: sharedLogos,
+    },
+  ],
+} satisfies Record<'zh' | 'en', LogoWallSection[]>
+
+const sections = computed(() => logoWallContent[localeKey.value])
+</script>
+
+<template>
+  <section class="logo-wall" aria-label="AI x Web3 School partners">
+    <section
+      v-for="section in sections"
+      :key="section.eyebrow"
+      class="logo-wall-section"
+    >
+      <header class="logo-wall-head">
+        <p class="logo-wall-eyebrow">{{ section.eyebrow }}</p>
+        <h2>{{ section.title }}</h2>
+      </header>
+
+      <div class="logo-wall-grid">
+        <a
+          v-for="item in section.items"
+          :key="`${section.eyebrow}-${item.name}`"
+          class="logo-wall-card"
+          :href="item.href"
+          target="_blank"
+          rel="noopener noreferrer"
+          :aria-label="item.name"
+        >
+          <img
+            class="logo-wall-logo logo-wall-logo-light"
+            :src="withBase(item.lightSrc)"
+            :alt="item.name"
+            loading="lazy"
+          >
+          <img
+            class="logo-wall-logo logo-wall-logo-dark"
+            :src="withBase(item.darkSrc)"
+            :alt="item.name"
+            loading="lazy"
+          >
+        </a>
+      </div>
+    </section>
+  </section>
+</template>
+
+<style scoped>
+.logo-wall {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  padding: clamp(64px, 8vw, 112px) 20px clamp(80px, 9vw, 128px);
+}
+
+.logo-wall-section {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.logo-wall-section + .logo-wall-section {
+  margin-top: clamp(72px, 8vw, 116px);
+}
+
+.logo-wall-head {
+  text-align: center;
+  margin-bottom: clamp(34px, 5vw, 70px);
+}
+
+.logo-wall-eyebrow {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 clamp(24px, 3vw, 38px);
+  padding: 0 26px;
+  border: 1px solid rgba(148, 95, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(247, 241, 255, 0.72);
+  color: #6d3ee0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(13px, 1.05vw, 17px);
+  font-weight: 850;
+  letter-spacing: 0;
+}
+
+.logo-wall-head h2 {
+  margin: 0;
+  color: #25183f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(34px, 4.6vw, 66px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.logo-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+}
+
+.logo-wall-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(108px, 10vw, 132px);
+  padding: 28px;
+  border: 1px solid rgba(181, 145, 255, 0.34);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow:
+    0 20px 54px rgba(108, 85, 154, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.logo-wall-card:hover,
+.logo-wall-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(125, 84, 233, 0.58);
+  box-shadow:
+    0 22px 58px rgba(108, 85, 154, 0.13),
+    0 0 18px rgba(170, 104, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+.logo-wall-card:focus-visible {
+  outline: 2px solid rgba(116, 67, 224, 0.36);
+  outline-offset: 4px;
+}
+
+.logo-wall-logo {
+  display: block;
+  width: min(78%, 230px);
+  max-height: 74px;
+  object-fit: contain;
+}
+
+.logo-wall-logo-dark {
+  display: none;
+}
+
+:global(html[data-theme='dark']) .logo-wall-eyebrow {
+  border-color: rgba(188, 153, 255, 0.24);
+  background: rgba(196, 170, 255, 0.09);
+  color: rgba(208, 190, 255, 0.94);
+}
+
+:global(html[data-theme='dark']) .logo-wall-head h2 {
+  color: #f3edff;
+}
+
+:global(html[data-theme='dark']) .logo-wall-card {
+  border-color: rgba(149, 104, 221, 0.3);
+  background: rgba(31, 24, 42, 0.58);
+  box-shadow:
+    0 22px 58px rgba(5, 6, 12, 0.24),
+    inset 0 1px 0 rgba(225, 206, 255, 0.06);
+}
+
+:global(html[data-theme='dark']) .logo-wall-card:hover,
+:global(html[data-theme='dark']) .logo-wall-card:focus-visible {
+  border-color: rgba(188, 153, 255, 0.42);
+  background: rgba(42, 31, 56, 0.68);
+  box-shadow:
+    0 24px 64px rgba(5, 6, 12, 0.3),
+    0 0 20px rgba(126, 75, 255, 0.16),
+    inset 0 1px 0 rgba(225, 206, 255, 0.08);
+}
+
+:global(html[data-theme='dark']) .logo-wall-logo-light {
+  display: none;
+}
+
+:global(html[data-theme='dark']) .logo-wall-logo-dark {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .logo-wall-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .logo-wall {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .logo-wall-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .logo-wall-card {
+    min-height: 104px;
+  }
+}
+</style>
+
+<style>
+html[data-theme='dark'] .logo-wall-eyebrow,
+[data-theme='dark'] .logo-wall-eyebrow,
+.dark .logo-wall-eyebrow {
+  border-color: rgba(188, 153, 255, 0.24) !important;
+  background: rgba(196, 170, 255, 0.09) !important;
+  color: rgba(208, 190, 255, 0.94) !important;
+}
+
+html[data-theme='dark'] .logo-wall-head h2,
+[data-theme='dark'] .logo-wall-head h2,
+.dark .logo-wall-head h2 {
+  color: #f3edff !important;
+}
+
+html[data-theme='dark'] .logo-wall-card,
+[data-theme='dark'] .logo-wall-card,
+.dark .logo-wall-card {
+  border-color: rgba(149, 104, 221, 0.3) !important;
+  background: rgba(31, 24, 42, 0.58) !important;
+  box-shadow:
+    0 22px 58px rgba(5, 6, 12, 0.24),
+    inset 0 1px 0 rgba(225, 206, 255, 0.06) !important;
+}
+
+html[data-theme='dark'] .logo-wall-card:hover,
+html[data-theme='dark'] .logo-wall-card:focus-visible,
+[data-theme='dark'] .logo-wall-card:hover,
+[data-theme='dark'] .logo-wall-card:focus-visible,
+.dark .logo-wall-card:hover,
+.dark .logo-wall-card:focus-visible {
+  border-color: rgba(188, 153, 255, 0.42) !important;
+  background: rgba(42, 31, 56, 0.68) !important;
+  box-shadow:
+    0 24px 64px rgba(5, 6, 12, 0.3),
+    0 0 20px rgba(126, 75, 255, 0.16),
+    inset 0 1px 0 rgba(225, 206, 255, 0.08) !important;
+}
+
+html[data-theme='dark'] .logo-wall-logo-light,
+[data-theme='dark'] .logo-wall-logo-light,
+.dark .logo-wall-logo-light {
+  display: none !important;
+}
+
+html[data-theme='dark'] .logo-wall-logo-dark,
+[data-theme='dark'] .logo-wall-logo-dark,
+.dark .logo-wall-logo-dark {
+  display: block !important;
+  filter: none !important;
+}
+</style>

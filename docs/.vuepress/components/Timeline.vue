@@ -28,7 +28,6 @@ const roadmapChapters = computed(() => {
   }
   return localized
 })
-const sponsorSlots = Array.from({ length: 6 }, (_, index) => ({ id: `slot-${index + 1}` }))
 const nodeTypes = { roadmap: markRaw(RoadmapFlowNode) }
 const viewportWidth = ref(1180)
 const activeRoadmapNodeId = ref('')
@@ -263,18 +262,6 @@ function triggerRoadmapFeedback(nodeId: string) {
       </div>
     </section>
 
-    <section class="homepage-board sponsor-board">
-      <div class="board-head">
-        <span></span>
-        <h3>{{ content.sponsors.title }}</h3>
-        <span></span>
-      </div>
-      <div class="sponsor-grid">
-        <div v-for="slot in sponsorSlots" :key="slot.id" class="board-card sponsor-card">
-          <div class="logo-placeholder" :aria-label="content.sponsors.ariaLabel" />
-        </div>
-      </div>
-    </section>
   </section>
 </template>
 
@@ -1025,33 +1012,6 @@ html[data-theme='dark'] .banner-btn:focus-visible {
     inset 0 1px 0 rgba(221, 204, 255, 0.1);
 }
 
-.sponsor-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.sponsor-card {
-  min-height: 82px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-placeholder {
-  width: 74%;
-  max-width: 216px;
-  height: 24px;
-  border: 1.4px dashed rgba(186, 153, 255, 0.36);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.32);
-}
-
-html[data-theme='dark'] .logo-placeholder {
-  border-color: rgba(130, 98, 220, 0.46);
-  background: rgba(54, 40, 70, 0.4);
-}
-
 @media (max-width: 768px) {
   .timeline-wrap {
     padding: 20px 0 60px;
@@ -1087,8 +1047,5 @@ html[data-theme='dark'] .logo-placeholder {
     font-size: 28px;
   }
 
-  .sponsor-grid {
-    grid-template-columns: 1fr;
-  }
 }
 </style>

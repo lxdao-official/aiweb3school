@@ -24,5 +24,5 @@ config:
           theme: alt
   - type: CourseBootcampBanner
   - type: RoadmapPlayground
-  - type: Timeline
+  - type: LogoWall
 ---
