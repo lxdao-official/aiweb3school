@@ -77,6 +77,8 @@ bun run docs:build
 bun run docs:preview
 ```
 
+本地开发服务运行时，不要把验证构建输出到 `docs/.vuepress/` 下的临时目录；VuePress dev 会监听该目录，可能触发错误热更新。
+
 ---
 
 ## 服务器部署

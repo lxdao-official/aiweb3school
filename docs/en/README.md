@@ -8,11 +8,17 @@ config:
       name: |
         <div class="hero-art-frame">
           <picture class="hero-art">
-            <source media="(max-width: 768px)" srcset="/images/homepage-hero-bg-mobile.png">
-            <img src="/images/homepage-hero-bg.png" alt="AI x Web3 School">
+            <img src="/images/homepage-hero-bg.jpg" alt="">
           </picture>
-          <span class="hero-wip-badge">(WIP)</span>
+          <img class="hero-title-art" src="/images/ai-web3-text.png" width="670" height="553" alt="AI x Web3 School">
         </div>
       text: ''
+      actions:
+        - text: Join Bootcamp
+          link: /en/ai-fundamentals/
+          theme: brand
+        - text: Learn More
+          link: /en/ai-agents/
+          theme: alt
   - type: Timeline
 ---

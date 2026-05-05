@@ -36,6 +36,75 @@ let roadmapFeedbackTimer: ReturnType<typeof setTimeout> | undefined
 
 const roadmapViewport = computed(() => createRoadmapViewport(viewportWidth.value))
 const isMobileViewport = computed(() => viewportWidth.value <= 768)
+const mapDemoGraph = {
+  width: 760,
+  titleWidth: 500,
+  itemWidth: 620,
+  titleHeight: 72,
+  itemHeight: 88,
+  itemGap: 26,
+  titleY: 28,
+  firstItemY: 138,
+}
+
+const mapDemoFlow = computed(() => {
+  const shellWidth = Math.min(820, Math.max(320, viewportWidth.value - (viewportWidth.value <= 768 ? 24 : 40)))
+  const zoom = Math.min(1, Math.max(0.42, (shellWidth - 40) / mapDemoGraph.width))
+  const graphHeight = mapDemoGraph.firstItemY
+    + content.value.mapDemo.items.length * mapDemoGraph.itemHeight
+    + Math.max(0, content.value.mapDemo.items.length - 1) * mapDemoGraph.itemGap
+    + 34
+  const centerX = mapDemoGraph.width / 2
+
+  return {
+    height: Math.ceil(graphHeight * zoom + 48),
+    viewport: {
+      x: (shellWidth - mapDemoGraph.width * zoom) / 2,
+      y: 24,
+      zoom,
+    },
+    nodes: [
+      {
+        id: 'map-demo-title',
+        type: 'roadmap',
+        position: { x: centerX - mapDemoGraph.titleWidth / 2, y: mapDemoGraph.titleY },
+        width: mapDemoGraph.titleWidth,
+        height: mapDemoGraph.titleHeight,
+        draggable: false,
+        selectable: false,
+        connectable: false,
+        focusable: false,
+        data: {
+          title: content.value.mapDemo.title,
+          tone: 'intro',
+          variant: 'section-title',
+          isInteractive: false,
+        },
+      },
+      ...content.value.mapDemo.items.map((item, index) => ({
+        id: `map-demo-item-${index}`,
+        type: 'roadmap',
+        position: {
+          x: centerX - mapDemoGraph.itemWidth / 2,
+          y: mapDemoGraph.firstItemY + index * (mapDemoGraph.itemHeight + mapDemoGraph.itemGap),
+        },
+        width: mapDemoGraph.itemWidth,
+        height: mapDemoGraph.itemHeight,
+        draggable: false,
+        selectable: false,
+        connectable: false,
+        focusable: false,
+        data: {
+          title: item,
+          tone: 'intro',
+          variant: 'topic',
+          isInteractive: false,
+        },
+      })),
+    ] satisfies RoadmapNode[],
+    edges: [],
+  }
+})
 
 function updateViewportWidth() {
   viewportWidth.value = window.innerWidth
@@ -104,6 +173,35 @@ function triggerRoadmapFeedback(nodeId: string) {
 
 <template>
   <section class="timeline-wrap">
+    <section class="map-section-demo" :aria-label="content.mapDemo.title">
+      <ClientOnly>
+        <VueFlow
+          class="map-demo-vue-flow"
+          :style="{ height: `${mapDemoFlow.height}px` }"
+          :nodes="mapDemoFlow.nodes"
+          :edges="mapDemoFlow.edges"
+          :node-types="nodeTypes"
+          :nodes-draggable="false"
+          :nodes-connectable="false"
+          :edges-updatable="false"
+          :elements-selectable="false"
+          :pan-on-drag="false"
+          :pan-on-scroll="false"
+          :zoom-on-scroll="false"
+          :zoom-on-pinch="false"
+          :zoom-on-double-click="false"
+          :prevent-scrolling="false"
+          :fit-view-on-init="false"
+          :default-viewport="mapDemoFlow.viewport"
+          :min-zoom="0.42"
+          :max-zoom="1"
+        />
+        <template #fallback>
+          <div class="map-demo-vue-flow" :style="{ height: `${mapDemoFlow.height}px` }"></div>
+        </template>
+      </ClientOnly>
+    </section>
+
     <section class="roadmap-shell">
       <RoadmapMobile
         v-if="isMobileViewport"
@@ -195,12 +293,120 @@ html[data-theme='dark'] .timeline-wrap {
     linear-gradient(180deg, #1c0f1e 0%, #110d18 36%, #0d111a 100%);
 }
 
+.map-section-demo {
+  width: min(820px, calc(100vw - 40px));
+  margin: 0 auto 42px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid rgba(178, 139, 255, 0.76);
+  border-radius: 34px;
+  background:
+    radial-gradient(70% 92% at 50% 0%, rgba(178, 139, 255, 0.12), transparent 72%),
+    rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 20px 54px rgba(158, 126, 245, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.map-demo-vue-flow {
+  width: 100%;
+  cursor: default;
+}
+
+.map-demo-vue-flow .vue-flow__pane {
+  touch-action: auto;
+}
+
+.map-demo-vue-flow .vue-flow__attribution {
+  display: none;
+}
+
+.map-demo-vue-flow .vue-flow__node {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.map-demo-vue-flow .roadmap-flow-card.is-section-title {
+  min-height: 72px;
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(160, 103, 255, 0.94);
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.map-demo-vue-flow .roadmap-flow-card.is-section-title::before,
+.map-demo-vue-flow .roadmap-flow-card.is-section-title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  min-width: 80px;
+  background: linear-gradient(90deg, transparent, rgba(178, 139, 255, 0.42));
+}
+
+.map-demo-vue-flow .roadmap-flow-card.is-section-title::after {
+  background: linear-gradient(90deg, rgba(178, 139, 255, 0.42), transparent);
+}
+
+.map-demo-vue-flow .roadmap-flow-card.is-topic {
+  min-height: 88px;
+  padding: 0 22px;
+  border: 2px solid rgba(178, 139, 255, 0.82);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+  color: rgba(105, 113, 122, 0.96);
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.16;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+html[data-theme='dark'] .map-section-demo {
+  border-color: rgba(132, 104, 219, 0.62);
+  background:
+    radial-gradient(80% 100% at 8% 0%, rgba(119, 191, 217, 0.18), transparent 72%),
+    radial-gradient(70% 92% at 50% 0%, rgba(178, 139, 255, 0.1), transparent 72%),
+    rgba(33, 42, 51, 0.56);
+  box-shadow:
+    0 24px 68px rgba(11, 18, 28, 0.34),
+    inset 0 1px 0 rgba(212, 193, 255, 0.08);
+}
+
+html[data-theme='dark'] .map-demo-vue-flow .roadmap-flow-card.is-section-title {
+  color: rgba(186, 168, 255, 0.96);
+}
+
+html[data-theme='dark'] .map-demo-vue-flow .roadmap-flow-card.is-section-title::before {
+  background: linear-gradient(90deg, transparent, rgba(178, 139, 255, 0.44));
+}
+
+html[data-theme='dark'] .map-demo-vue-flow .roadmap-flow-card.is-section-title::after {
+  background: linear-gradient(90deg, rgba(178, 139, 255, 0.44), transparent);
+}
+
+html[data-theme='dark'] .map-demo-vue-flow .roadmap-flow-card.is-topic {
+  border-color: rgba(132, 104, 219, 0.62);
+  background: rgba(35, 43, 52, 0.28);
+  color: rgba(225, 234, 242, 0.9);
+}
+
 .roadmap-shell {
   position: relative;
   width: min(1180px, calc(100vw - 40px));
   margin: 3% auto 0;
   overflow: hidden;
-  border: 1px solid rgba(186, 153, 255, 0.26);
+  border: 0;
   border-radius: 28px;
   background:
     linear-gradient(180deg, transparent 0, rgba(255, 255, 255, 0.08) 96px, rgba(255, 255, 255, 0.28) 170px),
@@ -227,7 +433,6 @@ html[data-theme='dark'] .timeline-wrap {
 }
 
 html[data-theme='dark'] .roadmap-shell {
-  border-color: rgba(127, 93, 214, 0.58);
   background:
     linear-gradient(180deg, transparent 0, rgba(34, 24, 48, 0.1) 96px, rgba(34, 24, 48, 0.42) 170px),
     radial-gradient(36% 32% at 50% 7%, rgba(0, 195, 255, 0.13), transparent 72%),
@@ -261,6 +466,27 @@ html[data-theme='dark'] .roadmap-shell::before {
 @media (max-width: 768px) {
   .timeline-wrap {
     padding-top: 32px;
+  }
+
+  .map-section-demo {
+    width: calc(100vw - 24px);
+    margin-bottom: 28px;
+    border-radius: 24px;
+  }
+
+  .map-demo-vue-flow .roadmap-flow-card.is-section-title {
+    gap: 18px;
+    font-size: 32px;
+  }
+
+  .map-demo-vue-flow .roadmap-flow-card.is-section-title::before,
+  .map-demo-vue-flow .roadmap-flow-card.is-section-title::after {
+    min-width: 42px;
+  }
+
+  .map-demo-vue-flow .roadmap-flow-card.is-topic {
+    border-radius: 16px;
+    font-size: 28px;
   }
 
   .roadmap-shell {
@@ -815,6 +1041,10 @@ html[data-theme='dark'] .logo-placeholder {
 @media (max-width: 768px) {
   .timeline-wrap {
     padding: 20px 0 60px;
+  }
+
+  .map-section-demo {
+    width: calc(100vw - 24px);
   }
 
   .roadmap-shell {
