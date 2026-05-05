@@ -16,7 +16,7 @@ export default defineThemeConfig({
   nextPage: true,
 
   footer: {
-    message: '© AI Web3 School',
+    message: '© AI x Web3 School',
   },
 
   transition: {
@@ -31,7 +31,7 @@ export default defineThemeConfig({
       selectLanguageText: '选择语言',
       profile: {
         avatar: '/images/logo.svg',
-        name: 'AI Web3 School',
+        name: 'AI x Web3 School',
         description: 'AI × Web3 学习平台',
       },
 
@@ -43,7 +43,7 @@ export default defineThemeConfig({
       selectLanguageText: 'Languages',
       profile: {
         avatar: '/images/logo.svg',
-        name: 'AI Web3 School',
+        name: 'AI x Web3 School',
         description: 'AI × Web3 learning platform',
       },
 

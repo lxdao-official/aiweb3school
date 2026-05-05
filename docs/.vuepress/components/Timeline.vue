@@ -48,28 +48,41 @@ const mapDemoGraph = {
 }
 
 const mapDemoFlow = computed(() => {
+  const isCompact = viewportWidth.value <= 768
+  const graph = isCompact
+    ? {
+        width: 350,
+        titleWidth: 300,
+        itemWidth: 292,
+        titleHeight: 52,
+        itemHeight: 68,
+        itemGap: 16,
+        titleY: 18,
+        firstItemY: 88,
+      }
+    : mapDemoGraph
   const shellWidth = Math.min(820, Math.max(320, viewportWidth.value - (viewportWidth.value <= 768 ? 24 : 40)))
-  const zoom = Math.min(1, Math.max(0.42, (shellWidth - 40) / mapDemoGraph.width))
-  const graphHeight = mapDemoGraph.firstItemY
-    + content.value.mapDemo.items.length * mapDemoGraph.itemHeight
-    + Math.max(0, content.value.mapDemo.items.length - 1) * mapDemoGraph.itemGap
+  const zoom = isCompact ? 1 : Math.min(1, Math.max(0.42, (shellWidth - 40) / graph.width))
+  const graphHeight = graph.firstItemY
+    + content.value.mapDemo.items.length * graph.itemHeight
+    + Math.max(0, content.value.mapDemo.items.length - 1) * graph.itemGap
     + 34
-  const centerX = mapDemoGraph.width / 2
+  const centerX = graph.width / 2
 
   return {
-    height: Math.ceil(graphHeight * zoom + 48),
+    height: Math.ceil(graphHeight * zoom + (isCompact ? 30 : 48)),
     viewport: {
-      x: (shellWidth - mapDemoGraph.width * zoom) / 2,
-      y: 24,
+      x: (shellWidth - graph.width * zoom) / 2,
+      y: isCompact ? 12 : 24,
       zoom,
     },
     nodes: [
       {
         id: 'map-demo-title',
         type: 'roadmap',
-        position: { x: centerX - mapDemoGraph.titleWidth / 2, y: mapDemoGraph.titleY },
-        width: mapDemoGraph.titleWidth,
-        height: mapDemoGraph.titleHeight,
+        position: { x: centerX - graph.titleWidth / 2, y: graph.titleY },
+        width: graph.titleWidth,
+        height: graph.titleHeight,
         draggable: false,
         selectable: false,
         connectable: false,
@@ -85,11 +98,11 @@ const mapDemoFlow = computed(() => {
         id: `map-demo-item-${index}`,
         type: 'roadmap',
         position: {
-          x: centerX - mapDemoGraph.itemWidth / 2,
-          y: mapDemoGraph.firstItemY + index * (mapDemoGraph.itemHeight + mapDemoGraph.itemGap),
+          x: centerX - graph.itemWidth / 2,
+          y: graph.firstItemY + index * (graph.itemHeight + graph.itemGap),
         },
-        width: mapDemoGraph.itemWidth,
-        height: mapDemoGraph.itemHeight,
+        width: graph.itemWidth,
+        height: graph.itemHeight,
         draggable: false,
         selectable: false,
         connectable: false,
@@ -485,6 +498,7 @@ html[data-theme='dark'] .roadmap-shell::before {
   }
 
   .map-demo-vue-flow .roadmap-flow-card.is-topic {
+    min-height: 68px;
     border-radius: 16px;
     font-size: 28px;
   }

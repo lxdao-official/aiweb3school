@@ -15,10 +15,14 @@ config:
       text: ''
       actions:
         - text: 加入 Bootcamp
-          link: /zh/ai-fundamentals/
+          link: https://web3career.build/zh/programs/AI-Web3-School?tab=apply
           theme: brand
+          target: _blank
+          rel: noopener noreferrer
         - text: 了解更多
           link: /zh/ai-agents/
           theme: alt
+  - type: CourseBootcampBanner
+  - type: RoadmapPlayground
   - type: Timeline
 ---

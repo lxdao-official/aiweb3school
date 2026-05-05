@@ -15,10 +15,13 @@ config:
       text: ''
       actions:
         - text: Join Bootcamp
-          link: /en/ai-fundamentals/
+          link: https://web3career.build/en/programs/AI-Web3-School?tab=apply
           theme: brand
+          target: _blank
+          rel: noopener noreferrer
         - text: Learn More
           link: /en/ai-agents/
           theme: alt
+  - type: CourseBootcampBanner
   - type: Timeline
 ---

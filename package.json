@@ -1,7 +1,7 @@
 {
   "name": "aiweb3school",
   "private": true,
-  "description": "AI Web3 School",
+  "description": "AI x Web3 School",
   "license": "MIT",
   "engines": {
     "node": "^20.6.0 || >=22.0.0"

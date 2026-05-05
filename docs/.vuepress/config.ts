@@ -7,12 +7,12 @@ export default defineUserConfig({
   lang: 'zh-CN',
   locales: {
     '/': {
-      title: 'AI Web3 School',
+      title: 'AI x Web3 School',
       lang: 'zh-CN',
       description: 'AI × Web3 学习平台',
     },
     '/en/': {
-      title: 'AI Web3 School',
+      title: 'AI x Web3 School',
       lang: 'en-US',
       description: 'AI × Web3 learning platform',
     },

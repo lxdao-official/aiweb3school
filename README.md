@@ -1,4 +1,4 @@
-# AI Web3 School
+# AI x Web3 School
 
 <div align="center">
 
@@ -12,7 +12,7 @@
 
 ## 关于项目
 
-AI Web3 School 是一个面向中文学习者的开源学习项目，聚焦 AI 与 Web3 的交叉知识体系，内容覆盖 AI 基础、Web3 基础、融合应用案例和项目实践路径。
+AI x Web3 School 是一个面向中文学习者的开源学习项目，聚焦 AI 与 Web3 的交叉知识体系，内容覆盖 AI 基础、Web3 基础、融合应用案例和项目实践路径。
 
 这个仓库适合：
 
