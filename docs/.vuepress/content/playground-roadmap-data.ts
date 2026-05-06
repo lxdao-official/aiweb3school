@@ -11,7 +11,7 @@
  *     - 在各自半区内，sub-card 按节点 index 自动左右交替挂在主列两侧
  *     - 主线保持紧凑固定节奏；sub-card 在各自 lane 内有空就向上贴合，只避免同 lane 重叠
  *   • 融合 card 自动排成 4 列，中线左右各 2 列；每列向上贴合，只避免同列重叠
- *   • Hackathon tracks 列等宽（250px）等距（28px gap）
+ *   • Hackathon tracks 渲染为 6 张 sub-card，等宽（250px）等距（28px gap）
  *   • 主节点的 link 会让节点亮起、cursor 变 pointer，并新窗口打开
  *   • sub-card item 的 link 同上，作用范围限于 item 本身
  *

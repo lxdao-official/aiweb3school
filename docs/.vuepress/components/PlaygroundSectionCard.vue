@@ -22,7 +22,8 @@ defineProps<{
 function handleItemClick(item: SectionItem, e: MouseEvent) {
   if (!item.link) return
   e.stopPropagation()
-  window.open(item.link, '_blank')
+  const isEnglish = document.documentElement.lang.toLowerCase().startsWith('en')
+  window.alert(isEnglish ? 'Working in progress. Content is being written.' : '正在编写中，内容即将上线。')
 }
 </script>
 

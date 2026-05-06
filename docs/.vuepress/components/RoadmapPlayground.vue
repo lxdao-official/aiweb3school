@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
-import { ClientOnly } from 'vuepress/client'
+import { ClientOnly, useRouteLocale } from 'vuepress/client'
 import {
   MarkerType,
   VueFlow,
@@ -83,7 +83,7 @@ const layout = {
   fusionCardColGap: 24,
   fusionCardCenterGap: 34,
 
-  // Hackathon tracks（6×250 + 5×28 = 1640，填满 1640 宽画布）
+  // Hackathon tracks（6 张 sub-card，6×250 + 5×28 = 1640，填满 1640 宽画布）
   splitTopGap: 82,
   splitLabelHeight: 30,
   splitSectionLabelGap: 18,
@@ -92,8 +92,7 @@ const layout = {
   splitPadX: 24,
   splitPadY: 32,
   splitColGap: 28,
-  splitNodeStartOffset: 30,
-  splitStepY: 88,
+  splitCardStartOffset: 30,
 }
 
 // ============================================================
@@ -376,8 +375,7 @@ function buildFromData(data: RoadmapData) {
   // ─── 4 路分支 ───
   const splitCount = data.splits.length
   const splitSectionLabelY = fusionFrameTop + fusionFrameH + layout.splitTopGap
-  const splitLabelY = splitSectionLabelY + layout.splitLabelHeight + layout.splitSectionLabelGap
-  const splitFrameTop = splitLabelY + layout.splitLabelHeight + layout.splitLabelGap
+  const splitFrameTop = splitSectionLabelY + layout.splitLabelHeight + layout.splitSectionLabelGap
   const totalSplitW = splitCount * layout.splitFrameWidth + Math.max(0, splitCount - 1) * layout.splitColGap
   const splitFirstFrameLeftX = (layout.graphWidth - totalSplitW) / 2
 
@@ -394,33 +392,18 @@ function buildFromData(data: RoadmapData) {
   ))
 
   data.splits.forEach((col, c) => {
-    const frameLeftX = splitFirstFrameLeftX + c * (layout.splitFrameWidth + layout.splitColGap)
-    const frameCenterX = frameLeftX + layout.splitFrameWidth / 2
-    const colIds: string[] = []
+    const cardLeftX = splitFirstFrameLeftX + c * (layout.splitFrameWidth + layout.splitColGap)
+    const cardY = splitFrameTop + layout.splitCardStartOffset
+    const cardId = `TRACK-CARD-${c + 1}`
+    const sections: SectionBlock[] = [{
+      title: col.label,
+      items: col.nodes.map((n) => ({ title: n.title, link: n.link })),
+    }]
+    const { node, height } = makeSectionCardNode(cardId, cardLeftX, cardY, layout.splitFrameWidth, sections)
 
-    col.nodes.forEach((n, r) => {
-      const y = splitFrameTop + layout.splitNodeStartOffset + r * layout.splitStepY
-      nodes.push(makeRoadmapNode(n.id, n.title, 'group', frameCenterX, y, 'web3', n.link))
-      colIds.push(n.id)
-    })
-    for (let r = 0; r < colIds.length - 1; r++) {
-      edges.push(makeMainEdge(colIds[r], colIds[r + 1]))
-    }
-    if (colIds.length) splitColumnFirstIds.push(colIds[0])
-
-    const colBottomY = splitFrameTop + layout.splitNodeStartOffset + Math.max(0, col.nodes.length - 1) * layout.splitStepY + layout.nodeHeight
-    const frameH = colBottomY + layout.splitPadY - splitFrameTop
-    splitContentBottomY = Math.max(splitContentBottomY, splitFrameTop + frameH)
-    nodes.push(makeFrameNode(`FRAME-S${c + 1}`, frameLeftX, splitFrameTop, layout.splitFrameWidth, frameH, 'fusion'))
-
-    const labelW = Math.min(230, layout.splitFrameWidth - 20)
-    nodes.push(makeLabelNode(
-      `LBL-S${c + 1}`,
-      frameCenterX - labelW / 2,
-      splitLabelY,
-      labelW, layout.splitLabelHeight,
-      col.label, 'fusion',
-    ))
+    nodes.push(node)
+    splitColumnFirstIds.push(cardId)
+    splitContentBottomY = Math.max(splitContentBottomY, cardY + height + layout.splitPadY)
   })
 
   splitColumnFirstIds.forEach((firstId) => {
@@ -441,6 +424,13 @@ const nodeTypes = {
   'section-card': markRaw(PlaygroundSectionCard),
 }
 const viewportWidth = ref(1320)
+const routeLocale = useRouteLocale()
+const localeKey = computed(() => routeLocale.value === '/en/' ? 'en' : 'zh')
+const wipMessage = computed(() => (
+  localeKey.value === 'en'
+    ? 'Working in progress. Content is being written.'
+    : '正在编写中，内容即将上线。'
+))
 
 function updateViewportWidth() {
   viewportWidth.value = window.innerWidth
@@ -472,7 +462,7 @@ const displayHeight = computed(() => {
 function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
   const link = node.data?.link
   if (!link) return
-  window.open(link, '_blank')
+  window.alert(wipMessage.value)
 }
 </script>
 
