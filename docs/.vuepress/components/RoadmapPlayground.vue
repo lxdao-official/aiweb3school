@@ -695,6 +695,7 @@ function handleMobileItemClick(link?: string) {
 
 :deep(.roadmap-vue-flow .roadmap-flow-edge-fusion .vue-flow__edge-path) {
   stroke: rgba(203, 140, 255, 0.92);
+  filter: none;
 }
 
 :deep(.roadmap-vue-flow .roadmap-flow-edge-ai .vue-flow__edge-path),
