@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
-import { ClientOnly, useRouteLocale } from 'vuepress/client'
+import { ClientOnly, useRouteLocale, withBase } from 'vuepress/client'
 import {
   VueFlow,
   type NodeMouseEvent,
@@ -35,11 +35,7 @@ let roadmapFeedbackTimer: ReturnType<typeof setTimeout> | undefined
 
 const roadmapViewport = computed(() => createRoadmapViewport(viewportWidth.value))
 const isMobileViewport = computed(() => viewportWidth.value <= 768)
-const wipMessage = computed(() => (
-  localeKey.value === 'en'
-    ? 'Working in progress. Content is being written.'
-    : '正在编写中，内容即将上线。'
-))
+const contributionPath = computed(() => localeKey.value === 'en' ? '/en/contribution/' : '/zh/contribution/')
 const mapDemoGraph = {
   width: 760,
   titleWidth: 500,
@@ -163,19 +159,17 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
 
   if (node.data?.variant === 'topic' || node.data?.variant === 'section-title') {
     triggerRoadmapFeedback(node.id)
-    if (link) {
-      window.alert(wipMessage.value)
-    }
+    window.location.href = withBase(contributionPath.value)
     return
   }
 
   if (!link) return
-  window.alert(wipMessage.value)
+  window.location.href = withBase(contributionPath.value)
 }
 
 function handleMobileRoadmapClick(nodeId: string) {
   triggerRoadmapFeedback(nodeId)
-  window.alert(wipMessage.value)
+  window.location.href = withBase(contributionPath.value)
 }
 
 function triggerRoadmapFeedback(nodeId: string) {

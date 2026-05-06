@@ -23,6 +23,6 @@ config:
           link: /en/ai-agents/
           theme: alt
   - type: CourseBootcampBanner
-  - type: Timeline
+  - type: RoadmapPlayground
   - type: LogoWall
 ---

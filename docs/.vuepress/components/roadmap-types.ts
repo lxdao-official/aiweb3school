@@ -5,4 +5,5 @@ export interface RoadmapFlowNodeData {
   isActive?: boolean
   isInteractive?: boolean
   link?: string
+  description?: string
 }

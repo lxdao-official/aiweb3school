@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { Handle, Position } from '@vue-flow/core'
+import { withBase } from 'vuepress/client'
 
 export interface SectionItem {
   title: string
   link?: string
+  description?: string
 }
 
 export interface SectionBlock {
   title: string
+  description?: string
   items: SectionItem[]
 }
 
@@ -23,7 +26,7 @@ function handleItemClick(item: SectionItem, e: MouseEvent) {
   if (!item.link) return
   e.stopPropagation()
   const isEnglish = document.documentElement.lang.toLowerCase().startsWith('en')
-  window.alert(isEnglish ? 'Working in progress. Content is being written.' : '正在编写中，内容即将上线。')
+  window.location.href = withBase(isEnglish ? '/en/contribution/' : '/zh/contribution/')
 }
 </script>
 
@@ -35,7 +38,10 @@ function handleItemClick(item: SectionItem, e: MouseEvent) {
     <div v-for="(section, si) in data.sections" :key="si" class="pg-section-block">
       <div class="pg-section-title-row">
         <span class="pg-divider" />
-        <span class="pg-section-title">{{ section.title }}</span>
+        <span class="pg-section-title" :title="section.description">
+          {{ section.title }}
+          <span v-if="section.description" class="pg-tooltip" role="tooltip">{{ section.description }}</span>
+        </span>
         <span class="pg-divider" />
       </div>
       <div
@@ -43,9 +49,11 @@ function handleItemClick(item: SectionItem, e: MouseEvent) {
         :key="ii"
         class="pg-section-item"
         :class="{ 'is-clickable': !!item.link }"
+        :title="item.description"
         @click="handleItemClick(item, $event)"
       >
         {{ item.title }}
+        <span v-if="item.description" class="pg-tooltip" role="tooltip">{{ item.description }}</span>
       </div>
     </div>
     <Handle id="left-target" type="target" :position="Position.Left" class="pg-handle" />
@@ -100,6 +108,7 @@ html[data-theme='dark'] .pg-section-card {
 }
 
 .pg-section-title {
+  position: relative;
   min-width: 0;
   font-size: 15px;
   font-weight: 700;
@@ -115,6 +124,7 @@ html[data-theme='dark'] .pg-section-title {
 }
 
 .pg-section-item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,6 +145,59 @@ html[data-theme='dark'] .pg-section-title {
     background-color 0.18s ease,
     box-shadow 0.18s ease,
     color 0.18s ease;
+}
+
+.pg-tooltip {
+  position: absolute;
+  z-index: 50;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  width: max-content;
+  max-width: 260px;
+  padding: 8px 10px;
+  border: 1px solid rgba(167, 139, 250, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(45, 36, 68, 0.94);
+  box-shadow: 0 10px 24px rgba(86, 55, 140, 0.16);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.pg-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid rgba(167, 139, 250, 0.34);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.34);
+  background: inherit;
+  transform: translate(-50%, -4px) rotate(45deg);
+}
+
+.pg-section-title:hover .pg-tooltip,
+.pg-section-title:focus-within .pg-tooltip,
+.pg-section-item:hover .pg-tooltip,
+.pg-section-item:focus-within .pg-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+html[data-theme='dark'] .pg-tooltip {
+  border-color: rgba(154, 117, 245, 0.48);
+  background: rgba(32, 23, 48, 0.97);
+  color: rgba(249, 245, 255, 0.92);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.38);
 }
 
 html[data-theme='dark'] .pg-section-item {

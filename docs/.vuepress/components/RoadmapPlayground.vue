@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
-import { ClientOnly, useRouteLocale } from 'vuepress/client'
+import { ClientOnly, useRouteLocale, withBase } from 'vuepress/client'
 import {
   MarkerType,
   VueFlow,
@@ -17,6 +17,7 @@ import PlaygroundAnchor from './PlaygroundAnchor.vue'
 import PlaygroundSectionCard, { type SectionBlock } from './PlaygroundSectionCard.vue'
 import type { RoadmapNode } from './roadmap-layout'
 import {
+  describeRoadmapTitle,
   playgroundRoadmap,
   type RoadmapData,
   type RoadmapSubCard,
@@ -114,7 +115,14 @@ function computeSectionCardHeight(sections: SectionBlock[]): number {
 }
 
 function asSectionBlocks(card: RoadmapSubCard): SectionBlock[] {
-  return [{ title: card.title, items: card.items }]
+  return [{
+    title: card.title,
+    description: card.description ?? describeRoadmapTitle(card.title),
+    items: card.items.map((item) => ({
+      ...item,
+      description: item.description ?? describeRoadmapTitle(item.title),
+    })),
+  }]
 }
 
 // ============================================================
@@ -138,7 +146,7 @@ function makeRoadmapNode(
     connectable: false,
     focusable: interactive,
     zIndex: 5,
-    data: { title, tone, variant, isInteractive: interactive, link },
+    data: { title, tone, variant, isInteractive: interactive, link, description: describeRoadmapTitle(title) },
   }
 }
 
@@ -397,7 +405,12 @@ function buildFromData(data: RoadmapData) {
     const cardId = `TRACK-CARD-${c + 1}`
     const sections: SectionBlock[] = [{
       title: col.label,
-      items: col.nodes.map((n) => ({ title: n.title, link: n.link })),
+      description: describeRoadmapTitle(col.label),
+      items: col.nodes.map((n) => ({
+        title: n.title,
+        link: n.link,
+        description: n.description ?? describeRoadmapTitle(n.title),
+      })),
     }]
     const { node, height } = makeSectionCardNode(cardId, cardLeftX, cardY, layout.splitFrameWidth, sections)
 
@@ -423,14 +436,11 @@ const nodeTypes = {
   anchor: markRaw(PlaygroundAnchor),
   'section-card': markRaw(PlaygroundSectionCard),
 }
-const viewportWidth = ref(1320)
+const viewportWidth = ref(typeof window === 'undefined' ? 1320 : window.innerWidth)
 const routeLocale = useRouteLocale()
 const localeKey = computed(() => routeLocale.value === '/en/' ? 'en' : 'zh')
-const wipMessage = computed(() => (
-  localeKey.value === 'en'
-    ? 'Working in progress. Content is being written.'
-    : '正在编写中，内容即将上线。'
-))
+const contributionPath = computed(() => localeKey.value === 'en' ? '/en/contribution/' : '/zh/contribution/')
+const isMobileLayout = computed(() => viewportWidth.value <= 768)
 
 function updateViewportWidth() {
   viewportWidth.value = window.innerWidth
@@ -455,6 +465,8 @@ const viewport = computed(() => {
   }
 })
 
+const flowKey = computed(() => `roadmap-${Math.round(viewport.value.zoom * 1000)}`)
+
 const displayHeight = computed(() => {
   return Math.ceil(flow.value.height * viewport.value.zoom + viewport.value.y + 48)
 })
@@ -462,15 +474,111 @@ const displayHeight = computed(() => {
 function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
   const link = node.data?.link
   if (!link) return
-  window.alert(wipMessage.value)
+  window.location.href = withBase(contributionPath.value)
+}
+
+function handleMobileItemClick(link?: string) {
+  if (!link) return
+  window.location.href = withBase(contributionPath.value)
 }
 </script>
 
 <template>
   <section class="roadmap-playground">
-    <div class="roadmap-playground-shell">
+    <div v-if="isMobileLayout" class="roadmap-mobile-flat">
+      <details class="roadmap-mobile-section is-ai" open>
+        <summary>
+          <span>{{ playgroundRoadmap.topLeft.label }}</span>
+          <small>{{ describeRoadmapTitle(playgroundRoadmap.topLeft.label) }}</small>
+        </summary>
+        <article v-for="node in playgroundRoadmap.topLeft.nodes" :key="node.id" class="roadmap-mobile-card">
+          <h3 :title="describeRoadmapTitle(node.title)">{{ node.title }}</h3>
+          <p>{{ describeRoadmapTitle(node.title) }}</p>
+          <div v-if="node.subCard" class="roadmap-mobile-items">
+            <button
+              v-for="item in node.subCard.items"
+              :key="item.title"
+              type="button"
+              :title="item.description ?? describeRoadmapTitle(item.title)"
+              @click="handleMobileItemClick(item.link)"
+            >
+              {{ item.title }}
+            </button>
+          </div>
+        </article>
+      </details>
+
+      <details class="roadmap-mobile-section is-web3" open>
+        <summary>
+          <span>{{ playgroundRoadmap.topRight.label }}</span>
+          <small>{{ describeRoadmapTitle(playgroundRoadmap.topRight.label) }}</small>
+        </summary>
+        <article v-for="node in playgroundRoadmap.topRight.nodes" :key="node.id" class="roadmap-mobile-card">
+          <h3 :title="describeRoadmapTitle(node.title)">{{ node.title }}</h3>
+          <p>{{ describeRoadmapTitle(node.title) }}</p>
+          <div v-if="node.subCard" class="roadmap-mobile-items">
+            <button
+              v-for="item in node.subCard.items"
+              :key="item.title"
+              type="button"
+              :title="item.description ?? describeRoadmapTitle(item.title)"
+              @click="handleMobileItemClick(item.link)"
+            >
+              {{ item.title }}
+            </button>
+          </div>
+        </article>
+      </details>
+
+      <details class="roadmap-mobile-section is-bridge" open>
+        <summary>
+          <span>{{ playgroundRoadmap.fusion.label }}</span>
+          <small>{{ describeRoadmapTitle(playgroundRoadmap.fusion.label) }}</small>
+        </summary>
+        <article v-for="card in playgroundRoadmap.fusion.cards" :key="card.title" class="roadmap-mobile-card">
+          <h3 :title="describeRoadmapTitle(card.title)">{{ card.title }}</h3>
+          <p>{{ describeRoadmapTitle(card.title) }}</p>
+          <div class="roadmap-mobile-items">
+            <button
+              v-for="item in card.items"
+              :key="item.title"
+              type="button"
+              :title="item.description ?? describeRoadmapTitle(item.title)"
+              @click="handleMobileItemClick(item.link)"
+            >
+              {{ item.title }}
+            </button>
+          </div>
+        </article>
+      </details>
+
+      <details class="roadmap-mobile-section is-frontier" open>
+        <summary>
+          <span>Frontier Directions</span>
+          <small>{{ describeRoadmapTitle('Frontier Directions') }}</small>
+        </summary>
+        <article v-for="track in playgroundRoadmap.splits" :key="track.label" class="roadmap-mobile-card">
+          <h3 :title="describeRoadmapTitle(track.label)">{{ track.label }}</h3>
+          <p>{{ describeRoadmapTitle(track.label) }}</p>
+          <div class="roadmap-mobile-items">
+            <button
+              v-for="item in track.nodes"
+              :key="item.id"
+              type="button"
+              :title="item.description ?? describeRoadmapTitle(item.title)"
+              @click="handleMobileItemClick(item.link)"
+            >
+              {{ item.title }}
+            </button>
+          </div>
+        </article>
+      </details>
+    </div>
+
+    <div v-else class="roadmap-playground-shell">
       <ClientOnly>
         <VueFlow
+          :key="flowKey"
           class="roadmap-vue-flow"
           :style="{ height: `${displayHeight}px` }"
           :nodes="flow.nodes"
@@ -506,6 +614,13 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
   margin: 40px auto;
 }
 
+@media (max-width: 768px) {
+  .roadmap-playground {
+    width: min(100%, calc(100vw - 24px));
+    margin: 28px auto;
+  }
+}
+
 :deep(.roadmap-vue-flow .roadmap-flow-edge-ai .vue-flow__edge-path) {
   stroke: rgba(160, 138, 255, 0.94);
   filter:
@@ -526,8 +641,7 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
 
 :deep(.roadmap-vue-flow .roadmap-flow-edge-ai .vue-flow__edge-path),
 :deep(.roadmap-vue-flow .roadmap-flow-edge-web3 .vue-flow__edge-path) {
-  stroke-dasharray: 14 12;
-  animation: roadmap-edge-flow 2.8s linear infinite;
+  stroke-dasharray: none;
 }
 
 :deep(.roadmap-vue-flow .roadmap-flow-edge-side .vue-flow__edge-path) {
@@ -537,15 +651,137 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
   filter: drop-shadow(0 0 5px rgba(178, 138, 255, 0.22));
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :deep(.roadmap-vue-flow .vue-flow__edge-path) {
-    animation: none !important;
-  }
+.roadmap-mobile-flat {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
-@keyframes roadmap-edge-flow {
-  to {
-    stroke-dashoffset: -26;
-  }
+.roadmap-mobile-section {
+  --mobile-accent: rgba(170, 104, 255, 0.95);
+  --mobile-border: rgba(186, 153, 255, 0.36);
+  --mobile-soft: rgba(170, 104, 255, 0.1);
+  border: 1px solid var(--mobile-border);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 70% at 0% 0%, var(--mobile-soft), transparent 58%),
+    rgba(255, 255, 255, 0.34);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.roadmap-mobile-section.is-ai {
+  --mobile-accent: rgba(138, 112, 255, 0.98);
+  --mobile-border: rgba(167, 139, 250, 0.42);
+  --mobile-soft: rgba(167, 139, 250, 0.14);
+}
+
+.roadmap-mobile-section.is-web3 {
+  --mobile-accent: rgba(42, 157, 218, 0.98);
+  --mobile-border: rgba(110, 209, 255, 0.38);
+  --mobile-soft: rgba(110, 209, 255, 0.12);
+}
+
+.roadmap-mobile-section summary {
+  display: grid;
+  gap: 6px;
+  padding: 18px 18px 16px;
+  cursor: pointer;
+  list-style: none;
+  min-width: 0;
+}
+
+.roadmap-mobile-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.roadmap-mobile-section summary span {
+  color: var(--mobile-accent);
+  font-size: 28px;
+  font-weight: 850;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-mobile-section summary small {
+  color: rgba(74, 62, 96, 0.78);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-mobile-card {
+  margin: 0 14px 14px;
+  padding: 14px;
+  border: 1px solid var(--mobile-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.42);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.roadmap-mobile-card h3 {
+  margin: 0 0 6px;
+  color: var(--mobile-accent);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-mobile-card p {
+  margin: 0 0 12px;
+  color: rgba(58, 48, 76, 0.78);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-mobile-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.roadmap-mobile-items button {
+  min-width: 0;
+  max-width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--mobile-border);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.45);
+  color: rgba(57, 45, 72, 0.92);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+html[data-theme='dark'] .roadmap-mobile-section {
+  background:
+    radial-gradient(120% 70% at 0% 0%, var(--mobile-soft), transparent 58%),
+    rgba(33, 24, 48, 0.62);
+}
+
+html[data-theme='dark'] .roadmap-mobile-section summary small,
+html[data-theme='dark'] .roadmap-mobile-card p {
+  color: rgba(235, 226, 250, 0.78);
+}
+
+html[data-theme='dark'] .roadmap-mobile-card {
+  background: rgba(26, 19, 38, 0.54);
+}
+
+html[data-theme='dark'] .roadmap-mobile-items button {
+  background: rgba(26, 19, 38, 0.56);
+  color: rgba(249, 245, 255, 0.86);
 }
 </style>

@@ -5,6 +5,21 @@ import { enNotes, zhNotes } from './notes';
 const applyZhUrl = 'https://web3career.build/zh/programs/AI-Web3-School?tab=apply';
 const applyEnUrl = 'https://web3career.build/en/programs/AI-Web3-School?tab=apply';
 
+const socialLinks = [
+  {
+    icon: 'x',
+    link: 'https://x.com/aiweb3school',
+  },
+  {
+    icon: 'telegram',
+    link: 'http://t.me/aiweb3school',
+  },
+  {
+    icon: 'github',
+    link: 'https://github.com/lxdao-official/aiweb3school',
+  },
+];
+
 const footerZh = `
 <section class="aiw3-footer" aria-label="AI x Web3 School 页脚">
   <div class="aiw3-footer-main">
@@ -80,12 +95,8 @@ const footerEn = `
 export default defineThemeConfig({
   appearance: true,
 
-  social: [
-    {
-      icon: 'github',
-      link: 'https://github.com/lxdao-official/aiweb3school',
-    },
-  ],
+  social: socialLinks,
+  navbarSocialInclude: ['x', 'telegram', 'github'],
 
   prevPage: true,
   nextPage: true,
@@ -112,6 +123,7 @@ export default defineThemeConfig({
 
       navbar: zhNavbar,
       notes: zhNotes,
+      social: socialLinks,
       footer: {
         message: footerZh,
       },
@@ -127,6 +139,7 @@ export default defineThemeConfig({
 
       navbar: enNavbar,
       notes: enNotes,
+      social: socialLinks,
       footer: {
         message: footerEn,
       },
