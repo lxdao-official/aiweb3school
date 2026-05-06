@@ -20,6 +20,7 @@ import {
   describeRoadmapTitle,
   playgroundRoadmap,
   type RoadmapData,
+  type RoadmapMainNode,
   type RoadmapSubCard,
 } from '../content/playground-roadmap-data'
 
@@ -442,6 +443,63 @@ const localeKey = computed(() => routeLocale.value === '/en/' ? 'en' : 'zh')
 const contributionPath = computed(() => localeKey.value === 'en' ? '/en/contribution/' : '/zh/contribution/')
 const isMobileLayout = computed(() => viewportWidth.value <= 768)
 
+const homepageAiIds = new Set(['A1', 'A2', 'A3', 'A4', 'A5', 'A9'])
+const homepageWeb3Ids = new Set(['B1', 'B2', 'B3', 'B4', 'B6', 'B10'])
+const homepageSubCardIds = new Set(['A1', 'A4', 'A5', 'A9', 'B1', 'B3', 'B6', 'B10'])
+const homepageFusionTitles = new Set([
+  'Chain-aware Context',
+  'Web3 Tool Use',
+  'Agent Workflow',
+  'Agent Wallet',
+  'Machine Payment',
+  'Settlement & Escrow',
+  'AI Oracle',
+  'Verifiable AI',
+])
+
+function simplifyMainNode(node: RoadmapMainNode): RoadmapMainNode {
+  if (!homepageSubCardIds.has(node.id) || !node.subCard) {
+    const { subCard, ...mainNode } = node
+    void subCard
+    return mainNode
+  }
+
+  return {
+    ...node,
+    subCard: trimCard(node.subCard, 4),
+  }
+}
+
+function trimCard(card: RoadmapSubCard, itemLimit: number): RoadmapSubCard {
+  return {
+    ...card,
+    items: card.items.slice(0, itemLimit),
+  }
+}
+
+const homepageRoadmap = computed<RoadmapData>(() => ({
+  topLeft: {
+    ...playgroundRoadmap.topLeft,
+    nodes: playgroundRoadmap.topLeft.nodes.filter((node) => homepageAiIds.has(node.id)).map(simplifyMainNode),
+  },
+  topRight: {
+    ...playgroundRoadmap.topRight,
+    nodes: playgroundRoadmap.topRight.nodes.filter((node) => homepageWeb3Ids.has(node.id)).map(simplifyMainNode),
+  },
+  fusion: {
+    ...playgroundRoadmap.fusion,
+    cards: playgroundRoadmap.fusion.cards
+      .filter((card) => homepageFusionTitles.has(card.title))
+      .map((card) => trimCard(card, 4)),
+  },
+  splits: playgroundRoadmap.splits.map((split) => ({
+    ...split,
+    nodes: split.nodes.slice(0, 3),
+  })),
+}))
+
+const visibleMobileRoadmap = computed(() => homepageRoadmap.value)
+
 function updateViewportWidth() {
   viewportWidth.value = window.innerWidth
 }
@@ -453,7 +511,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateViewportWidth)
 })
 
-const flow = computed(() => buildFromData(playgroundRoadmap))
+const flow = computed(() => buildFromData(homepageRoadmap.value))
 
 const viewport = computed(() => {
   const shellWidth = Math.min(layout.graphWidth, Math.max(320, viewportWidth.value - 40))
@@ -488,10 +546,10 @@ function handleMobileItemClick(link?: string) {
     <div v-if="isMobileLayout" class="roadmap-mobile-flat">
       <details class="roadmap-mobile-section is-ai" open>
         <summary>
-          <span>{{ playgroundRoadmap.topLeft.label }}</span>
-          <small>{{ describeRoadmapTitle(playgroundRoadmap.topLeft.label) }}</small>
+          <span>{{ visibleMobileRoadmap.topLeft.label }}</span>
+          <small>{{ describeRoadmapTitle(visibleMobileRoadmap.topLeft.label) }}</small>
         </summary>
-        <article v-for="node in playgroundRoadmap.topLeft.nodes" :key="node.id" class="roadmap-mobile-card">
+        <article v-for="node in visibleMobileRoadmap.topLeft.nodes" :key="node.id" class="roadmap-mobile-card">
           <h3 :title="describeRoadmapTitle(node.title)">{{ node.title }}</h3>
           <p>{{ describeRoadmapTitle(node.title) }}</p>
           <div v-if="node.subCard" class="roadmap-mobile-items">
@@ -510,10 +568,10 @@ function handleMobileItemClick(link?: string) {
 
       <details class="roadmap-mobile-section is-web3" open>
         <summary>
-          <span>{{ playgroundRoadmap.topRight.label }}</span>
-          <small>{{ describeRoadmapTitle(playgroundRoadmap.topRight.label) }}</small>
+          <span>{{ visibleMobileRoadmap.topRight.label }}</span>
+          <small>{{ describeRoadmapTitle(visibleMobileRoadmap.topRight.label) }}</small>
         </summary>
-        <article v-for="node in playgroundRoadmap.topRight.nodes" :key="node.id" class="roadmap-mobile-card">
+        <article v-for="node in visibleMobileRoadmap.topRight.nodes" :key="node.id" class="roadmap-mobile-card">
           <h3 :title="describeRoadmapTitle(node.title)">{{ node.title }}</h3>
           <p>{{ describeRoadmapTitle(node.title) }}</p>
           <div v-if="node.subCard" class="roadmap-mobile-items">
@@ -532,10 +590,10 @@ function handleMobileItemClick(link?: string) {
 
       <details class="roadmap-mobile-section is-bridge" open>
         <summary>
-          <span>{{ playgroundRoadmap.fusion.label }}</span>
-          <small>{{ describeRoadmapTitle(playgroundRoadmap.fusion.label) }}</small>
+          <span>{{ visibleMobileRoadmap.fusion.label }}</span>
+          <small>{{ describeRoadmapTitle(visibleMobileRoadmap.fusion.label) }}</small>
         </summary>
-        <article v-for="card in playgroundRoadmap.fusion.cards" :key="card.title" class="roadmap-mobile-card">
+        <article v-for="card in visibleMobileRoadmap.fusion.cards" :key="card.title" class="roadmap-mobile-card">
           <h3 :title="describeRoadmapTitle(card.title)">{{ card.title }}</h3>
           <p>{{ describeRoadmapTitle(card.title) }}</p>
           <div class="roadmap-mobile-items">
@@ -557,7 +615,7 @@ function handleMobileItemClick(link?: string) {
           <span>Frontier Directions</span>
           <small>{{ describeRoadmapTitle('Frontier Directions') }}</small>
         </summary>
-        <article v-for="track in playgroundRoadmap.splits" :key="track.label" class="roadmap-mobile-card">
+        <article v-for="track in visibleMobileRoadmap.splits" :key="track.label" class="roadmap-mobile-card">
           <h3 :title="describeRoadmapTitle(track.label)">{{ track.label }}</h3>
           <p>{{ describeRoadmapTitle(track.label) }}</p>
           <div class="roadmap-mobile-items">

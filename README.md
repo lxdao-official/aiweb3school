@@ -2,138 +2,158 @@
 
 <div align="center">
 
-**AI × Web3 融合学习手册，帮助学习者系统理解人工智能与区块链的交叉领域**
+**An open learning handbook, bootcamp, and collaboration network for builders working at the intersection of AI and Web3.**
 
-[在线阅读](./docs/README.md) | [中文入口](./docs/zh/README.md) | [官方平台](https://web3career.build/) | [GitHub](https://github.com/lxdao-official/aiweb3school)
+[Website](https://aiweb3.school/) | [English Docs](./docs/en/README.md) | [Chinese Docs](./docs/README.md) | [Join Bootcamp](https://web3career.build/en/programs/AI-Web3-School?tab=apply) | [Telegram](https://t.me/aiweb3school) | [X](https://x.com/aiweb3school)
 
 </div>
 
 ---
 
-## 关于项目
+> [!IMPORTANT]
+> This handbook is a work in progress. The roadmap and learning materials are being written in public, and many topics are not complete yet. Contributions, corrections, examples, translations, and learning resources are welcome.
 
-AI x Web3 School 是一个面向中文学习者的开源学习项目，聚焦 AI 与 Web3 的交叉知识体系，内容覆盖 AI 基础、Web3 基础、融合应用案例和项目实践路径。
+## Current Bootcamp
 
-这个仓库适合：
+<table>
+  <tr>
+    <td><strong>Program</strong></td>
+    <td>AI x Web3 School Bootcamp</td>
+  </tr>
+  <tr>
+    <td><strong>Schedule</strong></td>
+    <td>May 17 - June 14, 2026</td>
+  </tr>
+  <tr>
+    <td><strong>Format</strong></td>
+    <td>3-week Bootcamp + 2-week hackathon</td>
+  </tr>
+  <tr>
+    <td><strong>Focus</strong></td>
+    <td>AI agents, wallets, onchain automation, payments, verification, privacy, decentralized AI, and practical AI x Web3 product building.</td>
+  </tr>
+  <tr>
+    <td><strong>Apply</strong></td>
+    <td><a href="https://web3career.build/en/programs/AI-Web3-School?tab=apply">English application</a> · <a href="https://web3career.build/zh/programs/AI-Web3-School?tab=apply">中文报名</a></td>
+  </tr>
+  <tr>
+    <td><strong>Community</strong></td>
+    <td><a href="https://t.me/aiweb3school">Telegram</a> · <a href="https://x.com/aiweb3school">X</a></td>
+  </tr>
+</table>
 
-- 想快速建立 AI 与 Web3 共同知识框架的初学者
-- 希望理解 AI Agent、AI + DeFi、AI + NFT 等方向的开发者
-- 想搭建课程、训练营或社区学习资料的教育组织与社区
+## Overview
 
----
+AI x Web3 School is an open-source education project for people who want to understand, build, and contribute to AI-native Web3 applications.
 
-## 内容结构
+The project combines:
 
-### 第一部分：AI 基础
+- a bilingual learning handbook in English and Chinese
+- a structured roadmap from fundamentals to applied AI x Web3 topics
+- a Bootcamp and hackathon program for builders
+- contribution-friendly docs for community writers, researchers, developers, and translators
 
-1. [AI 基础概念](./docs/zh/part1/ai-fundamentals.md)
-2. [机器学习基础](./docs/zh/part1/machine-learning-basics.md)
-3. [深度学习简介](./docs/zh/part1/deep-learning-intro.md)
-4. [AI 工具介绍](./docs/zh/part1/ai-tools.md)
+## Learning Content
 
-### 第二部分：Web3 基础
+The handbook is organized into four main parts.
 
-1. [区块链基础](./docs/zh/part2/blockchain-basics.md)
-2. [DeFi 简介](./docs/zh/part2/defi-intro.md)
-3. [智能合约](./docs/zh/part2/smart-contracts.md)
-4. [Web3 工具](./docs/zh/part2/web3-tools.md)
+### Part 1: AI Foundations
 
-### 第三部分：AI × Web3 融合方向
+- [AI Fundamentals](./docs/en/part1/ai-fundamentals.md)
+- [Machine Learning Basics](./docs/en/part1/machine-learning-basics.md)
+- [Deep Learning Introduction](./docs/en/part1/deep-learning-intro.md)
+- [AI Tools & Platforms](./docs/en/part1/ai-tools.md)
 
-1. [AI Agent](./docs/zh/part3/ai-agents.md)
-2. [AI + DeFi](./docs/zh/part3/ai-defi.md)
-3. [AI + NFT](./docs/zh/part3/ai-nft.md)
-4. [去中心化 AI](./docs/zh/part3/decentralized-ai.md)
+### Part 2: Web3 Foundations
 
-### 第四部分：案例与实践
+- [Blockchain Basics](./docs/en/part2/blockchain-basics.md)
+- [DeFi Introduction](./docs/en/part2/defi-intro.md)
+- [Smart Contracts](./docs/en/part2/smart-contracts.md)
+- [Web3 Tools](./docs/en/part2/web3-tools.md)
 
-1. [案例分析](./docs/zh/part4/case-studies.md)
-2. [项目指南](./docs/zh/part4/project-guide.md)
-3. [学习资源](./docs/zh/part4/resources.md)
+### Part 3: AI x Web3 Directions
 
----
+- [AI Agents](./docs/en/part3/ai-agents.md)
+- [AI + DeFi](./docs/en/part3/ai-defi.md)
+- [AI + NFT](./docs/en/part3/ai-nft.md)
+- [Decentralized AI](./docs/en/part3/decentralized-ai.md)
 
-## 如何阅读
+### Part 4: Cases and Practice
 
-- 文档主页：[`docs/README.md`](./docs/README.md)
-- 中文学习入口：[`docs/zh/README.md`](./docs/zh/README.md)
-- 推荐顺序：先学 AI 基础，再补 Web3 基础，最后进入融合专题和项目实践
+- [Case Studies](./docs/en/part4/case-studies.md)
+- [Project Guide](./docs/en/part4/project-guide.md)
+- [Resources](./docs/en/part4/resources.md)
 
----
+Chinese versions live under [`docs/zh/`](./docs/zh/).
 
-## 本地运行
+## Roadmap Status
 
-项目基于 VuePress 构建。
+Some roadmap topics are still being written. When a page is incomplete, it points to the contribution guide instead of pretending the content is finished.
+
+Contribution guides:
+
+- [English contribution guide](./docs/en/contribution.md)
+- [Chinese contribution guide](./docs/zh/contribution.md)
+
+## Contributing
+
+Contributions are welcome. Useful contributions include:
+
+- writing missing roadmap entries
+- fixing incorrect, unclear, or outdated explanations
+- adding diagrams, examples, exercises, and case studies
+- improving Chinese and English translations
+- sharing tools and resources for AI x Web3 builders
+
+To contribute:
+
+1. Fork this repository.
+2. Create a new branch.
+3. Edit or add documents under `docs/en/` or `docs/zh/`.
+4. Run a local build check.
+5. Open a Pull Request and explain which topic you improved.
+
+```bash
+bun install
+bun run docs:build
+```
+
+If you want to discuss a topic before writing, open an Issue or join the Telegram group:
+
+<https://t.me/aiweb3school>
+
+## Local Development
+
+This site is built with VuePress and vuepress-theme-plume.
 
 ```bash
 bun install
 bun run docs:dev
 ```
 
-常用命令：
+Useful commands:
 
 ```bash
+bun run docs:dev-clean
 bun run docs:build
 bun run docs:preview
 ```
 
-本地开发服务运行时，不要把验证构建输出到 `docs/.vuepress/` 下的临时目录；VuePress dev 会监听该目录，可能触发错误热更新。
-
----
-
-## 服务器部署
-
-项目使用 `Dockerfile` 构建镜像，并直接通过 `docker run` 启动一个静态站点服务。
-
-部署结构说明：
-
-- `Dockerfile` 使用多阶段构建，先用 Bun 构建 VuePress 静态文件
-- 最终镜像使用 Node 静态服务进程提供站点内容
-
-首次部署：
+For verification builds while a dev server is running, avoid writing temporary output into watched VuePress directories. A safe pattern is:
 
 ```bash
-docker build -t aiweb3school:latest .
-docker run -d --name aiweb3school --restart unless-stopped -p 8080:3000 aiweb3school:latest
+bunx vuepress build docs --clean-cache --clean-temp --dest docs/.vuepress/dist-check
+rm -rf docs/.vuepress/dist-check
 ```
 
-默认会把站点映射到服务器的 `8080` 端口，你可以直接访问：
+## Community
 
-```text
-http://<server-ip>:8080
-```
+- Website: <https://aiweb3.school/>
+- Bootcamp application: <https://web3career.build/en/programs/AI-Web3-School?tab=apply>
+- Telegram: <https://t.me/aiweb3school>
+- X: <https://x.com/aiweb3school>
+- GitHub: <https://github.com/lxdao-official/aiweb3school>
 
-如果要修改宿主机端口，可以在执行前设置环境变量：
+## License
 
-```bash
-docker run -d --name aiweb3school --restart unless-stopped -p 80:3000 aiweb3school:latest
-```
-
-常用命令：
-
-```bash
-docker logs -f aiweb3school
-docker stop aiweb3school && docker rm aiweb3school
-docker build -t aiweb3school:latest .
-docker run -d --name aiweb3school --restart unless-stopped -p 8080:3000 aiweb3school:latest
-```
-
-如果服务器前面还有 Nginx、Caddy 或云负载均衡，建议将它们反向代理到容器暴露的端口。
-
----
-
-## 参与贡献
-
-欢迎提交 Issue 或 Pull Request，帮助补充课程内容、修正文档问题，或完善学习路径设计。
-
-如果你准备贡献内容，建议优先补充以下方向：
-
-- AI × Web3 的新案例与最佳实践
-- 教程中的示例、图示与练习题
-- 更完整的项目实战与工具对比
-
----
-
-## 开源协议
-
-本项目采用 [MIT License](./package.json)。
+This project is licensed under the [MIT License](./package.json).
