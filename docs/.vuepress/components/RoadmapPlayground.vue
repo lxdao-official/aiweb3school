@@ -115,13 +115,15 @@ function computeSectionCardHeight(sections: SectionBlock[]): number {
   return h
 }
 
-function asSectionBlocks(card: RoadmapSubCard): SectionBlock[] {
+type RoadmapLocale = 'zh' | 'en'
+
+function asSectionBlocks(card: RoadmapSubCard, locale: RoadmapLocale): SectionBlock[] {
   return [{
     title: card.title,
-    description: card.description ?? describeRoadmapTitle(card.title),
+    description: card.description ?? describeRoadmapTitle(card.title, locale),
     items: card.items.map((item) => ({
       ...item,
-      description: item.description ?? describeRoadmapTitle(item.title),
+      description: item.description ?? describeRoadmapTitle(item.title, locale),
     })),
   }]
 }
@@ -134,6 +136,7 @@ type AnyNode = Node | RoadmapNode
 function makeRoadmapNode(
   id: string, title: string, variant: 'section-title' | 'group' | 'topic',
   centerX: number, y: number, tone: 'intro' | 'ai' | 'web3' | 'fusion',
+  locale: RoadmapLocale,
   link?: string,
 ): RoadmapNode {
   const interactive = !!link
@@ -147,7 +150,7 @@ function makeRoadmapNode(
     connectable: false,
     focusable: interactive,
     zIndex: 5,
-    data: { title, tone, variant, isInteractive: interactive, link, description: describeRoadmapTitle(title) },
+    data: { title, tone, variant, isInteractive: interactive, link, description: describeRoadmapTitle(title, locale) },
   }
 }
 
@@ -239,7 +242,7 @@ function makeSideEdge(source: string, target: string, side: 'left' | 'right'): E
 // ============================================================
 // 构建：完全由 data 驱动
 // ============================================================
-function buildFromData(data: RoadmapData) {
+function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
   const nodes: AnyNode[] = []
   const edges: Edge[] = []
   const topRowsCount = Math.max(data.topLeft.nodes.length, data.topRight.nodes.length)
@@ -264,13 +267,13 @@ function buildFromData(data: RoadmapData) {
   data.topLeft.nodes.forEach((n, i) => {
     const y = layout.topNodeStartY + i * layout.topNodeStepY
     const centerY = y + layout.nodeHeight / 2
-    nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.aiNodeX, y, 'ai', n.link))
+    nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.aiNodeX, y, 'ai', locale, n.link))
     aiNodeIds.push(n.id)
     if (n.subCard) {
       // 在 AI 半区内左右交替（i=0 右 / i=1 左 / i=2 右 …）
       const side: 'right' | 'left' = i % 2 === 0 ? 'right' : 'left'
       const subId = `${n.id}-SUB`
-      const sec = asSectionBlocks(n.subCard)
+      const sec = asSectionBlocks(n.subCard, locale)
       const subH = computeSectionCardHeight(sec)
       const desiredSubY = centerY - subH / 2
       const subY = Math.max(desiredSubY, aiLaneBottom[side] + layout.topSubCardGapY)
@@ -304,13 +307,13 @@ function buildFromData(data: RoadmapData) {
   data.topRight.nodes.forEach((n, i) => {
     const y = layout.topNodeStartY + i * layout.topNodeStepY
     const centerY = y + layout.nodeHeight / 2
-    nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.web3NodeX, y, 'web3', n.link))
+    nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.web3NodeX, y, 'web3', locale, n.link))
     web3NodeIds.push(n.id)
     if (n.subCard) {
       // 在 Web3 半区内左右交替（与 AI 镜像：i=0 左 / i=1 右 / i=2 左 …）
       const side: 'right' | 'left' = i % 2 === 0 ? 'left' : 'right'
       const subId = `${n.id}-SUB`
-      const sec = asSectionBlocks(n.subCard)
+      const sec = asSectionBlocks(n.subCard, locale)
       const subH = computeSectionCardHeight(sec)
       const desiredSubY = centerY - subH / 2
       const subY = Math.max(desiredSubY, web3LaneBottom[side] + layout.topSubCardGapY)
@@ -351,7 +354,7 @@ function buildFromData(data: RoadmapData) {
   data.fusion.cards.forEach((card, i) => {
     const col = i % fusionColumnXs.length
     const y = fusionColumnBottoms[col]
-    const sec = asSectionBlocks(card)
+    const sec = asSectionBlocks(card, locale)
     const cardLeftX = fusionColumnXs[col]
     const cardId = `FUSION-CARD-${i + 1}`
     const { node, height } = makeSectionCardNode(cardId, cardLeftX, y, layout.fusionCardWidth, sec)
@@ -406,11 +409,11 @@ function buildFromData(data: RoadmapData) {
     const cardId = `TRACK-CARD-${c + 1}`
     const sections: SectionBlock[] = [{
       title: col.label,
-      description: describeRoadmapTitle(col.label),
+      description: describeRoadmapTitle(col.label, locale),
       items: col.nodes.map((n) => ({
         title: n.title,
         link: n.link,
-        description: n.description ?? describeRoadmapTitle(n.title),
+        description: n.description ?? describeRoadmapTitle(n.title, locale),
       })),
     }]
     const { node, height } = makeSectionCardNode(cardId, cardLeftX, cardY, layout.splitFrameWidth, sections)
@@ -439,9 +442,13 @@ const nodeTypes = {
 }
 const viewportWidth = ref(typeof window === 'undefined' ? 1320 : window.innerWidth)
 const routeLocale = useRouteLocale()
-const localeKey = computed(() => routeLocale.value === '/en/' ? 'en' : 'zh')
+const localeKey = computed<RoadmapLocale>(() => routeLocale.value === '/en/' ? 'en' : 'zh')
 const contributionPath = computed(() => localeKey.value === 'en' ? '/en/contribution/' : '/zh/contribution/')
 const isMobileLayout = computed(() => viewportWidth.value <= 768)
+
+function describeTitle(title: string): string {
+  return describeRoadmapTitle(title, localeKey.value)
+}
 
 const homepageAiIds = new Set(['A1', 'A2', 'A3', 'A4', 'A5', 'A9'])
 const homepageWeb3Ids = new Set(['B1', 'B2', 'B3', 'B4', 'B6', 'B10'])
@@ -511,7 +518,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateViewportWidth)
 })
 
-const flow = computed(() => buildFromData(homepageRoadmap.value))
+const flow = computed(() => buildFromData(homepageRoadmap.value, localeKey.value))
 
 const viewport = computed(() => {
   const shellWidth = Math.min(layout.graphWidth, Math.max(320, viewportWidth.value - 40))
@@ -547,17 +554,17 @@ function handleMobileItemClick(link?: string) {
       <details class="roadmap-mobile-section is-ai" open>
         <summary>
           <span>{{ visibleMobileRoadmap.topLeft.label }}</span>
-          <small>{{ describeRoadmapTitle(visibleMobileRoadmap.topLeft.label) }}</small>
+          <small>{{ describeTitle(visibleMobileRoadmap.topLeft.label) }}</small>
         </summary>
         <article v-for="node in visibleMobileRoadmap.topLeft.nodes" :key="node.id" class="roadmap-mobile-card">
-          <h3 :title="describeRoadmapTitle(node.title)">{{ node.title }}</h3>
-          <p>{{ describeRoadmapTitle(node.title) }}</p>
+          <h3 :title="describeTitle(node.title)">{{ node.title }}</h3>
+          <p>{{ describeTitle(node.title) }}</p>
           <div v-if="node.subCard" class="roadmap-mobile-items">
             <button
               v-for="item in node.subCard.items"
               :key="item.title"
               type="button"
-              :title="item.description ?? describeRoadmapTitle(item.title)"
+              :title="item.description ?? describeTitle(item.title)"
               @click="handleMobileItemClick(item.link)"
             >
               {{ item.title }}
@@ -569,17 +576,17 @@ function handleMobileItemClick(link?: string) {
       <details class="roadmap-mobile-section is-web3" open>
         <summary>
           <span>{{ visibleMobileRoadmap.topRight.label }}</span>
-          <small>{{ describeRoadmapTitle(visibleMobileRoadmap.topRight.label) }}</small>
+          <small>{{ describeTitle(visibleMobileRoadmap.topRight.label) }}</small>
         </summary>
         <article v-for="node in visibleMobileRoadmap.topRight.nodes" :key="node.id" class="roadmap-mobile-card">
-          <h3 :title="describeRoadmapTitle(node.title)">{{ node.title }}</h3>
-          <p>{{ describeRoadmapTitle(node.title) }}</p>
+          <h3 :title="describeTitle(node.title)">{{ node.title }}</h3>
+          <p>{{ describeTitle(node.title) }}</p>
           <div v-if="node.subCard" class="roadmap-mobile-items">
             <button
               v-for="item in node.subCard.items"
               :key="item.title"
               type="button"
-              :title="item.description ?? describeRoadmapTitle(item.title)"
+              :title="item.description ?? describeTitle(item.title)"
               @click="handleMobileItemClick(item.link)"
             >
               {{ item.title }}
@@ -591,17 +598,17 @@ function handleMobileItemClick(link?: string) {
       <details class="roadmap-mobile-section is-bridge" open>
         <summary>
           <span>{{ visibleMobileRoadmap.fusion.label }}</span>
-          <small>{{ describeRoadmapTitle(visibleMobileRoadmap.fusion.label) }}</small>
+          <small>{{ describeTitle(visibleMobileRoadmap.fusion.label) }}</small>
         </summary>
         <article v-for="card in visibleMobileRoadmap.fusion.cards" :key="card.title" class="roadmap-mobile-card">
-          <h3 :title="describeRoadmapTitle(card.title)">{{ card.title }}</h3>
-          <p>{{ describeRoadmapTitle(card.title) }}</p>
+          <h3 :title="describeTitle(card.title)">{{ card.title }}</h3>
+          <p>{{ describeTitle(card.title) }}</p>
           <div class="roadmap-mobile-items">
             <button
               v-for="item in card.items"
               :key="item.title"
               type="button"
-              :title="item.description ?? describeRoadmapTitle(item.title)"
+              :title="item.description ?? describeTitle(item.title)"
               @click="handleMobileItemClick(item.link)"
             >
               {{ item.title }}
@@ -613,17 +620,17 @@ function handleMobileItemClick(link?: string) {
       <details class="roadmap-mobile-section is-frontier" open>
         <summary>
           <span>Frontier Directions</span>
-          <small>{{ describeRoadmapTitle('Frontier Directions') }}</small>
+          <small>{{ describeTitle('Frontier Directions') }}</small>
         </summary>
         <article v-for="track in visibleMobileRoadmap.splits" :key="track.label" class="roadmap-mobile-card">
-          <h3 :title="describeRoadmapTitle(track.label)">{{ track.label }}</h3>
-          <p>{{ describeRoadmapTitle(track.label) }}</p>
+          <h3 :title="describeTitle(track.label)">{{ track.label }}</h3>
+          <p>{{ describeTitle(track.label) }}</p>
           <div class="roadmap-mobile-items">
             <button
               v-for="item in track.nodes"
               :key="item.id"
               type="button"
-              :title="item.description ?? describeRoadmapTitle(item.title)"
+              :title="item.description ?? describeTitle(item.title)"
               @click="handleMobileItemClick(item.link)"
             >
               {{ item.title }}
