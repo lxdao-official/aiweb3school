@@ -297,8 +297,172 @@ html.layout-home .vp-home {
 }
 
 .vp-footer {
+  padding: clamp(30px, 5vw, 58px) 20px 28px !important;
   background: transparent !important;
   border-top: none !important;
+}
+
+.vp-footer .container {
+  max-width: 1180px !important;
+  text-align: left !important;
+}
+
+.vp-footer .message {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+.aiw3-footer {
+  position: relative;
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  border-top: 1px solid rgba(126, 164, 196, 0.22);
+  padding-top: clamp(22px, 3.6vw, 38px);
+}
+
+.aiw3-footer-main {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+  gap: clamp(28px, 5vw, 70px);
+  align-items: start;
+}
+
+.aiw3-footer-brand {
+  max-width: 650px;
+}
+
+.aiw3-footer-name {
+  margin: 0;
+  color: #20212b;
+  font-size: clamp(17px, 1.4vw, 22px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.aiw3-footer-brand > p:not(.aiw3-footer-name) {
+  max-width: 520px;
+  margin: 12px 0 0;
+  color: rgba(64, 72, 84, 0.82) !important;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.58;
+}
+
+.aiw3-footer-cta {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #6f2ce2;
+  color: #fff !important;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none !important;
+  box-shadow: 0 10px 22px rgba(67, 22, 145, 0.16);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.vp-footer .aiw3-footer-cta,
+.vp-footer .aiw3-footer-cta:visited,
+.vp-footer .aiw3-footer-cta:hover,
+.vp-footer .aiw3-footer-cta:focus-visible {
+  color: #fff !important;
+}
+
+.aiw3-footer-cta:hover,
+.aiw3-footer-cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(67, 22, 145, 0.22);
+}
+
+.aiw3-footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.5vw, 34px);
+}
+
+.aiw3-footer-links section {
+  min-width: 0;
+}
+
+.aiw3-footer-links h3 {
+  margin: 0 0 12px;
+  color: #20212b;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.aiw3-footer-links a {
+  display: flex;
+  width: fit-content;
+  margin-top: 10px;
+  color: rgba(64, 72, 84, 0.78) !important;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.35;
+  text-decoration: none !important;
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease;
+}
+
+.aiw3-footer-links a:hover,
+.aiw3-footer-links a:focus-visible {
+  color: #6f2ce2 !important;
+  transform: translateX(3px);
+}
+
+.aiw3-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: clamp(24px, 3.4vw, 36px);
+  padding: 0 4px;
+  color: rgba(114, 119, 124, 0.86);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+html[data-theme='dark'] .aiw3-footer {
+  border-top-color: rgba(149, 104, 221, 0.34);
+}
+
+html[data-theme='dark'] .aiw3-footer-name,
+html[data-theme='dark'] .aiw3-footer-links h3 {
+  color: #f3edff;
+}
+
+html[data-theme='dark'] .aiw3-footer-brand > p:not(.aiw3-footer-name) {
+  color: rgba(224, 220, 236, 0.78) !important;
+}
+
+html[data-theme='dark'] .aiw3-footer-cta {
+  border-color: rgba(196, 170, 255, 0.3);
+  background: #7130dd;
+  box-shadow: 0 12px 26px rgba(113, 48, 221, 0.24);
+}
+
+html[data-theme='dark'] .aiw3-footer-links a {
+  color: rgba(224, 220, 236, 0.72) !important;
+}
+
+html[data-theme='dark'] .aiw3-footer-links a:hover,
+html[data-theme='dark'] .aiw3-footer-links a:focus-visible {
+  color: rgba(208, 190, 255, 0.96) !important;
+}
+
+html[data-theme='dark'] .aiw3-footer-bottom {
+  color: rgba(224, 220, 236, 0.62);
 }
 
 :is(
@@ -373,6 +537,14 @@ html[data-theme='dark'] .vp-footer a {
 }
 
 @media (max-width: 900px) {
+  .aiw3-footer-main {
+    grid-template-columns: 1fr;
+  }
+
+  .aiw3-footer-links {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .vp-home .vp-home-hero {
     --hero-content-x: max(32px, calc((100vw - (var(--vp-layout-max-width) - 64px)) / 2));
 
@@ -435,6 +607,28 @@ html[data-theme='dark'] .vp-footer a {
 }
 
 @media (max-width: 520px) {
+  .vp-footer {
+    padding: 34px 12px 24px !important;
+  }
+
+  .aiw3-footer-main {
+    padding: 24px;
+    border-radius: 16px;
+  }
+
+  .aiw3-footer-links {
+    grid-template-columns: 1fr;
+  }
+
+  .aiw3-footer-links a {
+    margin-top: 8px;
+  }
+
+  .aiw3-footer-bottom {
+    flex-direction: column;
+    gap: 4px;
+  }
+
   .vp-home .vp-home-hero {
     --hero-content-x: 20px;
 

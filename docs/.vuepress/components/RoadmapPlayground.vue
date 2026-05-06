@@ -28,19 +28,19 @@ import {
  * 数据来源：docs/.vuepress/content/playground-roadmap-data.ts
  * 本组件只负责把数据按下面规则排到画布上：
  *
- *  1. 节点：宽 200，渲染由 RoadmapFlowNode 决定，自带 hover 提亮 + cursor pointer
- *  2. Sub-card：宽 220 (top) / 240 (fusion)，高度按 items 数量自动算
+ *  1. 节点：宽 220，渲染由 RoadmapFlowNode 决定，自带 hover 提亮 + cursor pointer
+ *  2. Sub-card：宽 260 (top) / 340 (fusion)，高度按 items 数量自动算
  *  3. 顶部 AI / Web3：
- *     - AI 主列固定 X=330（sub 全部留在左半区），Web3 主列 X=990（sub 全部留在右半区）
+ *     - AI 主列固定 X=410（sub 全部留在左半区），Web3 主列 X=1230（sub 全部留在右半区）
  *     - 在自身半区内，sub-card 按节点 index 左右交替挂在主列两侧
- *     - 中央保持 ≥44px 留白，AI / Web3 的 sub-card 永不交织
+ *     - 主线保持紧凑固定节奏；sub-card 在各自 lane 内有空就向上贴合，只避免同 lane 重叠
  *  4. 中央融合 section：
  *     - 主线由 anchor 上下贯穿中央
- *     - cards 自动按顺序左右交替，行高 130px
- *     - frame 宽 800、padding 40 包住所有 cards
- *  5. 4 路分支：
- *     - 每列独立 frame，宽 260、列间距 32
- *     - 推荐 3-5 列；超过 5 列会溢出 graphWidth
+ *     - cards 自动排成 4 列，中线左右各 2 列；每列向上贴合，只避免同列重叠
+ *     - frame 宽 1320、padding 44 包住所有 cards
+ *  5. 多路分支：
+ *     - 每列独立 frame，宽 250、列间距 28
+ *     - 画布按 6 个 Hackathon tracks 扩展
  *  6. 主线连边 = smoothstep + 箭头；side 连边 = straight
  *  7. 节点 / sub-card item 的 link 控制 hover 提亮与 cursor，新窗口打开
  */
@@ -49,58 +49,61 @@ import {
 // LAYOUT RULES（锁定，不要因数据改动）
 // ============================================================
 const layout = {
-  // 中心 = 660；AI 半区 0-660，Web3 半区 660-1320
-  graphWidth: 1320,
+  // 中心 = 820；AI 半区 0-820，Web3 半区 820-1640
+  graphWidth: 1640,
   graphPaddingY: 60,
 
-  nodeWidth: 200,
+  nodeWidth: 220,
   nodeHeight: 56,
 
   // 顶部 AI / Web3（每侧 sub-card 在主列左右交替，但永远不跨过中心）
   topLabelY: 16,
   topLabelHeight: 30,
   topNodeStartY: 80,
-  topNodeStepY: 120,           // 因为 alternating，行高可压缩
-  topSubCardWidth: 180,        // 减小宽度让交替时左右两侧都能容下
-  topSubCardGapX: 28,
-  aiNodeX: 330,                // 中点：左半区中央（128+180=308 ≤ X ≤ 532-180=352）
-  web3NodeX: 990,              // = graphWidth - aiNodeX 镜像
+  topNodeStepY: 150,
+  topSubCardGapY: 22,
+  topSubCardWidth: 260,
+  topSubCardGapX: 20,
+  aiNodeX: 410,
+  web3NodeX: 1230,
 
-  // 融合 section（trunk 居中 660，frame 对称包住 cards）
-  fusionTopGap: 110,
+  // 融合 section（trunk 居中 820，frame 对称包住 cards）
+  fusionTopGap: 82,
   fusionLabelHeight: 30,
   fusionLabelGap: 8,
-  fusionFrameLeftX: 270,
-  fusionFrameWidth: 780,       // 中心 = 660
-  fusionPadX: 40,
-  fusionPadY: 40,
+  fusionFrameLeftX: 160,
+  fusionFrameWidth: 1320,
+  fusionPadX: 44,
+  fusionPadY: 44,
   fusionTopAnchorOffset: 24,
   fusionBottomAnchorOffset: 24,
-  fusionCardStartOffset: 40,
-  fusionCardStepY: 130,
-  fusionCardWidth: 240,
-  fusionCardCenterGap: 110,
+  fusionCardStartOffset: 36,
+  fusionCardGapY: 18,
+  fusionCardWidth: 280,
+  fusionCardColGap: 24,
+  fusionCardCenterGap: 34,
 
-  // 4 路分支（4×260 + 3×32 = 1136，居中放在 1320 内 leftX=92）
-  splitTopGap: 100,
+  // Hackathon tracks（6×250 + 5×28 = 1640，填满 1640 宽画布）
+  splitTopGap: 82,
   splitLabelHeight: 30,
+  splitSectionLabelGap: 18,
   splitLabelGap: 8,
-  splitFrameWidth: 260,
-  splitPadX: 30,
-  splitPadY: 36,
-  splitColGap: 32,
+  splitFrameWidth: 250,
+  splitPadX: 24,
+  splitPadY: 32,
+  splitColGap: 28,
   splitNodeStartOffset: 30,
-  splitStepY: 100,
+  splitStepY: 88,
 }
 
 // ============================================================
 // 高度计算（与 PlaygroundSectionCard.vue 内部尺寸一致）
 // ============================================================
 function computeSectionCardHeight(sections: SectionBlock[]): number {
-  const padTop = 28, padBottom = 28
+  const padTop = 24, padBottom = 24
   const titleRowH = 26, titleGap = 10
-  const itemH = 46, itemGap = 10
-  const blockGap = 18
+  const itemH = 42, itemGap = 8
+  const blockGap = 16
   let h = padTop
   sections.forEach((s, i) => {
     if (i > 0) h += blockGap
@@ -193,16 +196,22 @@ function makeSectionCardNode(
   }
 }
 
-function makeMainEdge(source: string, target: string): Edge {
+function makeMainEdge(source: string, target: string, tone: 'ai' | 'web3' | 'fusion' = 'fusion'): Edge {
+  const markerColor = tone === 'ai'
+    ? 'rgba(160, 138, 255, 0.94)'
+    : tone === 'web3'
+      ? 'rgba(82, 205, 255, 0.92)'
+      : 'rgba(203, 140, 255, 0.9)'
+
   return {
     id: `${source}->${target}`, source, target,
     type: 'smoothstep',
     sourceHandle: 'bottom', targetHandle: 'top',
     selectable: false, focusable: false, updatable: false,
-    class: 'roadmap-flow-edge roadmap-flow-edge-mainline',
+    class: `roadmap-flow-edge roadmap-flow-edge-mainline roadmap-flow-edge-${tone}`,
     markerEnd: {
       type: MarkerType.ArrowClosed,
-      color: 'rgba(203, 140, 255, 0.9)',
+      color: markerColor,
       width: 13, height: 13,
     },
   }
@@ -215,7 +224,7 @@ function makeSideEdge(source: string, target: string, side: 'left' | 'right'): E
     sourceHandle: side === 'right' ? 'right-source' : 'left-source',
     targetHandle: side === 'right' ? 'left-target' : 'right-target',
     selectable: false, focusable: false, updatable: false,
-    class: 'roadmap-flow-edge roadmap-flow-edge-topic',
+    class: 'roadmap-flow-edge roadmap-flow-edge-topic roadmap-flow-edge-side',
   }
 }
 
@@ -225,6 +234,11 @@ function makeSideEdge(source: string, target: string, side: 'left' | 'right'): E
 function buildFromData(data: RoadmapData) {
   const nodes: AnyNode[] = []
   const edges: Edge[] = []
+  const topRowsCount = Math.max(data.topLeft.nodes.length, data.topRight.nodes.length)
+  const topMainBottomY = topRowsCount
+    ? layout.topNodeStartY + (topRowsCount - 1) * layout.topNodeStepY + layout.nodeHeight
+    : layout.topNodeStartY
+  let topSubCardsBottomY = layout.topNodeStartY
 
   // ─── 顶部 AI 列 ───
   const aiLabelW = 80
@@ -235,8 +249,13 @@ function buildFromData(data: RoadmapData) {
     data.topLeft.label, 'ai',
   ))
   const aiNodeIds: string[] = []
+  const aiLaneBottom: Record<'left' | 'right', number> = {
+    left: layout.topNodeStartY,
+    right: layout.topNodeStartY,
+  }
   data.topLeft.nodes.forEach((n, i) => {
     const y = layout.topNodeStartY + i * layout.topNodeStepY
+    const centerY = y + layout.nodeHeight / 2
     nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.aiNodeX, y, 'ai', n.link))
     aiNodeIds.push(n.id)
     if (n.subCard) {
@@ -245,17 +264,20 @@ function buildFromData(data: RoadmapData) {
       const subId = `${n.id}-SUB`
       const sec = asSectionBlocks(n.subCard)
       const subH = computeSectionCardHeight(sec)
-      const subY = y + layout.nodeHeight / 2 - subH / 2
+      const desiredSubY = centerY - subH / 2
+      const subY = Math.max(desiredSubY, aiLaneBottom[side] + layout.topSubCardGapY)
       const subLeftX = side === 'right'
         ? layout.aiNodeX + layout.nodeWidth / 2 + layout.topSubCardGapX
         : layout.aiNodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
       const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, sec)
       nodes.push(node)
       edges.push(makeSideEdge(n.id, subId, side))
+      aiLaneBottom[side] = subY + subH
+      topSubCardsBottomY = Math.max(topSubCardsBottomY, aiLaneBottom[side])
     }
   })
   for (let i = 0; i < aiNodeIds.length - 1; i++) {
-    edges.push(makeMainEdge(aiNodeIds[i], aiNodeIds[i + 1]))
+    edges.push(makeMainEdge(aiNodeIds[i], aiNodeIds[i + 1], 'ai'))
   }
 
   // ─── 顶部 Web3 列（镜像） ───
@@ -267,8 +289,13 @@ function buildFromData(data: RoadmapData) {
     data.topRight.label, 'web3',
   ))
   const web3NodeIds: string[] = []
+  const web3LaneBottom: Record<'left' | 'right', number> = {
+    left: layout.topNodeStartY,
+    right: layout.topNodeStartY,
+  }
   data.topRight.nodes.forEach((n, i) => {
     const y = layout.topNodeStartY + i * layout.topNodeStepY
+    const centerY = y + layout.nodeHeight / 2
     nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.web3NodeX, y, 'web3', n.link))
     web3NodeIds.push(n.id)
     if (n.subCard) {
@@ -277,30 +304,23 @@ function buildFromData(data: RoadmapData) {
       const subId = `${n.id}-SUB`
       const sec = asSectionBlocks(n.subCard)
       const subH = computeSectionCardHeight(sec)
-      const subY = y + layout.nodeHeight / 2 - subH / 2
+      const desiredSubY = centerY - subH / 2
+      const subY = Math.max(desiredSubY, web3LaneBottom[side] + layout.topSubCardGapY)
       const subLeftX = side === 'right'
         ? layout.web3NodeX + layout.nodeWidth / 2 + layout.topSubCardGapX
         : layout.web3NodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
       const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, sec)
       nodes.push(node)
       edges.push(makeSideEdge(n.id, subId, side))
+      web3LaneBottom[side] = subY + subH
+      topSubCardsBottomY = Math.max(topSubCardsBottomY, web3LaneBottom[side])
     }
   })
   for (let i = 0; i < web3NodeIds.length - 1; i++) {
-    edges.push(makeMainEdge(web3NodeIds[i], web3NodeIds[i + 1]))
+    edges.push(makeMainEdge(web3NodeIds[i], web3NodeIds[i + 1], 'web3'))
   }
 
-  const topRowsCount = Math.max(data.topLeft.nodes.length, data.topRight.nodes.length)
-  const lastTopY = layout.topNodeStartY + (topRowsCount - 1) * layout.topNodeStepY
-  // 估算顶部 sub-card 最大高度（取所有顶部 sub-card 中最高的）
-  let topMaxSubH = 0
-  data.topLeft.nodes.concat(data.topRight.nodes).forEach((n) => {
-    if (n.subCard) topMaxSubH = Math.max(topMaxSubH, computeSectionCardHeight(asSectionBlocks(n.subCard)))
-  })
-  const topAreaBottomY = Math.max(
-    lastTopY + layout.nodeHeight,
-    lastTopY + layout.nodeHeight / 2 + topMaxSubH / 2,
-  )
+  const topAreaBottomY = Math.max(topMainBottomY, topSubCardsBottomY)
 
   // ─── 融合 section ───
   const fusionCenterX = layout.graphWidth / 2
@@ -313,17 +333,23 @@ function buildFromData(data: RoadmapData) {
   if (web3NodeIds.length) edges.push(makeMainEdge(web3NodeIds[web3NodeIds.length - 1], 'FUSION-TOP'))
 
   let cardsBottomY = fusionFrameTop
+  const fusionColumnXs = [
+    fusionCenterX - layout.fusionCardCenterGap - layout.fusionCardWidth * 2 - layout.fusionCardColGap,
+    fusionCenterX - layout.fusionCardCenterGap - layout.fusionCardWidth,
+    fusionCenterX + layout.fusionCardCenterGap,
+    fusionCenterX + layout.fusionCardCenterGap + layout.fusionCardWidth + layout.fusionCardColGap,
+  ]
+  const fusionColumnBottoms = fusionColumnXs.map(() => fusionFrameTop + layout.fusionCardStartOffset)
   data.fusion.cards.forEach((card, i) => {
-    const side: 'right' | 'left' = i % 2 === 0 ? 'right' : 'left'
-    const y = fusionFrameTop + layout.fusionCardStartOffset + i * layout.fusionCardStepY
+    const col = i % fusionColumnXs.length
+    const y = fusionColumnBottoms[col]
     const sec = asSectionBlocks(card)
-    const cardLeftX = side === 'right'
-      ? fusionCenterX + layout.fusionCardCenterGap
-      : fusionCenterX - layout.fusionCardCenterGap - layout.fusionCardWidth
+    const cardLeftX = fusionColumnXs[col]
     const cardId = `FUSION-CARD-${i + 1}`
     const { node, height } = makeSectionCardNode(cardId, cardLeftX, y, layout.fusionCardWidth, sec)
     nodes.push(node)
     cardsBottomY = Math.max(cardsBottomY, y + height)
+    fusionColumnBottoms[col] = y + height + layout.fusionCardGapY
   })
 
   const bottomAnchorY = cardsBottomY + layout.fusionBottomAnchorOffset
@@ -349,13 +375,23 @@ function buildFromData(data: RoadmapData) {
 
   // ─── 4 路分支 ───
   const splitCount = data.splits.length
-  const splitLabelY = fusionFrameTop + fusionFrameH + layout.splitTopGap
+  const splitSectionLabelY = fusionFrameTop + fusionFrameH + layout.splitTopGap
+  const splitLabelY = splitSectionLabelY + layout.splitLabelHeight + layout.splitSectionLabelGap
   const splitFrameTop = splitLabelY + layout.splitLabelHeight + layout.splitLabelGap
   const totalSplitW = splitCount * layout.splitFrameWidth + Math.max(0, splitCount - 1) * layout.splitColGap
   const splitFirstFrameLeftX = (layout.graphWidth - totalSplitW) / 2
 
   let splitContentBottomY = splitFrameTop
   const splitColumnFirstIds: string[] = []
+
+  const splitSectionLabelW = 260
+  nodes.push(makeLabelNode(
+    'LBL-FRONTIER',
+    layout.graphWidth / 2 - splitSectionLabelW / 2,
+    splitSectionLabelY,
+    splitSectionLabelW, layout.splitLabelHeight,
+    'Frontier Directions', 'fusion',
+  ))
 
   data.splits.forEach((col, c) => {
     const frameLeftX = splitFirstFrameLeftX + c * (layout.splitFrameWidth + layout.splitColGap)
@@ -364,7 +400,7 @@ function buildFromData(data: RoadmapData) {
 
     col.nodes.forEach((n, r) => {
       const y = splitFrameTop + layout.splitNodeStartOffset + r * layout.splitStepY
-      nodes.push(makeRoadmapNode(n.id, n.title, 'topic', frameCenterX, y, 'fusion', n.link))
+      nodes.push(makeRoadmapNode(n.id, n.title, 'group', frameCenterX, y, 'web3', n.link))
       colIds.push(n.id)
     })
     for (let r = 0; r < colIds.length - 1; r++) {
@@ -377,7 +413,7 @@ function buildFromData(data: RoadmapData) {
     splitContentBottomY = Math.max(splitContentBottomY, splitFrameTop + frameH)
     nodes.push(makeFrameNode(`FRAME-S${c + 1}`, frameLeftX, splitFrameTop, layout.splitFrameWidth, frameH, 'fusion'))
 
-    const labelW = 120
+    const labelW = Math.min(230, layout.splitFrameWidth - 20)
     nodes.push(makeLabelNode(
       `LBL-S${c + 1}`,
       frameCenterX - labelW / 2,
@@ -420,7 +456,7 @@ onBeforeUnmount(() => {
 const flow = computed(() => buildFromData(playgroundRoadmap))
 
 const viewport = computed(() => {
-  const shellWidth = Math.min(1320, Math.max(320, viewportWidth.value - 40))
+  const shellWidth = Math.min(layout.graphWidth, Math.max(320, viewportWidth.value - 40))
   const zoom = Math.min(1, Math.max(0.4, (shellWidth - 32) / layout.graphWidth))
   return {
     x: (shellWidth - layout.graphWidth * zoom) / 2,
@@ -476,7 +512,50 @@ function handleNodeClick({ node }: NodeMouseEvent<RoadmapNode>) {
 
 <style scoped>
 .roadmap-playground {
-  width: min(1320px, calc(100vw - 40px));
+  width: min(1640px, calc(100vw - 40px));
   margin: 40px auto;
+}
+
+:deep(.roadmap-vue-flow .roadmap-flow-edge-ai .vue-flow__edge-path) {
+  stroke: rgba(160, 138, 255, 0.94);
+  filter:
+    drop-shadow(0 0 7px rgba(142, 113, 255, 0.34))
+    drop-shadow(0 0 14px rgba(142, 113, 255, 0.14));
+}
+
+:deep(.roadmap-vue-flow .roadmap-flow-edge-web3 .vue-flow__edge-path) {
+  stroke: rgba(82, 205, 255, 0.92);
+  filter:
+    drop-shadow(0 0 7px rgba(74, 195, 255, 0.34))
+    drop-shadow(0 0 14px rgba(74, 195, 255, 0.14));
+}
+
+:deep(.roadmap-vue-flow .roadmap-flow-edge-fusion .vue-flow__edge-path) {
+  stroke: rgba(203, 140, 255, 0.92);
+}
+
+:deep(.roadmap-vue-flow .roadmap-flow-edge-ai .vue-flow__edge-path),
+:deep(.roadmap-vue-flow .roadmap-flow-edge-web3 .vue-flow__edge-path) {
+  stroke-dasharray: 14 12;
+  animation: roadmap-edge-flow 2.8s linear infinite;
+}
+
+:deep(.roadmap-vue-flow .roadmap-flow-edge-side .vue-flow__edge-path) {
+  stroke-width: 1.8;
+  stroke-dasharray: 7 7;
+  opacity: 0.82;
+  filter: drop-shadow(0 0 5px rgba(178, 138, 255, 0.22));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :deep(.roadmap-vue-flow .vue-flow__edge-path) {
+    animation: none !important;
+  }
+}
+
+@keyframes roadmap-edge-flow {
+  to {
+    stroke-dashoffset: -26;
+  }
 }
 </style>

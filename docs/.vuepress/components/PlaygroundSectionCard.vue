@@ -57,8 +57,8 @@ function handleItemClick(item: SectionItem, e: MouseEvent) {
 .pg-section-card {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 28px 26px;
+  gap: 16px;
+  padding: 24px 22px;
   border: 1.4px solid rgba(186, 153, 255, 0.5);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.42);
@@ -78,7 +78,7 @@ html[data-theme='dark'] .pg-section-card {
 .pg-section-block {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .pg-section-title-row {
@@ -99,11 +99,14 @@ html[data-theme='dark'] .pg-section-card {
 }
 
 .pg-section-title {
-  font-size: 16px;
+  min-width: 0;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: rgba(170, 104, 255, 0.95);
-  white-space: nowrap;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 html[data-theme='dark'] .pg-section-title {
@@ -114,15 +117,17 @@ html[data-theme='dark'] .pg-section-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  padding: 8px 16px;
+  min-height: 42px;
+  padding: 6px 10px;
   border: 1.2px solid rgba(186, 153, 255, 0.5);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.32);
   color: rgba(63, 56, 86, 0.92);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
+  line-height: 1.18;
   text-align: center;
+  overflow-wrap: anywhere;
   transition:
     transform 0.18s ease,
     border-color 0.18s ease,
