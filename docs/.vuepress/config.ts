@@ -19,7 +19,7 @@ export default defineUserConfig({
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/images/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
   ],
 
   bundler: viteBundler(),
