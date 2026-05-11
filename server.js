@@ -35,6 +35,11 @@ function sendFile(filePath, res) {
   stream.pipe(res);
 }
 
+function sendNotFound(res) {
+  res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+  res.end("Not Found");
+}
+
 function resolvePath(urlPath) {
   const decodedPath = decodeURIComponent(urlPath.split("?")[0]);
   const normalizedPath = path.posix.normalize(decodedPath);
@@ -69,6 +74,24 @@ const server = http.createServer((req, res) => {
       return;
     }
 
+    if (!error && stats.isDirectory()) {
+      const indexPath = path.join(filePath, "index.html");
+      fs.stat(indexPath, (indexError, indexStats) => {
+        if (!indexError && indexStats.isFile()) {
+          sendFile(indexPath, res);
+          return;
+        }
+
+        sendNotFound(res);
+      });
+      return;
+    }
+
+    if (path.extname(filePath)) {
+      sendNotFound(res);
+      return;
+    }
+
     const fallbackPath = path.join(rootDir, "index.html");
     fs.stat(fallbackPath, (fallbackError, fallbackStats) => {
       if (!fallbackError && fallbackStats.isFile()) {
@@ -76,8 +99,7 @@ const server = http.createServer((req, res) => {
         return;
       }
 
-      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Not Found");
+      sendNotFound(res);
     });
   });
 });
