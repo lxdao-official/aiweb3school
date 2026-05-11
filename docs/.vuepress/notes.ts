@@ -19,7 +19,7 @@ function zhHandbookLink(section: 'ai' | 'web3' | 'bridge' | 'tracks', title: str
 }
 
 const zhRoadmapSidebar = [
-  { text: zhSidebar.rootTitle, link: '/zh/' },
+  { text: zhSidebar.rootTitle, link: '/zh/handbook/' },
   {
     text: 'AI 基础',
     collapsed: false,
