@@ -1,5 +1,5 @@
 import { defineNoteConfig, defineNotesConfig } from 'vuepress-theme-plume';
-import { getSidebarEntries, handbookRoadmap } from './content/handbook-roadmap';
+import { handbookRoadmap } from './content/handbook-roadmap';
 import { displayRoadmapTitle, playgroundRoadmap } from './content/playground-roadmap-data';
 
 const zhSidebar = handbookRoadmap.zh.sidebar;
@@ -16,6 +16,10 @@ function slugifyRoadmapTitle(title: string): string {
 
 function zhHandbookLink(section: 'ai' | 'web3' | 'bridge' | 'tracks', title: string): string {
   return `/zh/handbook/${section}/${slugifyRoadmapTitle(title)}/`;
+}
+
+function enHandbookLink(section: 'ai' | 'web3' | 'bridge' | 'tracks', title: string): string {
+  return `/en/handbook/${section}/${slugifyRoadmapTitle(title)}/`;
 }
 
 const zhRoadmapSidebar = [
@@ -54,6 +58,42 @@ const zhRoadmapSidebar = [
   },
 ];
 
+const enRoadmapSidebar = [
+  { text: enSidebar.rootTitle, link: '/en/handbook/' },
+  {
+    text: 'AI Foundations',
+    collapsed: false,
+    items: playgroundRoadmap.topLeft.nodes.map((node) => ({
+      text: displayRoadmapTitle(node.title, 'en'),
+      link: enHandbookLink('ai', node.title),
+    })),
+  },
+  {
+    text: 'Web3 Foundations',
+    collapsed: false,
+    items: playgroundRoadmap.topRight.nodes.map((node) => ({
+      text: displayRoadmapTitle(node.title, 'en'),
+      link: enHandbookLink('web3', node.title),
+    })),
+  },
+  {
+    text: 'AI × Web3 Bridge',
+    collapsed: false,
+    items: playgroundRoadmap.fusion.cards.map((card) => ({
+      text: displayRoadmapTitle(card.title, 'en'),
+      link: enHandbookLink('bridge', card.title),
+    })),
+  },
+  {
+    text: 'Frontier Exploration',
+    collapsed: false,
+    items: playgroundRoadmap.splits.map((split) => ({
+      text: displayRoadmapTitle(split.label, 'en'),
+      link: enHandbookLink('tracks', split.label),
+    })),
+  },
+];
+
 const schoolNote = defineNoteConfig({
   dir: 'zh',
   link: '/zh',
@@ -67,16 +107,9 @@ export const zhNotes = defineNotesConfig({
 });
 
 const schoolNoteEn = defineNoteConfig({
-  dir: 'en',
-  link: '/en',
-  sidebar: [
-    { text: enSidebar.rootTitle, link: '/en/' },
-    ...enSidebar.groups.map((group) => ({
-      text: group.text,
-      collapsed: false,
-      items: getSidebarEntries('en', group.bucket),
-    })),
-  ],
+  dir: '',
+  link: '/',
+  sidebar: enRoadmapSidebar,
 });
 
 export const enNotes = defineNotesConfig({

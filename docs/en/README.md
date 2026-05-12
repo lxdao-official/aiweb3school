@@ -1,6 +1,9 @@
 ---
 title: Open AI × Web3 Learning Platform
-description: AI x Web3 School is a bilingual open learning platform for builders to learn AI, blockchain, smart contracts, AI agents, decentralized AI, and build through bootcamps and practical projects.
+description: >-
+  AI x Web3 School is a bilingual open learning platform for builders to learn
+  AI, blockchain, smart contracts, AI agents, decentralized AI, and build
+  through bootcamps and practical projects.
 pageLayout: home
 externalLinkIcon: false
 config:
@@ -27,4 +30,6 @@ config:
   - type: CourseBootcampBanner
   - type: RoadmapPlayground
   - type: LogoWall
+createTime: 2026/05/04 23:35:06
+permalink: /en/
 ---

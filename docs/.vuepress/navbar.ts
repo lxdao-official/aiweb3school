@@ -10,7 +10,8 @@ export const zhNavbar = defineNavbarConfig([
 
 export const enNavbar = defineNavbarConfig([
   { text: 'Start Learning', link: '/en/' },
-  { text: 'AI Foundations', link: '/en/ai-fundamentals/' },
-  { text: 'Web3 Foundations', link: '/en/blockchain-basics/' },
-  { text: 'AI × Web3', link: '/en/ai-agents/' },
+  { text: 'AI Foundations', link: '/en/handbook/ai/llm/' },
+  { text: 'Web3 Foundations', link: '/en/handbook/web3/network/' },
+  { text: 'AI × Web3 Bridge', link: '/en/handbook/bridge/chain-aware-context/' },
+  { text: 'Frontier Exploration', link: '/en/handbook/tracks/agentic-commerce/' },
 ]);
