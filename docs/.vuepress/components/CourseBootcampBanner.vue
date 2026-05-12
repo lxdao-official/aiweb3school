@@ -12,12 +12,14 @@ const bootcampContent = {
       "面向 builders 的 3 周 Bootcamp 加 2 周黑客松，系统探索 AI Agent、Web3 支付、AI 原生钱包、链上自动化与可验证智能体。",
     primaryCta: "加入 Bootcamp",
     secondaryCta: "查看课程",
+    sponsorPrefix: "由",
+    sponsorSuffix: "赞助",
     primaryHref: "https://web3career.build/zh/programs/AI-Web3-School?tab=apply",
     secondaryHref: "/zh/ai-agents/",
     phases: [
-      { label: "Bootcamp", value: "3 周" },
-      { label: "Hackathon", value: "2 周" },
-      { label: "Track", value: "AI x Web3" },
+      { label: "Bootcamp", value: "3 周", icon: "bootcamp" },
+      { label: "Hackathon", value: "2 周", icon: "hackathon" },
+      { label: "Track", value: "AI x Web3", icon: "track" },
     ],
     topicLabel: "核心方向",
     topics: ["Agent Payments", "AI-native Wallets", "Onchain Automation"],
@@ -29,12 +31,14 @@ const bootcampContent = {
       "A 3-week bootcamp plus 2-week hackathon for builders exploring AI agents, Web3 payments, AI-native wallets, onchain automation, and verifiable agents.",
     primaryCta: "Join Bootcamp",
     secondaryCta: "View Curriculum",
+    sponsorPrefix: "Sponsored by",
+    sponsorSuffix: "",
     primaryHref: "https://web3career.build/en/programs/AI-Web3-School?tab=apply",
     secondaryHref: "/en/ai-agents/",
     phases: [
-      { label: "Bootcamp", value: "3 weeks" },
-      { label: "Hackathon", value: "2 weeks" },
-      { label: "Track", value: "AI x Web3" },
+      { label: "Bootcamp", value: "3 weeks", icon: "bootcamp" },
+      { label: "Hackathon", value: "2 weeks", icon: "hackathon" },
+      { label: "Track", value: "AI x Web3", icon: "track" },
     ],
     topicLabel: "Focus",
     topics: ["Agent Payments", "AI-native Wallets", "Onchain Automation"],
@@ -44,6 +48,14 @@ const bootcampContent = {
 const localeKey = computed(() => (routeLocale.value === "/en/" ? "en" : "zh"));
 const content = computed(() => bootcampContent[localeKey.value]);
 const topicSummary = computed(() => content.value.topics.join(" / "));
+const highlights = computed(() => [
+  ...content.value.phases,
+  {
+    label: content.value.topicLabel,
+    value: topicSummary.value,
+    icon: "direction",
+  },
+]);
 </script>
 
 <template>
@@ -74,21 +86,50 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
             {{ content.secondaryCta }}
           </a>
         </div>
+        <div class="bootcamp-sponsor" aria-label="Z.ai sponsor">
+          <span>{{ content.sponsorPrefix }}</span>
+          <img
+            class="bootcamp-sponsor-logo bootcamp-sponsor-logo-light"
+            :src="withBase('/images/logos/智谱 ZAI_en_black.svg')"
+            alt="Z.ai"
+            loading="lazy"
+          >
+          <img
+            class="bootcamp-sponsor-logo bootcamp-sponsor-logo-dark"
+            :src="withBase('/images/logos/智谱 ZAI_en_white.svg')"
+            alt="Z.ai"
+            loading="lazy"
+          >
+          <span v-if="content.sponsorSuffix">{{ content.sponsorSuffix }}</span>
+        </div>
       </div>
 
       <div class="bootcamp-grid" aria-label="Bootcamp highlights">
         <div
-          v-for="(phase, index) in content.phases"
+          v-for="(phase, index) in highlights"
           :key="phase.label"
           class="bootcamp-metric"
-          :class="`bootcamp-metric-${index + 1}`"
+          :class="[
+            `bootcamp-metric-${index + 1}`,
+            { 'bootcamp-topics': index === highlights.length - 1 },
+          ]"
         >
+          <img
+            class="bootcamp-metric-icon bootcamp-metric-icon-light"
+            :src="withBase(`/${phase.icon}_white.svg`)"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+          >
+          <img
+            class="bootcamp-metric-icon bootcamp-metric-icon-dark"
+            :src="withBase(`/${phase.icon}_black.svg`)"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+          >
           <strong>{{ phase.label }}</strong>
           <span>{{ phase.value }}</span>
-        </div>
-        <div class="bootcamp-metric bootcamp-topics">
-          <strong>{{ content.topicLabel }}</strong>
-          <span>{{ topicSummary }}</span>
         </div>
       </div>
     </div>
@@ -190,6 +231,27 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
   margin-top: clamp(20px, 2.6vw, 30px);
 }
 
+.bootcamp-sponsor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(42px, 6vw, 74px);
+  color: rgba(64, 72, 84, 0.84);
+  font-size: clamp(14px, 1vw, 16px);
+  font-weight: 620;
+  line-height: 1;
+}
+
+.bootcamp-sponsor-logo {
+  display: block;
+  width: clamp(58px, 5.2vw, 78px);
+  height: auto;
+}
+
+.bootcamp-sponsor-logo-dark {
+  display: none;
+}
+
 .bootcamp-button {
   display: inline-flex;
   align-items: center;
@@ -246,6 +308,7 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
 }
 
 .bootcamp-metric {
+  position: relative;
   display: flex;
   aspect-ratio: 1;
   min-height: 0;
@@ -271,7 +334,22 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
     inset 0 1px 0 rgba(255, 255, 255, 0.68);
 }
 
+.bootcamp-metric-icon {
+  position: absolute;
+  right: clamp(10px, 1.8vw, 22px);
+  bottom: clamp(12px, 1.8vw, 22px);
+  width: clamp(82px, 10vw, 132px);
+  max-width: 74%;
+  height: auto;
+  pointer-events: none;
+}
+
+.bootcamp-metric-icon-dark {
+  display: none;
+}
+
 .bootcamp-metric span {
+  position: relative;
   color: #20212b;
   font-family:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
@@ -283,6 +361,7 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
 }
 
 .bootcamp-metric strong {
+  position: relative;
   display: block;
   color: #6b7180;
   font-size: clamp(12px, 0.92vw, 14px);
@@ -294,7 +373,7 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
 .bootcamp-topics span {
   color: rgba(64, 72, 84, 0.82);
   font-family: inherit;
-  font-size: clamp(12px, 1vw, 14px);
+  font-size: clamp(10px, 0.78vw, 12px);
   font-weight: 800;
   line-height: 1.34;
   overflow-wrap: anywhere;
@@ -333,6 +412,18 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
   color: rgba(224, 220, 236, 0.78);
 }
 
+:global(html[data-theme="dark"]) .bootcamp-sponsor {
+  color: rgba(224, 220, 236, 0.78);
+}
+
+:global(html[data-theme="dark"]) .bootcamp-sponsor-logo-light {
+  display: none;
+}
+
+:global(html[data-theme="dark"]) .bootcamp-sponsor-logo-dark {
+  display: block;
+}
+
 :global(html[data-theme="dark"]) .bootcamp-button-primary {
   border-color: rgba(196, 170, 255, 0.3);
   background: #7130dd;
@@ -364,6 +455,14 @@ const topicSummary = computed(() => content.value.topics.join(" / "));
   box-shadow:
     0 16px 38px rgba(5, 6, 12, 0.22),
     inset 0 1px 0 rgba(225, 206, 255, 0.07);
+}
+
+:global(html[data-theme="dark"]) .bootcamp-metric-icon-light {
+  display: none;
+}
+
+:global(html[data-theme="dark"]) .bootcamp-metric-icon-dark {
+  display: block;
 }
 
 :global(html[data-theme="dark"]) .bootcamp-metric span {
@@ -469,6 +568,24 @@ html[data-theme="dark"] .bootcamp-description,
   color: rgba(224, 220, 236, 0.78) !important;
 }
 
+html[data-theme="dark"] .bootcamp-sponsor,
+[data-theme="dark"] .bootcamp-sponsor,
+.dark .bootcamp-sponsor {
+  color: rgba(224, 220, 236, 0.78) !important;
+}
+
+html[data-theme="dark"] .bootcamp-sponsor-logo-light,
+[data-theme="dark"] .bootcamp-sponsor-logo-light,
+.dark .bootcamp-sponsor-logo-light {
+  display: none !important;
+}
+
+html[data-theme="dark"] .bootcamp-sponsor-logo-dark,
+[data-theme="dark"] .bootcamp-sponsor-logo-dark,
+.dark .bootcamp-sponsor-logo-dark {
+  display: block !important;
+}
+
 html[data-theme="dark"] .bootcamp-button-primary,
 [data-theme="dark"] .bootcamp-button-primary,
 .dark .bootcamp-button-primary {
@@ -498,6 +615,18 @@ html[data-theme="dark"] .bootcamp-metric,
   box-shadow:
     0 16px 38px rgba(5, 6, 12, 0.22),
     inset 0 1px 0 rgba(225, 206, 255, 0.07) !important;
+}
+
+html[data-theme="dark"] .bootcamp-metric-icon-light,
+[data-theme="dark"] .bootcamp-metric-icon-light,
+.dark .bootcamp-metric-icon-light {
+  display: none !important;
+}
+
+html[data-theme="dark"] .bootcamp-metric-icon-dark,
+[data-theme="dark"] .bootcamp-metric-icon-dark,
+.dark .bootcamp-metric-icon-dark {
+  display: block !important;
 }
 
 html[data-theme="dark"] .bootcamp-metric span,
