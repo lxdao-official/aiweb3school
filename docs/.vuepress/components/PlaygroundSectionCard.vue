@@ -10,6 +10,7 @@ export interface SectionItem {
 
 export interface SectionBlock {
   title: string
+  link?: string
   description?: string
   items: SectionItem[]
 }
@@ -21,6 +22,12 @@ defineProps<{
     height: number
   }
 }>()
+
+function handleSectionTitleClick(section: SectionBlock, e: MouseEvent) {
+  if (!section.link) return
+  e.stopPropagation()
+  window.location.href = withBase(section.link)
+}
 
 function handleItemClick(item: SectionItem, e: MouseEvent) {
   if (!item.link) return
@@ -37,7 +44,12 @@ function handleItemClick(item: SectionItem, e: MouseEvent) {
     <div v-for="(section, si) in data.sections" :key="si" class="pg-section-block">
       <div class="pg-section-title-row">
         <span class="pg-divider" />
-        <span class="pg-section-title" :aria-label="section.description">
+        <span
+          class="pg-section-title"
+          :class="{ 'is-clickable': !!section.link }"
+          :aria-label="section.description"
+          @click="handleSectionTitleClick(section, $event)"
+        >
           {{ section.title }}
           <span v-if="section.description" class="pg-tooltip" role="tooltip">{{ section.description }}</span>
         </span>
@@ -120,6 +132,18 @@ html[data-theme='dark'] .pg-section-card {
 
 html[data-theme='dark'] .pg-section-title {
   color: rgba(196, 158, 255, 0.96);
+}
+
+.pg-section-title.is-clickable {
+  cursor: pointer;
+}
+
+.pg-section-title.is-clickable:hover {
+  color: rgba(105, 65, 210, 0.98);
+}
+
+html[data-theme='dark'] .pg-section-title.is-clickable:hover {
+  color: rgba(222, 202, 255, 0.98);
 }
 
 .pg-section-item {

@@ -139,6 +139,7 @@ function handbookAnchor(title: string): string {
 function withItemLinks(card: RoadmapSubCard, pagePath: string): RoadmapSubCard {
   return {
     ...card,
+    link: pagePath,
     items: card.items.map((item) => ({
       ...item,
       link: `${pagePath}${handbookAnchor(item.title)}`,
@@ -149,6 +150,7 @@ function withItemLinks(card: RoadmapSubCard, pagePath: string): RoadmapSubCard {
 function asSectionBlocks(card: RoadmapSubCard, locale: RoadmapLocale): SectionBlock[] {
   return [{
     title: displayRoadmapTitle(card.title, locale),
+    link: card.link,
     description: card.description ?? describeRoadmapTitle(card.title, locale),
     items: card.items.map((item) => ({
       ...item,
@@ -439,6 +441,7 @@ function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
     const cardId = `TRACK-CARD-${c + 1}`
     const sections: SectionBlock[] = [{
       title: displayRoadmapTitle(col.label, locale),
+      link: handbookPath(locale, 'tracks', col.label),
       description: describeRoadmapTitle(col.label, locale),
       items: col.nodes.map((n) => ({
         title: displayRoadmapTitle(n.title, locale),
@@ -616,7 +619,11 @@ function handleMobileItemClick(link?: string) {
           <small>{{ describeTitle(visibleMobileRoadmap.topLeft.label) }}</small>
         </summary>
         <article v-for="node in visibleMobileRoadmap.topLeft.nodes" :key="node.id" class="roadmap-mobile-card">
-          <h3 :title="describeTitle(node.title)">{{ displayTitle(node.title) }}</h3>
+          <h3
+            :title="describeTitle(node.title)"
+            :class="{ 'is-clickable': !!node.link }"
+            @click="handleMobileItemClick(node.link)"
+          >{{ displayTitle(node.title) }}</h3>
           <p>{{ describeTitle(node.title) }}</p>
           <div v-if="node.subCard" class="roadmap-mobile-items">
             <button
@@ -638,7 +645,11 @@ function handleMobileItemClick(link?: string) {
           <small>{{ describeTitle(visibleMobileRoadmap.topRight.label) }}</small>
         </summary>
         <article v-for="node in visibleMobileRoadmap.topRight.nodes" :key="node.id" class="roadmap-mobile-card">
-          <h3 :title="describeTitle(node.title)">{{ displayTitle(node.title) }}</h3>
+          <h3
+            :title="describeTitle(node.title)"
+            :class="{ 'is-clickable': !!node.link }"
+            @click="handleMobileItemClick(node.link)"
+          >{{ displayTitle(node.title) }}</h3>
           <p>{{ describeTitle(node.title) }}</p>
           <div v-if="node.subCard" class="roadmap-mobile-items">
             <button
@@ -660,7 +671,11 @@ function handleMobileItemClick(link?: string) {
           <small>{{ describeTitle(visibleMobileRoadmap.fusion.label) }}</small>
         </summary>
         <article v-for="card in visibleMobileRoadmap.fusion.cards" :key="card.title" class="roadmap-mobile-card">
-          <h3 :title="describeTitle(card.title)">{{ displayTitle(card.title) }}</h3>
+          <h3
+            :title="describeTitle(card.title)"
+            :class="{ 'is-clickable': !!card.link }"
+            @click="handleMobileItemClick(card.link)"
+          >{{ displayTitle(card.title) }}</h3>
           <p>{{ describeTitle(card.title) }}</p>
           <div class="roadmap-mobile-items">
             <button
@@ -682,7 +697,11 @@ function handleMobileItemClick(link?: string) {
           <small>{{ describeTitle('Frontier Directions') }}</small>
         </summary>
         <article v-for="track in visibleMobileRoadmap.splits" :key="track.label" class="roadmap-mobile-card">
-          <h3 :title="describeTitle(track.label)">{{ displayTitle(track.label) }}</h3>
+          <h3
+            :title="describeTitle(track.label)"
+            class="is-clickable"
+            @click="handleMobileItemClick(handbookPath(localeKey, 'tracks', track.label))"
+          >{{ displayTitle(track.label) }}</h3>
           <p>{{ describeTitle(track.label) }}</p>
           <div class="roadmap-mobile-items">
             <button
@@ -855,6 +874,16 @@ function handleMobileItemClick(link?: string) {
   font-weight: 800;
   line-height: 1.22;
   overflow-wrap: anywhere;
+}
+
+.roadmap-mobile-card h3.is-clickable {
+  cursor: pointer;
+}
+
+.roadmap-mobile-card h3.is-clickable:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .roadmap-mobile-card p {

@@ -28,6 +28,7 @@ export interface RoadmapItem {
 /** 单张 sub-card：一个 title + 一组 items */
 export interface RoadmapSubCard {
   title: string
+  link?: string
   description?: string
   items: RoadmapItem[]
 }
