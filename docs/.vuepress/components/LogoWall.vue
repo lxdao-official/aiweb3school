@@ -37,6 +37,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/ethpanda-light.png',
     darkSrc: '/images/logos/ethpanda-dark.png',
   },
+  {
+    name: 'Elytro',
+    href: 'https://elytro.com/',
+    lightSrc: '/images/logos/elytro-light.png',
+    darkSrc: '/images/logos/elytro-dark.png',
+  },
 ]
 
 const logoWallContent = {
