@@ -22,6 +22,7 @@
 export interface RoadmapItem {
   title: string
   link?: string
+  anchor?: string
   description?: string
 }
 
@@ -105,7 +106,8 @@ const zhRoadmapTitleLabels: Record<string, string> = {
   Oracle: '预言机（Oracle）',
   Indexing: '索引（Indexing）',
   Security: '安全（Security）',
-  Token: '词元 / 代币（Token）',
+  'Model Token': '词元（Token）',
+  Token: '代币（Token）',
   Embedding: '嵌入向量（Embedding）',
   Transformer: 'Transformer 架构（Transformer）',
   Hallucination: '幻觉（Hallucination）',
@@ -405,6 +407,7 @@ const zhRoadmapTitleLabels: Record<string, string> = {
 }
 
 export function displayRoadmapTitle(title: string, locale: 'zh' | 'en' = 'zh'): string {
+  if (locale === 'en' && title === 'Model Token') return 'Token'
   if (locale === 'en') return title
   if (zhRoadmapTitleLabels[title]) return zhRoadmapTitleLabels[title]
   if (/[\u4e00-\u9fff]/.test(title)) return title
@@ -457,7 +460,8 @@ const roadmapDescriptions: Record<string, string> = {
   'Wallet / Permission': 'Wallet / Permission 关注 AI 钱包、权限策略、交易模拟和安全执行。',
   Governance: 'Governance 关注 DAO、公共物品、会议行动和贡献追踪。',
   'Open Track': 'Open Track 保留跨赛道组合、新协议和开放研究方向。',
-  Token: 'Token 是模型文本处理的基本单位，也会影响成本和上下文长度。',
+  'Model Token': 'Token 是模型文本处理的基本单位，也会影响成本和上下文长度。',
+  Token: 'Token 是 Web3 和 DeFi 中的资产或权益单位。',
   Embedding: 'Embedding 把文本或对象转为向量，用于语义搜索和相似度匹配。',
   Transformer: 'Transformer 是现代 LLM 的核心架构，依靠注意力处理上下文关系。',
   Hallucination: 'Hallucination 指模型生成无依据或不可靠内容的现象。',
@@ -501,7 +505,8 @@ const roadmapDescriptionsEn: Record<string, string> = {
   'Wallet / Permission': 'Wallet and permission work focuses on AI wallets, permission policies, transaction simulation, and safe execution.',
   Governance: 'Governance focuses on DAOs, public goods, meeting actions, and contribution tracking.',
   'Open Track': 'Open track leaves room for cross-track combinations, new protocols, and open research directions.',
-  Token: 'A token is the basic unit models use to process text, and it affects cost and context length.',
+  'Model Token': 'A token is the basic unit models use to process text, and it affects cost and context length.',
+  Token: 'A token is a unit of assets or rights in Web3 and DeFi systems.',
   Embedding: 'Embeddings turn text or objects into vectors for semantic search and similarity matching.',
   Transformer: 'Transformers are the core architecture behind modern LLMs, using attention to process context relationships.',
   Hallucination: 'Hallucination is when a model produces unsupported or unreliable content.',
@@ -605,7 +610,7 @@ export const playgroundRoadmap: RoadmapData = {
         subCard: {
           title: 'LLM',
           items: [
-            { title: 'Token', link: DEMO_LINK },
+            { title: 'Model Token', link: DEMO_LINK, anchor: '#token' },
             { title: 'Embedding', link: DEMO_LINK },
             { title: 'Transformer', link: DEMO_LINK },
             { title: 'Hallucination', link: DEMO_LINK },
