@@ -55,6 +55,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/cobo-agentic-wallet-light.png',
     darkSrc: '/images/logos/cobo-agentic-wallet-dark.png',
   },
+  {
+    name: 'Ethereum Foundation Dev Growth',
+    href: 'https://ethereum.foundation/',
+    lightSrc: '/images/logos/ethereum-foundation-dev-growth-light.png',
+    darkSrc: '/images/logos/ethereum-foundation-dev-growth-dark.png',
+  },
 ]
 
 const logoWallContent = {
