@@ -43,6 +43,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/elytro-light.png',
     darkSrc: '/images/logos/elytro-dark.png',
   },
+  {
+    name: 'Z.AI',
+    href: 'https://z.ai/',
+    lightSrc: '/images/logos/zai-light.svg',
+    darkSrc: '/images/logos/zai-dark.svg',
+  },
 ]
 
 const logoWallContent = {
