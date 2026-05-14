@@ -61,6 +61,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/ethereum-foundation-dev-growth-light.png',
     darkSrc: '/images/logos/ethereum-foundation-dev-growth-dark.png',
   },
+  {
+    name: 'PHALA',
+    href: 'https://phala.com/',
+    lightSrc: '/images/logos/phala-light.png',
+    darkSrc: '/images/logos/phala-dark.png',
+  },
 ]
 
 const logoWallContent = {
