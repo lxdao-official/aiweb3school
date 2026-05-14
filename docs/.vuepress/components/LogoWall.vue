@@ -121,6 +121,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/nova-light.png',
     darkSrc: '/images/logos/nova-dark.png',
   },
+  {
+    name: 'Deep Funding',
+    href: 'https://www.deepfunding.org/',
+    lightSrc: '/images/logos/deep-funding-light.svg',
+    darkSrc: '/images/logos/deep-funding-dark.svg',
+  },
 ]
 
 const logoWallContent = {
