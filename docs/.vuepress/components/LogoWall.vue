@@ -133,6 +133,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/lifi-light.svg',
     darkSrc: '/images/logos/lifi-dark.svg',
   },
+  {
+    name: 'AltLayer',
+    href: 'https://altlayer.io/',
+    lightSrc: '/images/logos/altlayer-light.png',
+    darkSrc: '/images/logos/altlayer-dark.png',
+  },
 ]
 
 const logoWallContent = {
