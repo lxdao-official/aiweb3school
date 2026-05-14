@@ -157,6 +157,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/panews-light.png',
     darkSrc: '/images/logos/panews-dark.png',
   },
+  {
+    name: 'Ethereum News',
+    href: 'https://ethereum.news/',
+    lightSrc: '/images/logos/ethereum-news-light.png',
+    darkSrc: '/images/logos/ethereum-news-dark.png',
+  },
 ]
 
 const logoWallContent = {
