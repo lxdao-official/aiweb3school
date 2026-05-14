@@ -145,6 +145,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/techflow-light.svg',
     darkSrc: '/images/logos/techflow-dark.svg',
   },
+  {
+    name: 'WU BLOCKCHAIN',
+    href: 'https://www.wublockchain.xyz/',
+    lightSrc: '/images/logos/wu-blockchain-light.png',
+    darkSrc: '/images/logos/wu-blockchain-dark.png',
+  },
 ]
 
 const logoWallContent = {
