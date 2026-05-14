@@ -127,6 +127,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/deep-funding-light.svg',
     darkSrc: '/images/logos/deep-funding-dark.svg',
   },
+  {
+    name: 'LI.FI',
+    href: 'https://li.fi/',
+    lightSrc: '/images/logos/lifi-light.svg',
+    darkSrc: '/images/logos/lifi-dark.svg',
+  },
 ]
 
 const logoWallContent = {
