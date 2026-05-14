@@ -103,6 +103,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/opencsg-light.svg',
     darkSrc: '/images/logos/opencsg-dark.svg',
   },
+  {
+    name: 'Napul.ETH',
+    href: 'https://www.napuleth.org/',
+    lightSrc: '/images/logos/napul-eth-light.png',
+    darkSrc: '/images/logos/napul-eth-dark.png',
+  },
 ]
 
 const logoWallContent = {
