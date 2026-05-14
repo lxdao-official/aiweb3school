@@ -91,6 +91,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/base-chinese-light.png',
     darkSrc: '/images/logos/base-chinese-dark.png',
   },
+  {
+    name: 'APAC DAO',
+    href: 'https://www.linkedin.com/company/apac-dao/',
+    lightSrc: '/images/logos/apac-dao-light.png',
+    darkSrc: '/images/logos/apac-dao-dark.png',
+  },
 ]
 
 const logoWallContent = {
