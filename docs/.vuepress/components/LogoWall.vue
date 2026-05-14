@@ -151,6 +151,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/wu-blockchain-light.png',
     darkSrc: '/images/logos/wu-blockchain-dark.png',
   },
+  {
+    name: 'PANews',
+    href: 'https://www.panewslab.com/en',
+    lightSrc: '/images/logos/panews-light.png',
+    darkSrc: '/images/logos/panews-dark.png',
+  },
 ]
 
 const logoWallContent = {
