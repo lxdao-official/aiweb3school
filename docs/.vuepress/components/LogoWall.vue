@@ -67,6 +67,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/phala-light.png',
     darkSrc: '/images/logos/phala-dark.png',
   },
+  {
+    name: 'Web3Privacy Now',
+    href: 'https://web3privacy.info/',
+    lightSrc: '/images/logos/web3privacy-now-light.svg',
+    darkSrc: '/images/logos/web3privacy-now-dark.svg',
+  },
 ]
 
 const logoWallContent = {
