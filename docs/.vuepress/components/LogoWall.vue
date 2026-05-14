@@ -85,6 +85,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/ethereum-singapore-light.png',
     darkSrc: '/images/logos/ethereum-singapore-dark.png',
   },
+  {
+    name: 'base中文台',
+    href: 'https://www.base.org/',
+    lightSrc: '/images/logos/base-chinese-light.png',
+    darkSrc: '/images/logos/base-chinese-dark.png',
+  },
 ]
 
 const logoWallContent = {
