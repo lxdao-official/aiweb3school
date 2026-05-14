@@ -115,6 +115,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/dev3pack-light.png',
     darkSrc: '/images/logos/dev3pack-dark.png',
   },
+  {
+    name: 'NOVA',
+    href: 'https://thenova.world/',
+    lightSrc: '/images/logos/nova-light.png',
+    darkSrc: '/images/logos/nova-dark.png',
+  },
 ]
 
 const logoWallContent = {
