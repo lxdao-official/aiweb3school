@@ -9,11 +9,27 @@ const bootcampContent = {
     eyebrow: "2026 年 5 月 17 日 - 6 月 14 日",
     title: "AI x Web3 School Bootcamp",
     description:
-      "面向 builders 的 3 周 Bootcamp 加 2 周黑客松，系统探索 AI Agent、Web3 支付、AI 原生钱包、链上自动化与可验证智能体。",
+      "面向 builders 的 3 周 Bootcamp ＋ 2 周黑客松，系统探索 AI Agent、Web3 支付、AI 原生钱包、链上自动化与可验证智能体。本次活动由 Z.AI 领衔赞助，全程提供核心算力与开发者激励。同时在 Cobo 支持下，共同连接 AI 工程能力、钱包基础设施与真实 Web3 场景，为全球 builders 托起最懂 AI × Web3 的创新舞台。",
     primaryCta: "加入 Bootcamp",
     secondaryCta: "查看课程",
-    sponsorPrefix: "由",
-    sponsorSuffix: "赞助",
+    sponsors: [
+      {
+        name: "Z.ai",
+        prefix: "由",
+        suffix: "领衔赞助",
+        lightSrc: "/images/logos/智谱 ZAI_en_black.svg",
+        darkSrc: "/images/logos/智谱 ZAI_en_white.svg",
+        logoClass: "bootcamp-sponsor-logo-zai",
+      },
+      {
+        name: "Cobo",
+        prefix: "",
+        suffix: "联合赞助",
+        lightSrc: "/images/logos/cobo-logo-light.svg",
+        darkSrc: "/images/logos/cobo-logo-dark.svg",
+        logoClass: "bootcamp-sponsor-logo-cobo",
+      },
+    ],
     primaryHref: "https://web3career.build/zh/programs/AI-Web3-School?tab=apply",
     secondaryHref: "/zh/ai-agents/",
     phases: [
@@ -28,11 +44,27 @@ const bootcampContent = {
     eyebrow: "May 17 - June 14, 2026",
     title: "AI x Web3 School Bootcamp",
     description:
-      "A 3-week bootcamp plus 2-week hackathon for builders exploring AI agents, Web3 payments, AI-native wallets, onchain automation, and verifiable agents.",
+      "A 3-week Bootcamp plus 2-week hackathon for builders to systematically explore AI Agents, Web3 payments, AI-native wallets, onchain automation, and verifiable agents. Led by Z.AI as the title sponsor, the program provides core compute resources and developer incentives throughout. With support from Cobo, it connects AI engineering capabilities, wallet infrastructure, and real Web3 scenarios to create the most AI x Web3-native innovation stage for builders worldwide.",
     primaryCta: "Join Bootcamp",
     secondaryCta: "View Curriculum",
-    sponsorPrefix: "Sponsored by",
-    sponsorSuffix: "",
+    sponsors: [
+      {
+        name: "Z.ai",
+        prefix: "Title sponsor",
+        suffix: "",
+        lightSrc: "/images/logos/智谱 ZAI_en_black.svg",
+        darkSrc: "/images/logos/智谱 ZAI_en_white.svg",
+        logoClass: "bootcamp-sponsor-logo-zai",
+      },
+      {
+        name: "Cobo",
+        prefix: "",
+        suffix: "Co-sponsor",
+        lightSrc: "/images/logos/cobo-logo-light.svg",
+        darkSrc: "/images/logos/cobo-logo-dark.svg",
+        logoClass: "bootcamp-sponsor-logo-cobo",
+      },
+    ],
     primaryHref: "https://web3career.build/en/programs/AI-Web3-School?tab=apply",
     secondaryHref: "/en/ai-agents/",
     phases: [
@@ -47,12 +79,12 @@ const bootcampContent = {
 
 const localeKey = computed(() => (routeLocale.value === "/en/" ? "en" : "zh"));
 const content = computed(() => bootcampContent[localeKey.value]);
-const topicSummary = computed(() => content.value.topics.join(" / "));
 const highlights = computed(() => [
   ...content.value.phases,
   {
     label: content.value.topicLabel,
-    value: topicSummary.value,
+    value: "",
+    topics: content.value.topics,
     icon: "direction",
   },
 ]);
@@ -86,21 +118,29 @@ const highlights = computed(() => [
             {{ content.secondaryCta }}
           </a>
         </div>
-        <div class="bootcamp-sponsor" aria-label="Z.ai sponsor">
-          <span>{{ content.sponsorPrefix }}</span>
-          <img
-            class="bootcamp-sponsor-logo bootcamp-sponsor-logo-light"
-            :src="withBase('/images/logos/智谱 ZAI_en_black.svg')"
-            alt="Z.ai"
-            loading="lazy"
+        <div class="bootcamp-sponsor" aria-label="Bootcamp sponsors">
+          <span
+            v-for="sponsor in content.sponsors"
+            :key="sponsor.name"
+            class="bootcamp-sponsor-item"
           >
-          <img
-            class="bootcamp-sponsor-logo bootcamp-sponsor-logo-dark"
-            :src="withBase('/images/logos/智谱 ZAI_en_white.svg')"
-            alt="Z.ai"
-            loading="lazy"
-          >
-          <span v-if="content.sponsorSuffix">{{ content.sponsorSuffix }}</span>
+            <span v-if="sponsor.prefix">{{ sponsor.prefix }}</span>
+            <img
+              class="bootcamp-sponsor-logo bootcamp-sponsor-logo-light"
+              :class="sponsor.logoClass"
+              :src="withBase(sponsor.lightSrc)"
+              :alt="sponsor.name"
+              loading="lazy"
+            >
+            <img
+              class="bootcamp-sponsor-logo bootcamp-sponsor-logo-dark"
+              :class="sponsor.logoClass"
+              :src="withBase(sponsor.darkSrc)"
+              :alt="sponsor.name"
+              loading="lazy"
+            >
+            <span v-if="sponsor.suffix">{{ sponsor.suffix }}</span>
+          </span>
         </div>
       </div>
 
@@ -129,7 +169,16 @@ const highlights = computed(() => [
             loading="lazy"
           >
           <strong>{{ phase.label }}</strong>
-          <span>{{ phase.value }}</span>
+          <span v-if="'topics' in phase" class="bootcamp-topic-list">
+            <span
+              v-for="topic in phase.topics"
+              :key="topic"
+              class="bootcamp-topic-item"
+            >
+              {{ topic }}
+            </span>
+          </span>
+          <span v-else>{{ phase.value }}</span>
         </div>
       </div>
     </div>
@@ -233,8 +282,9 @@ const highlights = computed(() => [
 
 .bootcamp-sponsor {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 14px 24px;
   margin-top: clamp(42px, 6vw, 74px);
   color: rgba(64, 72, 84, 0.84);
   font-size: clamp(14px, 1vw, 16px);
@@ -242,10 +292,27 @@ const highlights = computed(() => [
   line-height: 1;
 }
 
+.bootcamp-sponsor-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+}
+
 .bootcamp-sponsor-logo {
   display: block;
-  width: clamp(58px, 5.2vw, 78px);
   height: auto;
+  max-height: 28px;
+  object-fit: contain;
+}
+
+.bootcamp-sponsor-logo-zai {
+  width: clamp(58px, 5.2vw, 78px);
+}
+
+.bootcamp-sponsor-logo-cobo {
+  width: clamp(68px, 6.1vw, 92px);
+  transform: translate(-4px, -2px);
 }
 
 .bootcamp-sponsor-logo-dark {
@@ -360,6 +427,11 @@ const highlights = computed(() => [
   margin-top: auto;
 }
 
+.bootcamp-metric-3 span {
+  font-size: clamp(18px, 1.62vw, 24px);
+  white-space: nowrap;
+}
+
 .bootcamp-metric strong {
   position: relative;
   display: block;
@@ -377,6 +449,16 @@ const highlights = computed(() => [
   font-weight: 800;
   line-height: 1.34;
   overflow-wrap: anywhere;
+}
+
+.bootcamp-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bootcamp-topic-item {
+  display: block;
 }
 
 :global(html[data-theme="dark"]) .bootcamp-card {
@@ -509,6 +591,10 @@ const highlights = computed(() => [
     grid-template-columns: 1fr;
   }
 
+  .bootcamp-sponsor {
+    gap: 12px 18px;
+  }
+
   .bootcamp-button {
     width: 100%;
     min-width: 0;
@@ -526,6 +612,10 @@ const highlights = computed(() => [
 
   .bootcamp-metric span {
     font-size: 19px;
+  }
+
+  .bootcamp-metric-3 span {
+    font-size: 17px;
   }
 
   .bootcamp-topics span {

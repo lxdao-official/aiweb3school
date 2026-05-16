@@ -34,8 +34,8 @@ import {
  *  1. 节点：宽 220，渲染由 RoadmapFlowNode 决定，自带 hover 提亮 + cursor pointer
  *  2. Sub-card：宽 260 (top) / 340 (fusion)，高度按 items 数量自动算
  *  3. 顶部 AI / Web3：
- *     - AI 主列固定 X=410（sub 全部留在左半区），Web3 主列 X=1230（sub 全部留在右半区）
- *     - 在自身半区内，sub-card 按节点 index 左右交替挂在主列两侧
+ *     - AI 主列固定 X=410，Web3 主列固定 X=1230
+ *     - AI sub-card 按节点 index 右 / 左交替，Web3 sub-card 使用显式左右位置配置
  *     - 主线保持紧凑固定节奏；sub-card 在各自 lane 内有空就向上贴合，只避免同 lane 重叠
  *  4. 中央融合 section：
  *     - 主线由 anchor 上下贯穿中央
@@ -98,6 +98,18 @@ const layout = {
   splitCardStartOffset: 30,
 }
 
+const web3SubCardSideByTitle: Record<string, 'left' | 'right'> = {
+  Cryptography: 'left',
+  'Smart Contract': 'right',
+  'Account Abstraction': 'left',
+  Security: 'right',
+}
+
+const topSubCardAlignPairs: Array<[string, string]> = [
+  ['RAG', 'Smart Contract'],
+  ['Evaluation', 'Security'],
+]
+
 // ============================================================
 // 高度计算（与 PlaygroundSectionCard.vue 内部尺寸一致）
 // ============================================================
@@ -142,7 +154,7 @@ function withItemLinks(card: RoadmapSubCard, pagePath: string): RoadmapSubCard {
     link: pagePath,
     items: card.items.map((item) => ({
       ...item,
-      link: `${pagePath}${handbookAnchor(item.title)}`,
+      link: `${pagePath}${item.anchor ?? handbookAnchor(item.title)}`,
     })),
   }
 }
@@ -164,6 +176,72 @@ function asSectionBlocks(card: RoadmapSubCard, locale: RoadmapLocale): SectionBl
 // 节点 / 连线工厂
 // ============================================================
 type AnyNode = Node | RoadmapNode
+
+interface TopSubCardPlacement {
+  node: AnyNode
+  height: number
+  title: string
+  laneKey: string
+}
+
+function alignTopSubCards(placements: Record<string, TopSubCardPlacement>) {
+  topSubCardAlignPairs.forEach(([leftTitle, rightTitle]) => {
+    const left = placements[leftTitle]
+    const right = placements[rightTitle]
+    if (!left || !right) return
+
+    const alignedY = Math.round((left.node.position.y + right.node.position.y) / 2)
+    left.node.position.y = alignedY
+    right.node.position.y = alignedY
+  })
+}
+
+function getAlignedTopSubCardGroups(placements: Record<string, TopSubCardPlacement>) {
+  const groupedTitles = new Set<string>()
+  const groups: TopSubCardPlacement[][] = []
+
+  topSubCardAlignPairs.forEach((pair) => {
+    const group = pair
+      .map((title) => placements[title])
+      .filter((placement): placement is TopSubCardPlacement => !!placement)
+
+    if (group.length < 2) return
+
+    group.forEach((placement) => groupedTitles.add(placement.title))
+    groups.push(group)
+  })
+
+  Object.values(placements).forEach((placement) => {
+    if (groupedTitles.has(placement.title)) return
+    groups.push([placement])
+  })
+
+  return groups
+}
+
+function resolveTopSubCardCollisions(placements: Record<string, TopSubCardPlacement>) {
+  const laneBottoms = new Map<string, number>()
+  const groups = getAlignedTopSubCardGroups(placements).sort((a, b) => {
+    const ay = Math.min(...a.map((placement) => placement.node.position.y))
+    const by = Math.min(...b.map((placement) => placement.node.position.y))
+    if (ay !== by) return ay - by
+    return a[0].title.localeCompare(b[0].title)
+  })
+
+  groups.forEach((group) => {
+    let groupY = Math.min(...group.map((placement) => placement.node.position.y))
+
+    group.forEach((placement) => {
+      const laneBottom = laneBottoms.get(placement.laneKey) ?? layout.topNodeStartY
+      groupY = Math.max(groupY, laneBottom + layout.topSubCardGapY)
+    })
+
+    group.forEach((placement) => {
+      placement.node.position.y = groupY
+      laneBottoms.set(placement.laneKey, groupY + placement.height)
+    })
+  })
+}
 
 function makeRoadmapNode(
   id: string, title: string, variant: 'section-title' | 'group' | 'topic',
@@ -282,6 +360,7 @@ function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
     ? layout.topNodeStartY + (topRowsCount - 1) * layout.topNodeStepY + layout.nodeHeight
     : layout.topNodeStartY
   let topSubCardsBottomY = layout.topNodeStartY
+  const topSubCardPlacements: Record<string, TopSubCardPlacement> = {}
 
   // ─── 顶部 AI 列 ───
   const aiLabelW = 80
@@ -314,6 +393,7 @@ function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
         : layout.aiNodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
       const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, sec)
       nodes.push(node)
+      topSubCardPlacements[n.title] = { node, height: subH, title: n.title, laneKey: `ai:${side}` }
       edges.push(makeSideEdge(n.id, subId, side))
       aiLaneBottom[side] = subY + subH
       topSubCardsBottomY = Math.max(topSubCardsBottomY, aiLaneBottom[side])
@@ -342,8 +422,7 @@ function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
     nodes.push(makeRoadmapNode(n.id, n.title, 'group', layout.web3NodeX, y, 'web3', locale, n.link))
     web3NodeIds.push(n.id)
     if (n.subCard) {
-      // 在 Web3 半区内左右交替（与 AI 镜像：i=0 左 / i=1 右 / i=2 左 …）
-      const side: 'right' | 'left' = i % 2 === 0 ? 'left' : 'right'
+      const side: 'right' | 'left' = web3SubCardSideByTitle[n.title] ?? 'left'
       const subId = `${n.id}-SUB`
       const sec = asSectionBlocks(n.subCard, locale)
       const subH = computeSectionCardHeight(sec)
@@ -354,6 +433,7 @@ function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
         : layout.web3NodeX - layout.nodeWidth / 2 - layout.topSubCardGapX - layout.topSubCardWidth
       const { node } = makeSectionCardNode(subId, subLeftX, subY, layout.topSubCardWidth, sec)
       nodes.push(node)
+      topSubCardPlacements[n.title] = { node, height: subH, title: n.title, laneKey: `web3:${side}` }
       edges.push(makeSideEdge(n.id, subId, side))
       web3LaneBottom[side] = subY + subH
       topSubCardsBottomY = Math.max(topSubCardsBottomY, web3LaneBottom[side])
@@ -362,6 +442,13 @@ function buildFromData(data: RoadmapData, locale: RoadmapLocale) {
   for (let i = 0; i < web3NodeIds.length - 1; i++) {
     edges.push(makeMainEdge(web3NodeIds[i], web3NodeIds[i + 1], 'web3'))
   }
+
+  alignTopSubCards(topSubCardPlacements)
+  resolveTopSubCardCollisions(topSubCardPlacements)
+  topSubCardsBottomY = Math.max(
+    layout.topNodeStartY,
+    ...Object.values(topSubCardPlacements).map(({ node, height }) => node.position.y + height),
+  )
 
   const topAreaBottomY = Math.max(topMainBottomY, topSubCardsBottomY)
 
