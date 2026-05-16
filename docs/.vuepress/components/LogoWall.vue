@@ -38,12 +38,6 @@ const sharedLogos: LogoItem[] = [
     darkSrc: '/images/logos/ethpanda-dark.png',
   },
   {
-    name: 'Elytro',
-    href: 'https://elytro.com/',
-    lightSrc: '/images/logos/elytro-light.png',
-    darkSrc: '/images/logos/elytro-dark.png',
-  },
-  {
     name: 'Z.AI',
     href: 'https://z.ai/',
     lightSrc: '/images/logos/zai-light.svg',
@@ -54,6 +48,12 @@ const sharedLogos: LogoItem[] = [
     href: 'https://www.cobo.com/agentic-wallet',
     lightSrc: '/images/logos/cobo-agentic-wallet-light.png',
     darkSrc: '/images/logos/cobo-agentic-wallet-dark.png',
+  },
+  {
+    name: 'Elytro',
+    href: 'https://elytro.com/',
+    lightSrc: '/images/logos/elytro-light.png',
+    darkSrc: '/images/logos/elytro-dark.png',
   },
   {
     name: 'Ethereum Foundation Dev Growth',
