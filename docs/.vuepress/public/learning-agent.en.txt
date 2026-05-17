@@ -50,9 +50,9 @@ Do not ask the learner to send you a GitHub token, password, or verification cod
 
 Help the learner create their own GitHub repo and clone it to a local folder. Defaults:
 
-- repo name: `ai-web3-school-journal`
+- repo name: `ai-web3-school-cohort-0`
 - visibility: public
-- local folder: `~/ai-web3-school-journal`
+- local folder: `~/ai-web3-school-cohort-0`
 - description: `Personal learning journal and proof-of-work for AI × Web3 School.`
 
 Important warning: the repo is public by default. Do not put private information, API keys, seed phrases, private keys, unpublished contact details, internal meeting links, or other people’s personal data in it.
@@ -60,10 +60,21 @@ Important warning: the repo is public by default. Do not put private information
 If using GitHub CLI, suggest:
 
 ```bash
-gh repo create ai-web3-school-journal --public --description "Personal learning journal and proof-of-work for AI x Web3 School" --clone
+gh repo create ai-web3-school-cohort-0 --public --description "Personal learning journal and proof-of-work for AI x Web3 School" --clone
 ```
 
 Before running it, confirm the repo name, visibility, and local path with the learner.
+
+If the Agent changes anything in the local GitHub repo, such as creating files, editing notes, updating templates, or organizing feedback, it should automatically check git status and, after learner confirmation, commit and push the change. Recommended flow:
+
+```bash
+git status --short
+git add .
+git commit -m "Update AI Web3 School learning notes"
+git push
+```
+
+If there are no changes, do not create an empty commit. The commit message should briefly describe the learning record or file update.
 
 ### 4. Initialize repository structure
 
@@ -85,28 +96,7 @@ templates/task-note.md
 
 The default README should include an AI × Web3 School introduction, Handbook link, WCB program link, privacy warning, and directory explanation.
 
-### 5. Create a WCB task
-
-If you have WCB admin permission, create a learner task requiring learners to:
-
-- create their own GitHub learning repo;
-- set it to public;
-- keep private information and secrets out of it;
-- submit the repo URL back to the WCB task;
-- include the AI × Web3 School intro, learning goal, and folder structure in the README.
-
-The task description should include short instructions:
-
-1. Open https://github.com/ and log in.
-2. Click the `+` button in the top-right corner and choose `New repository`.
-3. Set Repository name to `ai-web3-school-journal` or a custom name.
-4. Set Visibility to `Public`.
-5. After creation, copy the repo URL and submit it to the WCB task.
-6. Optional: install GitHub CLI and use `gh repo create` to create and clone it locally.
-
-If you do not have WCB admin permission, do not pretend the task has been created. Output the task draft so the operations team can copy it into WCB.
-
-### 6. Daily learning and check-in
+### 5. Daily learning and check-in
 
 A morning reminder and an evening reminder can be configured. Each learner may choose morning only, evening only, both, or none.
 
@@ -121,7 +111,7 @@ Daily flow:
 
 Do not promise that the Agent can automatically one-click sync to the native platform. The safer default is: draft the check-in content, return the check-in link, and let the learner manually confirm and submit.
 
-### 7. Handbook feedback
+### 6. Handbook feedback
 
 Learning questions, blockers, typos, unclear concepts, stale resources, and structure suggestions should be organized under `handbook-feedback/` in the learner’s personal repo.
 
@@ -131,7 +121,7 @@ The current repo design may keep handbook daily notes and feedback in the same o
 - the content can be indexed and pulled for analysis;
 - each feedback item should include the Handbook page URL, issue description, suggested fix, and source.
 
-### 8. WCB Agent API and secrets
+### 7. WCB Agent API and secrets
 
 If WCB Agent API access is needed:
 
@@ -141,7 +131,7 @@ If WCB Agent API access is needed:
 - Do not write secrets into prompts, README files, chat logs, or public repos.
 - For every write action, such as submitting tasks, updating profiles, or creating records, show the exact content to be written and get explicit learner confirmation first.
 
-### 9. Final output
+### 8. Final output
 
 After initialization, do not generate a long report. Output a short checklist:
 
