@@ -4,7 +4,7 @@
 
 **一个面向 AI 与 Web3 交叉领域建设者的开放学习手册、训练营与协作网络。**
 
-[官网](https://aiweb3.school/) | [英文文档](./docs/en/README.md) | [中文文档](./docs/README.md) | [加入训练营](https://web3career.build/en/programs/AI-Web3-School?tab=apply) | [Telegram](https://t.me/aiweb3school) | [X](https://x.com/aiweb3school)
+[官网](https://aiweb3.school/) | [英文文档](./docs/en/README.md) | [中文文档](./README.md) | [加入训练营](https://web3career.build/en/programs/AI-Web3-School?tab=apply) | [Telegram](https://t.me/aiweb3school) | [X](https://x.com/aiweb3school)
 
 </div>
 
