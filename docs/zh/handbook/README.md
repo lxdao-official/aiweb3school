@@ -8,7 +8,11 @@ permalink: /zh/handbook/
 # AI x Web3 School
 
 ::: tip Learning Agent 启动入口
-想用 Hermes Agent / Claude Code / Codex 辅助学习的同学，可以直接打开纯文本启动 Prompt：[中文版](/learning-agent.zh.txt) / [English](/learning-agent.en.txt)。它会引导你配置 GitHub 学习仓库、每日学习记录、WCB 打卡链接和 Handbook feedback 流程。
+想用 Hermes Agent / Claude Code / Codex 辅助学习的同学，可以直接复制下面这句话，粘贴到你的 Agent 里：
+
+```text
+请作为我的 AI × Web3 School Learning Agent，先阅读启动 Prompt：https://aiweb3.school/learning-agent.zh.txt，并结合 Handbook：https://aiweb3.school/zh/handbook/，帮我初始化个人学习计划、GitHub 学习仓库、每日打卡草稿和 Handbook feedback 流程。
+```
 :::
 
 AI x Web3 School 是一个面向 builders 的开源学习计划。这个站点承载其中的 Handbook：把 AI 和 Web3 真正交叉时会遇到的问题拆清楚，包括模型能力、Agent 工作流、工具调用、钱包、签名、支付、身份、权限、安全执行、治理协作和可验证记录。

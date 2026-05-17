@@ -8,7 +8,11 @@ permalink: /en/handbook/
 # AI x Web3 School
 
 ::: tip Learning Agent Startup
-Learners who want to use Hermes Agent / Claude Code / Codex for assisted learning can open the plain-text startup prompt directly: [中文](/learning-agent.zh.txt) / [English](/learning-agent.en.txt). It guides GitHub learning repo setup, daily learning notes, WCB check-in links, and the Handbook feedback flow.
+Learners who want to use Hermes Agent / Claude Code / Codex for assisted learning can copy the sentence below and paste it into their Agent:
+
+```text
+Please act as my AI × Web3 School Learning Agent. First read the startup prompt at https://aiweb3.school/learning-agent.en.txt, then use the Handbook at https://aiweb3.school/en/handbook/ to help me initialize my personal learning plan, GitHub learning repository, daily check-in drafts, and Handbook feedback workflow.
+```
 :::
 
 AI x Web3 School is an open learning program for builders. This site hosts its Handbook: a structured map of the real problems that appear when AI and Web3 intersect, including model capabilities, Agent workflows, tool use, wallets, signatures, payments, identity, permissions, safe execution, governance collaboration, and verifiable records.
