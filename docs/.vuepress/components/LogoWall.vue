@@ -86,6 +86,12 @@ const sharedLogos: LogoItem[] = [
     darkSrc: '/images/logos/web3privacy-now-dark.svg',
   },
   {
+    name: 'Waterdrip Capital',
+    href: 'https://www.waterdripcapital.com/',
+    lightSrc: '/images/logos/waterdrip-capital-light.png',
+    darkSrc: '/images/logos/waterdrip-capital-dark.png',
+  },
+  {
     name: 'ETHVIETNAM',
     href: 'https://www.eth-vietnam.com/',
     lightSrc: '/images/logos/ethvietnam-light.png',
