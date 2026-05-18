@@ -172,8 +172,8 @@ const sharedLogos: LogoItem[] = [
   {
     name: 'ABAB News',
     href: 'https://www.ababnews.com/',
-    lightSrc: '/images/logos/abab-news-light.png',
-    darkSrc: '/images/logos/abab-news-dark.png',
+    lightSrc: '/images/logos/abab-news-light-tile.png',
+    darkSrc: '/images/logos/abab-news-dark-transparent.png',
   },
 ]
 
