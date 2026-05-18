@@ -169,6 +169,12 @@ const sharedLogos: LogoItem[] = [
     lightSrc: '/images/logos/ethereum-news-light.png',
     darkSrc: '/images/logos/ethereum-news-dark.png',
   },
+  {
+    name: 'ABAB News',
+    href: 'https://www.ababnews.com/',
+    lightSrc: '/images/logos/abab-news-light.png',
+    darkSrc: '/images/logos/abab-news-dark.png',
+  },
 ]
 
 const logoWallContent = {
