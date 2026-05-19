@@ -21,7 +21,7 @@ It usually touches four questions:
 - who provides the compute
 - who verifies outcomes and controls governance
 
-So it is not just “put the model onchain.” It is about changing the structure around AI production.
+So it is not just “put the model onchain.” It is an attempt to change how power and resources are distributed in AI systems.
 
 ## Why this direction exists
 
@@ -104,7 +104,7 @@ The strongest long-term value is not the slogan. It is the possibility of improv
 
 - openness of access
 - transparency of contribution and rewards
-- traceability of governance
+- traceability in the governance of models and data
 - resilience against single-platform dependence
 
 ## Minimum takeaway

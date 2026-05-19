@@ -50,7 +50,7 @@ The training set is used to learn model parameters. It contains the examples the
 
 ### Validation set
 
-The validation set helps compare approaches and tune settings during development.
+The validation set is used to tune parameters, compare models, and check direction. It helps you judge whether the current approach is actually improving.
 
 ### Test set
 
@@ -73,9 +73,9 @@ That usually means the model learned noise in addition to useful patterns.
 
 Features are the inputs available to the model, for example:
 
-- wallet age
+- active days of a user address
 - transaction frequency
-- asset balance changes
+- wallet asset changes
 - keywords in text
 
 ### Labels
@@ -90,10 +90,10 @@ The objective function measures how wrong the model currently is. Training is th
 
 Many projects do not fail because the model is outdated. They fail because the data pipeline is weak:
 
-- labels are inconsistent
-- the dataset does not match real-world usage
+- the labels themselves are inaccurate
+- the data distribution does not match the real scenario
 - sampling is biased
-- the training data is stale
+- the training data is outdated and cannot keep up with real-world changes
 
 This becomes even more visible in Web3. Onchain data is public, but it is not automatically ready for learning. The task still has to be defined, the noise has to be cleaned, and useful features have to be constructed.
 

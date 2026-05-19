@@ -30,7 +30,10 @@ At minimum, you should strengthen these areas:
 - prompting, agents, and tool-calling logic
 - model limits, failure modes, and risk
 
-The goal is not to become a researcher first. The goal is to understand where product capability really comes from.
+The goal is not to become a researcher first. The goal is to:
+
+- understand where product capability really comes from
+- know what models are suitable for, and what they are not suitable for
 
 ## Category 2: Web3 fundamentals
 

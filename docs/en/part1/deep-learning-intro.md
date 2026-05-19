@@ -12,7 +12,7 @@ Machine Learning explains how models learn. This lesson explains why Deep Learni
 
 ## A simple way to think about Deep Learning
 
-Deep Learning is a family of learning methods built on multi-layer neural networks. The word “deep” refers to the fact that the network has many layers, which gives it stronger representation power and allows it to learn more complex patterns from raw data.
+Deep Learning is a learning method built on multi-layer neural networks. “Deep” is not an abstract idea; it means the network has more layers and stronger representation power, allowing it to automatically extract higher-level features from complex data.
 
 Compared with earlier methods that depended heavily on hand-designed features, Deep Learning is better at working directly with:
 
@@ -62,7 +62,7 @@ Most modern language and multimodal models are built on the Transformer architec
 - scales well with parallel training
 - supports very large parameter counts
 
-You do not need the equations yet. What matters is knowing that most of the models used in AI × Web3 products today follow this architectural path.
+You do not need to master the internal equations yet. What matters is knowing that the language models, code models, and multimodal models used in most AI × Web3 scenarios today all rely on this technical path.
 
 ## Benefits and tradeoffs
 
@@ -83,11 +83,11 @@ You do not need the equations yet. What matters is knowing that most of the mode
 
 Deep Learning is useful for tasks such as:
 
-- analyzing transaction sequences
-- reading governance discussions
-- generating research summaries
-- identifying risky patterns
-- supplying reasoning capabilities to agents
+- processing onchain transaction behavior sequences
+- analyzing governance discussion text
+- generating research summaries and strategy drafts
+- doing onchain risk identification and pattern discovery
+- providing Agents with understanding capability before decision-making and execution
 
 It should not be treated as magic. In onchain environments, even powerful models still require:
 
@@ -107,4 +107,4 @@ After this lesson, you should be able to explain:
 
 ## What comes next
 
-The next lesson shifts from theory to practice and maps out the AI tools and platforms most commonly used to build real products.
+The next lesson moves into AI tools and platforms. The focus shifts from “principles” to “how to get started,” placing common model services, development frameworks, and practical workflows into a more useful map.

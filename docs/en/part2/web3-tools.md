@@ -17,15 +17,15 @@ The previous lessons explained the structure of blockchains and protocols. This 
 This category handles:
 
 - user identity access
-- transaction signing
-- permission approval
-- wallet connection
+- address signing
+- transaction confirmation
+- permission authorization
 
 At the product level, the wallet is usually the primary entry point into Web3.
 
 ### 2. Nodes and RPC services
 
-RPC services let your frontend or backend read chain state, send transactions, and call contracts.  
+RPC services let your frontend or backend read chain state, send transactions, and call contracts.
 Without this layer, your application cannot interact with a live network.
 
 ### 3. Smart contract development and testing tools
@@ -41,13 +41,13 @@ It is what turns protocol logic into something repeatable and verifiable.
 
 ### 4. Indexing and data tools
 
-Raw onchain data is often too difficult to query directly for product use.  
+Raw onchain data is often too difficult to query directly for product use.
 Indexing layers transform it into structures that are easier to search, display, and analyze.
 
 ### 5. Security and monitoring
 
-Onchain systems need observability from the start.  
-This category usually covers:
+Once an onchain product is live, security and monitoring cannot be added as an afterthought.
+This category mainly covers:
 
 - contract risk checks
 - address behavior tracking
@@ -91,11 +91,11 @@ Does the tool actually support the chain and environment you plan to use?
 
 ### Stability
 
-Are the SDK, RPC service, and indexing provider stable enough for real usage?
+Are the SDK, RPC service, and indexing provider stable, and are problems easy to troubleshoot?
 
 ### Replaceability
 
-Can you change providers later without rebuilding the whole system?
+Can providers be replaced easily, so the whole site does not go down when an underlying service fails?
 
 ### Developer experience
 
@@ -109,7 +109,7 @@ If AI becomes part of the onchain workflow, the toolchain needs three additional
 - clear boundaries on agent tool usage
 - observability, replay, and interruption for execution flows
 
-That is why AI × Web3 tooling is not just “an AI SDK plus a wallet SDK.” It needs a controlled execution architecture.
+That is why an AI × Web3 toolchain is not simply placing an AI SDK next to a wallet SDK; it needs complete orchestration and risk control.
 
 ## Minimum takeaway
 

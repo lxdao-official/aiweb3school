@@ -8,7 +8,7 @@ permalink: /en/defi-intro/
 
 ## What this lesson solves
 
-After learning blockchains and smart contracts, the natural next question is what these systems are used for in practice. DeFi is one of the most important answers. This lesson builds a high-level map before going into product-specific details.
+After learning blockchains and smart contracts, the natural next question is what these systems are used for in practice. DeFi is one of the most important answers. This lesson first builds a high-level map. It does not aim for detailed derivations; the focus is to see the main modules and how they relate to one another.
 
 ## What DeFi is
 
@@ -25,7 +25,7 @@ Its difference from traditional finance is not that all intermediaries disappear
 
 ### Stablecoins
 
-Stablecoins provide a relatively stable unit of account and act as the settlement layer for many DeFi systems.
+Stablecoins provide a relatively stable unit of account and are the basic asset layer for many DeFi systems.
 
 ### Decentralized exchanges
 
@@ -51,7 +51,7 @@ DeFi grows quickly because protocols can use one another as modules:
 - borrowed assets can be moved into liquidity pools
 - receipt tokens can become collateral elsewhere
 
-That structure behaves like financial Lego.  
+That structure behaves like financial Lego.
 It speeds up innovation, but it also allows risk to travel through dependencies.
 
 ## Why liquidity is central
@@ -92,7 +92,8 @@ When AI meets DeFi, two broad patterns appear most often:
 - understanding layer: research, summaries, monitoring, and decision support
 - execution layer: allocation, rebalancing, and rule-based onchain action
 
-The first is mostly analytical. The second carries the real risk, because it touches assets and permissions.
+The former is more about “analysis,” while the latter is more about “execution.”
+The truly high-risk part is usually not the model generating explanations, but whether it has permission to perform asset actions.
 
 ## Minimum takeaway
 

@@ -14,10 +14,10 @@ AI is not a single tool. It is a stack of capabilities that allows software to p
 
 It helps to split AI systems into four layers:
 
-1. Data layer: the text, images, audio, and behavioral data used for training and inference.
-2. Model layer: the system that learns patterns and produces outputs.
-3. Application layer: the product capability built on top of the model, such as search, summarization, generation, or classification.
-4. Execution layer: the part that allows a model to do more than answer, such as calling tools, writing to a database, or triggering onchain actions.
+1. Data layer: the text, images, audio, and behavioral data used for model training and inference.
+2. Model layer: the core system that learns patterns and produces outputs, such as classification models, generative models, or multimodal models.
+3. Application layer: the product capabilities built around models, such as Q&A, retrieval, summarization, code completion, or image generation.
+4. Execution layer: the part that lets a model do more than “answer”; it can also “act,” such as calling tools, initiating transactions, writing to a database, or operating onchain contracts.
 
 ## Core concepts
 
@@ -47,7 +47,9 @@ An Agent adds planning and execution on top of a model. It usually has a goal, m
 
 ## Why generative AI matters
 
-Earlier AI systems were often designed to classify or detect. Generative AI moved one step further. It can write, summarize, code, plan, and call tools. That makes it much more relevant to AI × Web3, where useful systems often need to:
+Earlier AI systems were often focused on recognition and classification, such as deciding whether an image contains a cat or whether a transaction is abnormal. Generative AI pushes this further: it can not only judge, but also write, draw, summarize, plan, call tools, and even keep completing multi-step tasks under clear rules and constraints.
+
+For AI × Web3, this is critical because onchain applications need more than “understanding information.” They also need to:
 
 - read onchain state
 - interpret transactions and contracts
@@ -58,7 +60,7 @@ Earlier AI systems were often designed to classify or detect. Generative AI move
 
 ### Misconception 1: the model is the product
 
-The model is only the capability layer. A real product still needs data flow, permissions, failure handling, and user experience.
+The model is only the capability foundation. A real product still needs data flow, permission control, execution logic, failure handling, and user experience.
 
 ### Misconception 2: an Agent automatically creates value
 

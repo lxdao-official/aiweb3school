@@ -8,7 +8,7 @@ permalink: /en/ai-nft/
 
 ## What this lesson solves
 
-AI + NFT is often reduced to “generate an image with AI and sell it.” This lesson breaks that down into the actual moving parts: content generation, digital identity, ownership representation, and assetized distribution.
+AI + NFT is often reduced to “generate an image with AI and sell it.” This lesson breaks that down into the actual moving parts: content generation, digital identity, ownership representation, and assetized distribution — and asks which combinations are real opportunities and which are short-term noise.
 
 ## NFT is not just an image
 

@@ -22,7 +22,7 @@ The most common mistake is trying to build all of this at once:
 - analytics
 
 That usually makes the scope too large and the value proposition too unclear.  
-The better approach is to build a product with one sharp value point first.
+The better approach is: **first build a minimum version with only one core value point.**
 
 ## Step 1: define the user problem first
 

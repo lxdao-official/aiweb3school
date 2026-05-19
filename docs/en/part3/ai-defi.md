@@ -20,9 +20,9 @@ DeFi has three properties that make it attractive for AI systems:
 
 That aligns well with three AI strengths:
 
-- understanding large volumes of information
-- generating structured suggestions
-- executing workflows through tools
+- understanding information: processing large amounts of protocol data, governance text, and market events
+- generating suggestions: forming strategies, alerts, and risk judgments
+- executing workflows: calling tools and completing operations according to rules
 
 This is why AI + DeFi is not just a trend label. It has real product logic behind it.
 
@@ -37,7 +37,7 @@ Examples:
 - tracking risk events
 - identifying large capital movements
 
-These are the easiest to ship because they mainly produce information.
+These are the easiest to ship because they mainly produce information and do not directly touch assets.
 
 ### Risk management
 
@@ -63,7 +63,7 @@ These are the most attractive use cases, but also the most dangerous, because er
 
 ## Where AI is best used today
 
-The most practical role for AI is usually not “full autonomous control of capital.”  
+The most practical role for AI is usually not “full autonomous control of capital.”
 It is more often:
 
 - organizing complex information
@@ -86,15 +86,15 @@ That makes DeFi execution qualitatively different from automating a document wor
 
 ## A typical AI + DeFi workflow
 
-Suppose the user goal is “earn conservative yield on stablecoins.”  
+Suppose the user goal is “earn stable yield with low risk.”
 An AI system might:
 
-1. read the current portfolio and approvals  
-2. fetch available protocols, rates, and risk indicators  
-3. filter options by risk constraints  
-4. rank candidate strategies and explain why  
-5. request confirmation or execute within limited permissions  
-6. continue monitoring the position  
+1. read the current portfolio and approvals
+2. fetch available protocols, rates, and risk indicators
+3. filter options by risk constraints
+4. rank candidate strategies and explain why
+5. request confirmation or execute within limited permissions
+6. continue monitoring position changes and risk events
 
 The value usually comes from ongoing monitoring and interpretation, not from one isolated transaction.
 
@@ -103,6 +103,7 @@ The value usually comes from ongoing monitoring and interpretation, not from one
 ### Constraint 1: data is not the same as truth
 
 Onchain data is public, but interpreting it still requires context.
+A high-yield pool is not necessarily suitable to enter.
 
 ### Constraint 2: market conditions move quickly
 
@@ -143,4 +144,4 @@ After this lesson, you should be able to explain:
 
 ## What comes next
 
-The next lesson moves into AI + NFT and shifts from financial execution to content generation, digital identity, and ownership design.
+The next lesson moves into AI + NFT and shifts from financial execution to the relationship between generated content, identity expression, copyright, and assetization.

@@ -22,7 +22,7 @@ This layer provides inference capability. It is what actually produces outputs s
 - speech recognition
 - multimodal understanding
 
-This layer affects cost, latency, context size, and model availability.
+This layer determines which models you can call, as well as cost, latency, context length, and controllability.
 
 ### 2. Application frameworks
 
@@ -74,11 +74,11 @@ If the goal is a real product rather than a short demo, the usual order of impor
 
 If you want to build an early prototype, a minimal combination is often enough:
 
-- one model service for understanding and generation
-- one backend application for APIs, permissions, and logs
-- one retrieval or vector layer for knowledge access
-- one onchain data source
-- one frontend interface
+- one model service: responsible for generation and understanding
+- one backend application: responsible for APIs, permissions, and logs
+- one vector or retrieval layer: responsible for knowledge supplementation
+- one onchain data source: responsible for reading addresses, transactions, and protocol state
+- one frontend interface: responsible for input, feedback, and result display
 
 That stack is already enough for products such as:
 
@@ -101,7 +101,7 @@ Can you switch models or providers later without rebuilding the entire product?
 
 ### Cost structure
 
-Are inference, storage, and usage costs predictable enough for the product?
+Are inference cost, storage cost, call frequency, and concurrency cost controllable?
 
 ### Fit for the scenario
 
@@ -111,11 +111,11 @@ Research products, execution products, education products, and consumer tools do
 
 Once AI touches onchain systems, tool selection has to include three additional checks:
 
-- Are permissions explicit?
-- Is the data source trustworthy?
-- Can the system fail safely?
+- Are permissions clear: which actions can only be suggested, and which actions can be executed?
+- Is the data trustworthy: are onchain data, indexed data, and manually assigned labels consistent?
+- Can risks be rolled back: could an incorrect call cause real asset loss?
 
-That is why an AI × Web3 stack is not just “model plus wallet.” Execution boundaries need to be designed upfront.
+That is why an AI × Web3 toolchain is not simply placing an AI SDK next to a wallet SDK; it needs complete orchestration and risk control.
 
 ## Minimum takeaway
 
@@ -135,4 +135,4 @@ By the end of Part 1, you should have a coherent line of thought:
 - then connect Deep Learning to modern large models
 - finally map those capabilities onto a real toolchain
 
-The next part moves into Web3 foundations and places those AI capabilities inside an onchain environment.
+The next Web3 foundations part will place these AI capabilities into an onchain environment and begin discussing accounts, transactions, Gas, smart contracts, and protocol structure.

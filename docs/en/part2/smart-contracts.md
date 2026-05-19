@@ -102,7 +102,11 @@ The healthier split is:
 - AI handles understanding, planning, and decision support
 - contracts enforce execution boundaries and final rules
 
-That structure keeps AI flexible while keeping execution verifiable.
+The benefit of this layering is:
+
+- AI can remain flexible
+- execution rules remain verifiable
+- high-risk actions can be more strictly constrained
 
 ## Minimum takeaway
 
@@ -115,4 +119,4 @@ After this lesson, you should be able to explain:
 
 ## What comes next
 
-The next lesson introduces DeFi and shows how smart contracts become full financial systems when they are composed together.
+The next lesson moves into DeFi. You will see how smart contracts are combined into real financial systems such as lending, trading, stablecoins, and yield strategies.

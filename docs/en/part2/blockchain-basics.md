@@ -38,7 +38,7 @@ The chain is the ordered connection between blocks. As more blocks are added, ch
 
 ## Why it differs from a normal database
 
-A traditional database usually has a clear administrator who can modify or rewrite data directly.  
+A traditional database usually has a clear administrator who can modify or rewrite data directly.
 A blockchain is not absolutely unchangeable, but changes are much more constrained and expensive because they require broader network coordination instead of a single operator.
 
 Its value is not speed. Its value is:
@@ -60,7 +60,8 @@ State is the current global result of the chain, for example:
 
 ### Transaction
 
-A transaction is an input that requests a state change.
+A transaction is an input that changes state.
+You can think of it as a “request submitted to the blockchain.”
 
 ### Block explorer
 
@@ -104,7 +105,7 @@ They are less suitable when:
 
 ## An AI × Web3 example
 
-If an AI agent only reads data locally and produces suggestions, blockchain may be unnecessary.  
+If an AI agent only reads data locally and produces suggestions, blockchain may be unnecessary.
 But if it needs to:
 
 - manage onchain assets
@@ -121,7 +122,7 @@ After this lesson, you should be able to explain:
 - the key difference between a blockchain and a normal database
 - what blocks, chains, states, and transactions are
 - why decentralization is a multi-layer property
-- what kinds of problems are worth putting onchain
+- what kinds of problems are suitable for blockchain, and what kinds are not
 
 ## What comes next
 
