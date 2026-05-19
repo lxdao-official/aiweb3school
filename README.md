@@ -4,7 +4,7 @@
 
 **An open learning handbook, bootcamp, and collaboration network for builders working at the intersection of AI and Web3.**
 
-[Website](https://aiweb3.school/) | [English Docs](./docs/en/README.md) | [Chinese Docs](./docs/README.md) | [Join Bootcamp](https://web3career.build/en/programs/AI-Web3-School?tab=apply) | [Telegram](https://t.me/aiweb3school) | [X](https://x.com/aiweb3school)
+[Website](https://aiweb3.school/) | [English Docs](./docs/en/README.md) | [Chinese Docs](./docs/zh/README.md) | [Join Bootcamp](https://web3career.build/en/programs/AI-Web3-School?tab=apply) | [Telegram](https://t.me/aiweb3school) | [X](https://x.com/aiweb3school)
 
 </div>
 
